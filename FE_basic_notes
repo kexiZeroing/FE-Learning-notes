@@ -310,10 +310,41 @@ function deduplication(arr){
 	}
 	return arr;
 }
+
 3.利用数组的filter方法
 var arr2 = arr.filter(function(item, index){
     return arr.indexOf(item) === index;
 });
+
+4.利用对象的key不可以重复来进行去重
+Array.prototype.unique = function () {
+  const newArray = [];
+  const tmp = {};
+
+  for (let i = 0; i < this.length; i++) {
+
+    // 使用JSON.stringify()进行序列化，因为对象作为 key 会变成 [object Object]
+    if (!tmp[typeof this[i] + JSON.stringify(this[i])]) {  //加typeof是为了解决隐式类型转换成字符串后一样的值
+
+      tmp[typeof this[i] + JSON.stringify(this[i])] = 1;
+
+      newArray.push(this[i]);
+    }
+  }
+
+  return newArray;
+}
+
+注：JSON.stringify
+var a = [{a:1}];
+typeof a + a  //"object[object Object]"
+typeof a + JSON.stringify(a)  //"object[{"a":1}]"
+
+5.set
+Array.prototype.unique = function () {
+  return [...new Set(this)];
+}
+
 
 排序
 arr.sort();  //默认转为字符串比较  [10,8,9,7].sort(); 返回[10,7,8,9]
