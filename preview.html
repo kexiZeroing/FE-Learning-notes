@@ -9,6 +9,26 @@
             padding: 10px;
             margin: 0;
         }
+        #list {
+            list-style-type: none;
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        #list li {
+            padding: 10px;
+            margin: 0;
+        }
+        #list img {
+            padding: 5px;
+            height: 200px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        #list img.selected {
+            border: solid 5px #37c;
+            padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -34,10 +54,129 @@
         <li>
           <img src="https://p5.ssl.qhimg.com/t0110b30256941b9611.jpg">
         </li>
-      </ul>
+    </ul>
 
-      <script>
-          
-      </script>
+    <script>
+        const useBehavior = (context) => {
+            const {type, getDetail} = context;
+            return function (subject, target) {
+                const event = new CustomEvent(type, {bubbles: true, detail: getDetail.call(context, subject, target)});
+                // may use `this` in getDetail function and `this` should the context
+                target.dispatchEvent(event);
+            };
+        }
+
+        const preview = useBehavior({
+            type: 'preview',
+
+            getDetail(subject, target) {
+                const imgs = Array.from(subject.querySelectorAll('img'));
+                const selectedIdx = imgs.indexOf(target);
+                let mask = document.getElementById('mask');
+
+                if(!mask) {
+                    mask = document.createElement('div');
+                    mask.id = 'mask';
+                    mask.innerHTML = `<a class="previous" href="#">&lt;</a><img src="${target.src}"><a class="next" href="#">&gt;</a>`;
+
+                    Object.assign(mask.style, {
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        display: 'none',
+                        // later the mask will be flex layout
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    });
+
+                    mask.querySelectorAll('a').forEach((a) => {
+                        Object.assign(a.style, {
+                            width: '30px',
+                            textAlign: 'center',
+                            fontSize: '2rem',
+                            color: '#fff',
+                            textDecoration: 'none',
+                        });
+                    });
+                    document.body.appendChild(mask);
+
+                    let idx = selectedIdx;
+                    mask.addEventListener('click', (evt) => {
+                        if(evt.target === mask) {
+                            mask.style.display = 'none';
+                        } else if(evt.target.className === 'previous') {
+                            update(--idx);
+                        } else if(evt.target.className === 'next') {
+                            update(++idx);
+                        }
+                    });
+                }
+
+                function update(idx) {
+                    const [previous, next] = [...mask.querySelectorAll('a')];
+                    previous.style.visibility = idx ? 'visible' : 'hidden';
+                    next.style.visibility = idx < imgs.length - 1 ? 'visible' : 'hidden';
+
+                    const img = mask.querySelector('img');
+                    img.src = imgs[idx].src;
+                }
+
+                return {
+                    showMask() {
+                        mask.style.display = 'flex';
+                        update(selectedIdx);
+                    }
+                }
+            }
+        });
+
+        const select = useBehavior({
+            type: 'select',
+            data: {
+                picked: new Set()
+            },
+
+            getDetail(subject, target) {
+                const picked = this.data.picked;
+                if(picked.has(target)) {
+                    target.className = '';
+                    picked.delete(target);
+                } else {
+                    target.className = 'selected';
+                    picked.add(target);
+                }
+                
+                // not be really used in this example
+                return {
+                    changed: target,
+                    picked
+                };
+            }
+        });
+
+        const list = document.getElementById('list');
+
+        list.addEventListener('click', (evt) => {
+            if(evt.target.tagName === 'IMG') {
+                if(evt.altKey) {
+                    select(list, evt.target);
+                } else {
+                    preview(list, evt.target);
+                }
+            }   
+        });
+
+        list.addEventListener('preview', ({detail}) => {
+            const {showMask} = detail;
+            showMask();
+        });
+
+        list.addEventListener('select', ({detail}) => {
+            console.log(detail)
+        });
+    </script>
 </body>
 </html>
