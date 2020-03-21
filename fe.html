@@ -126,6 +126,30 @@
             background-color: #0a6;
         }
 
+        /* todo list */
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        li button {
+            border: 0;
+            cursor: pointer;
+            outline: 0 none;
+            vertical-align: bottom;
+        }
+        li.completed {
+            transition: opacity 2s;
+            opacity: 0;
+        }
+        li button:before {
+            content: '🔲';
+        }
+        li.completed button:before {
+            content: '✅';
+        }
+
+        /* throttle */
         #panel1 {
             width: 200px;
             height: 200px;
@@ -140,13 +164,15 @@
     </style>
 </head>
 <body>
-    <input id="modeCheckBox" type="checkbox">
-    <div class="changeMode content">
-        <div>
-            <label id="modeBtn" for="modeCheckBox"></label>
-            <h2>模式切换</h2>
+    <div class="content">
+        <input id="modeCheckBox" type="checkbox">
+        <div class="changeMode">
+            <div>
+                <label id="modeBtn" for="modeCheckBox"></label>
+                <h2>模式切换</h2>
+            </div>
+            <p>这是一间营业时间从午夜十二点到早上七点的特殊食堂。这里的老板，不太爱说话，却总叫人吃得热泪盈眶。</p>
         </div>
-        <p>这是一间营业时间从午夜十二点到早上七点的特殊食堂。这里的老板，不太爱说话，却总叫人吃得热泪盈眶。</p>
     </div>
     
     <div class="content">
@@ -196,6 +222,29 @@
             
             signalLoop(traffic, signals, (subject, signal) => {
                 subject.className = `traffic ${signal}`;
+            });
+        </script>
+    </div>
+
+    <div class="content">
+        <h2>列表</h2>
+        <ul id="list">
+            <li><button></button><span>任务一：学习HTML</span></li>
+            <li><button></button><span>任务二：学习CSS</span></li>
+            <li><button></button><span>任务三：学习JavaScript</span></li>
+        </ul>
+
+        <script>
+            const list = document.querySelector('#list');
+            const buttons = list.querySelectorAll('button');
+
+            buttons.forEach((btn) => {
+                btn.addEventListener('click', (ev) => {
+                    ev.target.parentNode.className = 'completed';
+                    setTimeout(() => {
+                        list.removeChild(ev.target.parentNode);
+                    }, 2000);
+                });
             });
         </script>
     </div>
@@ -261,6 +310,138 @@
         </script>
     </div>
 
+    <div class="content">
+        <h2>轮播组件</h2>
+        <div class="slider"></div>
+
+        <script>
+            class Slider {
+                constructor({container, images = [], cycle = 2000}) {
+                    this.container = container;
+                    this.data = images;
+                    this.cycle = cycle;
+                    this.container.innerHTML = this.render(this.data);
+                    this.items = Array.from(this.container.querySelectorAll('.slider__item, .slider__item--selected'));
+                    this.slideTo(0);
+                }
+
+                render(images) {
+                    const content = images.map(image => `<li class="slider__item"><img src="${image}"/></li>`);
+                    return `<ul>${content.join('')}</ul>`;
+                }
+
+                getSelectedItem() {
+                    const selected = this.container.querySelector('.slider__item--selected');
+                    return selected;
+                }
+
+                getSelectedItemIndex() {
+                    return this.items.indexOf(this.getSelectedItem());
+                }
+
+                slideTo(idx) {
+                    const selected = this.getSelectedItem();
+                    if(selected) {
+                        selected.className = 'slider__item';
+                    }
+                    const item = this.items[idx];
+                    if(item) {
+                        item.className = 'slider__item--selected';
+                    }
+
+                    const detail = {index: idx};
+                    const event = new CustomEvent('slide', {bubbles: true, detail});
+                    this.container.dispatchEvent(event);
+                    // Dispatches an Event at the specified EventTarget, (synchronously) invoking the affected EventListeners in the appropriate order. The normal event processing rules also apply to events dispatched manually with dispatchEvent().
+                }
+
+                slideNext() {
+                    const currentIdx = this.getSelectedItemIndex();
+                    const nextIdx = (currentIdx + 1) % this.items.length;
+                    this.slideTo(nextIdx);
+                }
+
+                slidePrevious() {
+                    const currentIdx = this.getSelectedItemIndex();
+                    const previousIdx = (currentIdx - 1 + this.items.length) % this.items.length;
+                    this.slideTo(previousIdx);
+                }
+
+                start() {
+                    this.stop();
+                    this._timer = setInterval(() => this.slideNext(), this.cycle);
+                }
+
+                stop() {
+                    clearInterval(this._timer);
+                }
+
+                registerPlugins(...plugins) {
+                    plugins.forEach((plugin) => {
+                        const pluginContainer = document.createElement('div');
+                        pluginContainer.className = 'slider__plugin';
+                        pluginContainer.innerHTML = plugin.render(this.data);
+                        this.container.appendChild(pluginContainer);
+                        plugin.initialize(this);
+                    });
+                }
+            }
+            /* end of the Slider class and start the plugins(dots, prev and next arrows) */
+
+            const pluginPrevious = {
+                render() {
+                    return '<a class="slider__previous"></a>';
+                },
+
+                initialize(slider) {
+                    const previous = slider.container.querySelector('.slider__previous');
+                    if(previous) {
+                        previous.addEventListener('click', (evt) => {
+                            slider.stop();
+                            slider.slidePrevious();
+                            slider.start();
+                            evt.preventDefault();
+                        });
+                    }
+                }
+            };
+
+            const pluginNext = {
+                render() {
+                    return '<a class="slider__next"></a>';
+                },
+
+                initialize(slider) {
+                    const next = slider.container.querySelector('.slider__next');
+                    if(next) {
+                        next.addEventListener('click', (evt) => {
+                            slider.stop();
+                            slider.slideNext();
+                            slider.start();
+                            evt.preventDefault();
+                        });
+                    }
+                }
+            };
+
+            const pluginController = { 
+                render(images) { 
+                    return `<div class="slider__control">
+                        ${images.map((_image, i) => `
+                            <span class="slider__control-buttons${i === 0 ? '--selected' : ''}"></span>
+                        `).join('')}</div>`.trim();
+                },
+
+                initialize(slider) {
+                    const controller = slider.container.querySelector('.slider__control');
+                    if(controller) {
+                        const buttons = controller.querySelectorAll('.slider__control-buttons, .slider__control-buttons--selected');
+                        
+                    }
+                }
+            };
+        </script>
+    </div>
 
 </body>
 </html>
