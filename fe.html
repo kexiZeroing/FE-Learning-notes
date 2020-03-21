@@ -516,6 +516,7 @@
                         const buttons = controller.querySelectorAll('.slider__control-buttons, .slider__control-buttons--selected');
 
                         controller.addEventListener('mouseover', (evt) => {
+                            // Array.from is a shallow copy (point to the same DOM) 
                             const idx = Array.from(buttons).indexOf(evt.target);
                             if(idx >= 0) {
                                 slider.slideTo(idx);
