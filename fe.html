@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS skills</title>
+    <style>
+        body, html {
+            padding: 10px;
+            margin: 0;
+            max-width: 600px;
+        }
+        .content {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* change mode */
+        .changeMode {
+            transition: background-color 1s, color 1s;
+        }
+        #modeCheckBox {
+            display: none;
+        }
+        /* immediately after #modeCheckBox */ 
+        #modeCheckBox:checked + .changeMode {
+            background-color: black;
+            color: white;
+            transition: all 1s;
+        }
+        #modeBtn {
+            font-size: 2rem;
+            float: right;
+        }
+        #modeBtn::after {
+            content: '🌞';
+        }
+        #modeCheckBox:checked + .changeMode #modeBtn::after {
+            content: '🌜';
+        }
+
+        /* star icon */
+        .star {
+            width: 0;
+            height: 0;
+            font-size: 0;
+            position: relative; 
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 100px solid red;
+        }
+        .star::after {
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-top: 100px solid red;
+            position: absolute;
+            content: "";
+            top: 30px; 
+            left: -50px;
+        }
+
+        /* pie chart */
+        .pie, .pie::before {
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: relative;
+        }
+        .pie {
+            color: #fff;
+            font-size: 1rem;
+            line-height: 150px;
+            text-align: center;
+            background: linear-gradient(to right, #3c7 50%, transparent 50%);
+           
+            animation-play-state: paused;  /* or running */
+        }
+        .pie::before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            content: '';
+            background: linear-gradient(to right, #37c 50%, #3c7 50%);
+            z-index: -1;
+            animation: spin 10s linear infinite;
+            animation-play-state: paused;
+            animation-delay: inherit;
+        }
+        @keyframes convex {
+            50% {background: linear-gradient(to right, transparent 50%, #37c 50%)}
+        }
+        @keyframes spin{
+            to {transform: rotate(360deg)}
+        }
+        /*
+            ease 缓慢开始，缓慢结束
+            ease-in 先慢后快
+            ease-out 先快后慢
+            ease-in-out 以慢速开始和结束的过渡效果
+            linear 平滑效果
+            step-start 步进，忽略第一帧
+            step-end 步进，忽略最后一帧
+
+            animation-delay 为一个负值会让动画立即开始，但是动画会从它的动画序列中某位置开始。例如，如果设定值为-1s，动画会从它的动画序列的第 1 秒位置处立即开始。
+        */
+
+        /* traffic lights */
+        .traffic {
+            display: flex;
+            flex-direction: column;
+        }
+        .traffic .light {
+            width: 50px;
+            height: 50px;
+            background-color: #999;
+            border-radius: 50%;
+        }
+        .traffic.stop .light:nth-child(1) {
+            background-color: #c00
+        }
+        .traffic.wait .light:nth-child(2) {
+            background-color: #cc0;
+        }
+        .traffic.pass .light:nth-child(3) {
+            background-color: #0a6;
+        }
+
+        #panel1 {
+            width: 200px;
+            height: 200px;
+            background: hsl(0, 50%, 50%);
+        }
+        /*
+            Hue is a degree on the color wheel from 0 to 360. 0 is red, 120 is green, 240 is blue.
+            Saturation is a percentage value; 0% means a shade of gray and 100% is the full color.
+            Lightness is also a percentage; 0% is black, 100% is white.
+        */
+
+    </style>
+</head>
+<body>
+    <input id="modeCheckBox" type="checkbox">
+    <div class="changeMode content">
+        <div>
+            <label id="modeBtn" for="modeCheckBox"></label>
+            <h2>模式切换</h2>
+        </div>
+        <p>这是一间营业时间从午夜十二点到早上七点的特殊食堂。这里的老板，不太爱说话，却总叫人吃得热泪盈眶。</p>
+    </div>
+    
+    <div class="content">
+        <h2>star icon</h2>
+        <div class="star"></div>
+    </div>
+
+    <div class="content">
+        <h2>饼图</h2>
+        <div class="pie" style="animation-delay: -1s;"><span>10%</span></div>
+        <div class="pie" style="animation-delay: -2.5s;"><span>25%</span></div>
+        <div class="pie" style="animation-delay: -5s;"><span>50%</span></div>
+        <div class="pie" style="animation-delay: -8s;"><span>80%</span></div>
+    </div>
+
+    <div class="content">
+        <h2>模拟交通灯</h2>
+        <div class="traffic stop">
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+        </div>
+
+        <script>
+            const traffic = document.querySelector('.traffic');
+            const wait = (ms) => {
+                return new Promise((resolve) => {
+                    setTimeout(resolve, ms);
+                });
+            }
+
+            const signalLoop = async (subject, signals, onSignal) => {               
+                let i = 0;
+                while(true) {
+                    const {signal, duration} = signals[i];
+                    onSignal(subject, signal);
+                    await wait(duration);
+                    i = (++i) % signals.length;
+                }
+            }
+
+            const signals = [
+                {signal: 'stop', duration: 2000},
+                {signal: 'wait', duration: 800},
+                {signal: 'pass', duration: 2000}   
+            ];
+            
+            signalLoop(traffic, signals, (subject, signal) => {
+                subject.className = `traffic ${signal}`;
+            });
+        </script>
+    </div>
+
+    <div class="content">
+        <h2>节流</h2>
+        <div id="panel1"></div>
+
+        <script>
+            const panel1 = document.getElementById('panel1');
+            let throttleTimer = null;
+
+            panel1.addEventListener('mousemove', (e) => {
+                if(!throttleTimer) {
+                    e.target.style.background = '#' + parseInt(Math.random() * 0xffffff).toString(16);
+                    throttleTimer = setTimeout(() => {
+                        throttleTimer = null;
+                    }, 500);
+                }
+            });
+        </script>
+    </div>
+
+    <div class="content">
+        <h2>防抖</h2>
+        <div id="panel2">
+            <canvas></canvas>
+        </div>
+
+        <script>
+            const panel2 = document.getElementById('panel2');
+            const canvas = document.querySelector('canvas');
+
+            const resize = () => {
+                canvas.width = panel2.clientWidth;
+                canvas.height = canvas.width;
+            }
+
+            const draw = () => {
+                const ctx = canvas.getContext('2d');
+                const radius = canvas.width / 2;
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+                ctx.fillStyle = 'green';
+                ctx.fill();
+                ctx.restore();
+            }
+
+            resize();
+            draw();
+
+            let debounceTimer = null;
+            window.addEventListener('resize', () => {
+                if(debounceTimer) {
+                    clearTimeout(debounceTimer);
+                }
+                debounceTimer = setTimeout(() => {
+                    resize();
+                    draw();
+                }, 300);
+            });
+        </script>
+    </div>
+
+
+</body>
+</html>
