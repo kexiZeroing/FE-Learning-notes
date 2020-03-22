@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS skills</title>
+    <title>Basic FE skills</title>
     <style>
         body, html {
             padding: 10px;
@@ -160,6 +160,57 @@
             Saturation is a percentage value; 0% means a shade of gray and 100% is the full color.
             Lightness is also a percentage; 0% is black, 100% is white.
         */
+
+        /* rotate animation */
+        .rotateMain {
+            width: 380px;
+            height: 380px;
+            position: relative;
+        }
+        #sun, #earth {
+            position: absolute;
+        }
+        #sun {
+            font-size: 5rem;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #earth {
+            font-size: 2rem;
+            left: 50%;
+            top: calc(50% - 150px);  /* 150 is radius */
+            transform: translate(-50%, -50%) rotate(0);
+            /* By default, the origin of a transform is "50% 50%", which is the center of any given element */
+            /* x-offset y-offset */
+            transform-origin: 50% calc(50% + 150px);  
+            animation: rotate 5s linear infinite;
+        }
+        @keyframes rotate {
+            to {transform: translate(-50%, -50%) rotate(360deg)}
+        }
+
+        /* jump ball */
+        .jumbBall {
+            position: relative;
+        }
+        #sphere {
+            position: absolute;
+            left: 100px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #0af;
+        }
+        #ground {
+            position: absolute;
+            top: 280px;
+            width: 600px;
+            height: 10px;
+            background: black;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -309,6 +360,68 @@
                     draw();
                 }, 300);
             });
+        </script>
+    </div>
+
+    <div class="content">
+        <h2>旋转动画</h2>
+        <div class="rotateMain">
+            <div id="sun">🌞</div>
+            <div id="earth">🌏</div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>弹跳小球</h2>
+        <div class="jumbBall">
+            <div id="sphere"></div>
+            <div id="ground"></div>
+        </div>
+
+        <script>
+            const sphere = document.getElementById('sphere');
+
+            function animate(target, duration, cb) {
+                const startTime = Date.now();
+                return new Promise((resolve) => {
+                    function update() {
+                        const t = Date.now() - startTime;
+                        const p = Math.min(t / duration, 1);
+                        cb(target, p);
+                        if(p < 1) {
+                            // run update until spending duration's time
+                            requestAnimationFrame(update);
+                        } else {
+                            resolve(p);
+                        }
+                    }
+                    update();
+                });
+            }   
+
+            (async function () {
+                let h0 = height = 260;  // top of ground - height of sphere
+                let duration = 1000;
+
+                while(1) {
+                    if(height < 0.00001) break;
+                    // jump down
+                    await animate(sphere, duration, (target, p) => {
+                        const top = (h0 - height) + height * p ** 2;
+                        target.style.top = `${top}px`;
+                    });
+
+                    // power reduced
+                    height *= 0.7;
+                    duration *= Math.sqrt(0.7);
+
+                    // jump up
+                    await animate(sphere, duration, (target, p) => {
+                        const top = h0 - height * p * (2 - p);
+                        target.style.top = `${top}px`;
+                    });
+                }
+            }());        
         </script>
     </div>
 </body>
