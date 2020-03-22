@@ -149,6 +149,63 @@
             content: '✅';
         }
 
+        /* animation */
+        #content1 {
+            position: relative;
+            display: inline-block;  /* width depends on content */
+            padding: 5px;
+            border: solid 1px;
+            font-size: 1.5rem;
+        }
+        #content1::after {
+            position: absolute;
+            /* -1 because of border */
+            top: -1px;
+            right: -1px;
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            content: '';
+            background: white;
+            animation: slide 2s ease-in forwards;
+            /* 
+                animation-fill-mode: forwards; 目标将保留由执行期间遇到的最后一个关键帧计算值。
+                animation-fill-mode: backwards; 动画将在应用于目标时立即应用第一个关键帧中定义的值。
+                animation-fill-mode: none; 当动画未执行时，动画将不会赋予任何样式应用于目标。
+            */
+        }
+        @keyframes slide {
+            to {width: 0};
+        }
+
+        #content2 {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 5px;
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: fade-in 5s forwards;
+        }
+        @keyframes fade-in {
+            to {opacity: 1};
+        }
+
+        #content3 {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 5px;
+            font-size: 1.5rem;
+            /*
+                clip-path creates a clipping region that sets what part of an element should be shown. Parts that are inside the region are shown, while those outside are hidden.
+
+                polygon(): Each pair argument in the list represents xi and yi
+            */
+            clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+            animation: slide2 2s forwards;
+        }
+        @keyframes slide2 {
+            to {clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)};
+        }
+
         /* throttle */
         #panel1 {
             width: 200px;
@@ -297,6 +354,13 @@
                 });
             });
         </script>
+    </div>
+
+    <div class="content">
+        <h2>简单动画</h2>
+        <div id="content1">文字内容1</div><br>
+        <div id="content2">文字内容2</div><br>
+        <div id="content3">文字内容3</div>
     </div>
 
     <div class="content">
