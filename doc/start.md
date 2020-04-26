@@ -1,4 +1,4 @@
-## Follow these steps to start
+## Follow these steps to start a new JavaScript project
 
 1. Open VS Code
 2. <kbd>Ctrl</kbd> + <kbd>`</kbd> open the terminal
@@ -12,10 +12,10 @@
 10. Install prettier and eslint-prettier `npm i -D prettier eslint-plugin-prettier eslint-config-prettier`, and add prettier rules to `.eslintrc.yml` file. It will show eslint(prettier) errors in the problems tab
 11. eslint has the fix option `npm run lint -- --fix` (fix is the parameter for eslint rather than npm) which is very convenient to fix all the files in the src directory
 
-## Husky
+### Husky
 
-> While working on an enterprise development team, it is important that all code linting and unit tests are passing before committing code, especially if you are using some form of continuous integration.
+> While working on an enterprise development team, it is important that all code linting and unit tests are passing before committing code (**git hooks**), especially if you are using some form of continuous integration.
 
-**Husky** is a very popular npm package that allows custom scripts to be ran against your repository to prevent bad git commit, git push and more.
+[**Husky**](https://github.com/typicode/husky) is a very popular npm package that allows custom scripts to be ran against your repository to prevent bad git commit, git push and more. (making commits of fixing lint/prettier issue doesn't happen)
 
-11. Install husky `npm i -D husky`
+12. Install husky `npm i -D husky` and have a "husky" section in the `package.json` file to add git hooks.
