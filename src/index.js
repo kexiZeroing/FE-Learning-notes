@@ -1,6 +1,6 @@
 console.log("hello world");
 
-const a = 1;
+const a = 12;
 console.log(a);
 
 let main = (val) => console.log(val);

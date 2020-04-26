@@ -18,3 +18,10 @@
 > While working on an enterprise development team, it is important that all code linting and unit tests are passing before committing code (**git hooks**), especially if you are using some form of continuous integration.
 
 [**Husky**](https://github.com/typicode/husky) is a very popular npm package that allows custom scripts to be ran against your repository to prevent bad git commit, git push and more. (making commits of fixing lint/prettier issue doesn't happen)
+
+### Add more things
+
+13. Install webpack `npm i -D webpack webpack-dev-server webpack-cli` and babel loder `npm i -D babel-loader @babel/core @babel/preset-env`. Create a `dist` folder for the build version and have `rm dist/*` as a clean script. `webpack-dev-server` provides live reloading.
+14. Create a `webpack.config.js` file in the root, and can copy the content from https://createapp.dev with all the settings in a GUI. You can create `webpack.{dev,prod}.js` to have different configurations and add `--config webpack.{dev,prod}.js` in the NPM scripts like `"build": "webpack --config webpack.prod.js"`
+15. Create `.babelrc` in the root using `@babel/preset-env`
+16. Install eslint-babel `npm i -D babel-eslint eslint-plugin-babel` and change `.eslintrc` file.
