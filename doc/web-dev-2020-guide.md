@@ -1,6 +1,9 @@
 # Web Development In 2020 - A Practical Guide
 
-> Copy from https://github.com/andrews1022/web-development-2020-course-list
+> Copy from
+
+- https://github.com/andrews1022/web-development-2020-course-list
+- https://github.com/kamranahmedse/developer-roadmap
 
 ## Tools 1 - The Necessities
 
@@ -107,3 +110,9 @@
 ## Web Assembly
 
 ![Slide 35](https://raw.githubusercontent.com/andrews1022/web-development-2020-course-list/master/img/slide-35.jpg)
+
+## Developer Roadmap
+
+![frontend roadmap](https://raw.githubusercontent.com/kamranahmedse/developer-roadmap/master/img/frontend.png)
+
+![backend roadmap](https://raw.githubusercontent.com/kamranahmedse/developer-roadmap/master/img/backend.png)
