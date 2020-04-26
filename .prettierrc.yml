@@ -1,0 +1,2 @@
+# arrow function's parameters always have parenthesis (always or avoid)
+arrowParens: always
