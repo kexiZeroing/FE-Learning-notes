@@ -1,0 +1,29 @@
+{
+  "name": "fe-learning-notes",
+  "version": "1.0.0",
+  "description": "learn web development",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "eslint src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kexiZeroing/FE-Learning-notes.git"
+  },
+  "keywords": [],
+  "author": "Kexi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kexiZeroing/FE-Learning-notes/issues"
+  },
+  "homepage": "https://github.com/kexiZeroing/FE-Learning-notes#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5"
+  }
+}
