@@ -60,7 +60,9 @@ Web security course from Stanford: https://web.stanford.edu/class/cs253/
 - @vaidehijoshi basecs https://www.codenewbie.org/basecs
 - @devdevcharlie ML for front-end developers
 
-Don't forget your own resources:
+---
+
+#### Don't forget your own resources:
 
 > Hopefully one day I can migrate the content in Yueque and Evernote to my personal blog/website.
 
