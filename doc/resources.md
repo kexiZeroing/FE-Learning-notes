@@ -47,7 +47,18 @@ ReactJS by Kent C. Dodds: https://egghead.io/lessons/react-a-beginners-guide-to-
 
 Web security course from Stanford: https://web.stanford.edu/class/cs253/
 
----
+#### Inspiring
+
+- @kentcdodds and @dan_abramov learn React
+- @umaar @stefanjudis @sulco recommended reources and TIL
+- @mgechev programming podcast https://podcast.mgechev.com/
+- @flavio short courses https://flaviocopes.com/
+- @addyosmani every tweet
+- @samantha_ming tidbit https://www.samanthaming.com/
+- @b0rk wizard zines and flashcard
+- @Emma Bostian @kvlly ladybug podcast https://ladybug.dev/
+- @vaidehijoshi basecs https://www.codenewbie.org/basecs
+- @devdevcharlie ML for front-end developers
 
 Don't forget your own resources:
 
