@@ -56,7 +56,7 @@ Web security course from Stanford: https://web.stanford.edu/class/cs253/
 - @addyosmani every tweet
 - @samantha_ming tidbit https://www.samanthaming.com/
 - @b0rk wizard zines and flashcard
-- @Emma Bostian @kvlly ladybug podcast https://ladybug.dev/
+- @EmmaBostian @kvlly ladybug podcast https://ladybug.dev/
 - @vaidehijoshi basecs https://www.codenewbie.org/basecs
 - @devdevcharlie ML for front-end developers
 
@@ -64,7 +64,7 @@ Web security course from Stanford: https://web.stanford.edu/class/cs253/
 
 #### Don't forget your own resources:
 
-> Hopefully one day I can migrate the content in Yueque and Evernote to my personal blog/website.
+> Hopefully one day I can migrate the content in Yuque and Evernote to my personal blog/website.
 
 - Twitter
 - Github
