@@ -8,19 +8,44 @@ However, I can remember what I have and lower expectations. Take a relief, I'm 
 
 ---
 
+#### Articles
+
 Tania Rascia's blog: https://www.taniarascia.com/blog/
 
-Ooops, I guess we're full-stack developers now: https://full-stack.netlify.app/
+Basecs series: https://github.com/vaidehijoshi/basecs-series
 
-Chrome DevTools tips: https://umaar.com/dev-tips/
+JavaScript Algorithms: https://github.com/mgechev/javascript-algorithms
 
-Web security course from Stanford: https://web.stanford.edu/class/cs253/
+#### Tools
 
 Frontend build config generator: https://createapp.dev/
 
+Code sandbox online IDE: https://codesandbox.io/
+
+Chrome DevTools tips: https://umaar.com/dev-tips/
+
 Chrome urls: [chrome://chrome-urls](chrome://chrome-urls/)
 
+Git explorer: https://gitexplorer.com/
+
+Sketch with a hand-drawn feel: https://excalidraw.com/
+
+#### Websites
+
+Ooops, I guess we're full-stack developers now: https://full-stack.netlify.app/
+
 Interactive website with live coding: https://www.strml.net/
+
+How DNS works: https://howdns.works/
+
+How HTTPS works: https://howhttps.works/
+
+#### Videos
+
+The Beginner's Guide to
+ReactJS by Kent C. Dodds: https://egghead.io/lessons/react-a-beginners-guide-to-react-introduction
+
+Web security course from Stanford: https://web.stanford.edu/class/cs253/
 
 ---
 
