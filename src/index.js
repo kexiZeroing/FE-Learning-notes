@@ -1,4 +1,4 @@
-console.log("hello world");
+console.log('hello world');
 
 const a = 12;
 console.log(a);
@@ -7,5 +7,5 @@ console.log(a);
 /**
  * @param  {} val
  */
-let main = (val) => console.log(val);
-main("hi");
+const main = (val) => console.log(val);
+main('hi');
