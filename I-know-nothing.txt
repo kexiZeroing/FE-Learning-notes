@@ -1,0 +1,31 @@
+baseCS
+https://github.com/vaidehijoshi/basecs-series
+
+
+Web Security
+https://web.stanford.edu/class/cs253
+
+
+Inside look at modern web browser (4 parts)
+https://developers.google.com/web/updates/2018/09/inside-browser-part1
+
+
+Chrome University 2019
+https://www.youtube.com/playlist?list=PLNYkxOF6rcICgS7eFJrGDhMBwWtdTgzpx
+
+
+Build excellent websites
+https://web.dev
+
+
+CS 61B: Data Structures
+https://inst.eecs.berkeley.edu/~cs61b/sp20/index.html
+
+
+Intro to Computer Systems
+http://www.cs.cmu.edu/~213/schedule.html
+
+
+The Beginner's Guide to React
+https://egghead.io/courses/the-beginner-s-guide-to-react
+
