@@ -5,3 +5,10 @@
 - `demo/*.html` 文件为一些前端常用概念的使用或者基本组件的封装，均为原生 JS，和现代框架完全无关，仅用于学习
 
 - `doc/start.md` 开始一个现代 JS 项目的流程
+
+---
+
+### Tips
+- Quickly browse the history of a file in the repo: Go to a file in GitHub, replace `github.com` with `github.githistory.xyz` (i.e. https://github.githistory.xyz/kexiZeroing/FE-Learning-notes/blob/master/README.md)
+
+- `Cmd + Shift + .` toggles hidden files in Mac
