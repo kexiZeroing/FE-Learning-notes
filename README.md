@@ -10,5 +10,9 @@
 
 ### Tips
 - Quickly browse the history of a file in the repo: Go to a file in GitHub, replace `github.com` with `github.githistory.xyz` (i.e. https://github.githistory.xyz/kexiZeroing/FE-Learning-notes/blob/master/README.md)
-
 - `Cmd + Shift + .` toggles hidden files in Mac
+- Open VS Code in terminal: `Cmd + Shift + p` -> type **Shell Command: Install 'code' command in PATH** -> restart the terminal for the new `$PATH` value to take effect
+- Drag the file tab from VS Code straight into the terminal to get the absolute path for that file
+- `git log --oneline --graph`
+- Browser notepad: `data:text/html,<html contenteditable>`
+- Ever struggled with some forgotten processes taking over a port you're trying to use? Just run `npx kill-port [port-number]`

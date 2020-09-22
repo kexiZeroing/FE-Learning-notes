@@ -28,6 +28,10 @@ Modern JavaScript-based web development: https://fullstackopen.com/en
 
 Complete roadmap for web development: https://andreasbm.github.io/web-skills
 
+Webpack Introduction: https://ui.dev/webpack
+
+Code Tidbits: https://www.samanthaming.com/
+
 Bash Commands and Tips: https://dev.to/awwsmm/101-bash-commands-and-tips-for-beginners-to-experts-30je
 
 Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
@@ -51,8 +55,6 @@ Git explorer: https://gitexplorer.com/
 Sketch UI with a hand-drawn look: https://excalidraw.com/
 
 Images of source code: https://carbon.now.sh/
-
-Browser notepad in one line: data:text/html, &lt;html contenteditable&gt;
 
 CSS animations on demand: https://animista.net/
 
