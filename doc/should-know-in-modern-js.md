@@ -1,3 +1,4 @@
 1. major, minor, and patch version: `^` instructs npm to install the newest version of the package with the same major version; Use `~` to have both the major and minor version match.
 2. `__dirname` and `__filename`: running `node example.js` from `/Users/mjr`, **__dirname** is `/Users/mjr` and **__filename** is `/Users/mjr/example.js`
 3. Passing arguments to other npm commands, we can leverage the `--` separator. e.g. `"pass-flags-to-other-script": "npm run my-script -- --watch"` will pass the `--watch` flag to the `my-script` command.
+4. livereload: start a server and it can detect files' changes; inject a script into the client; tell the browser to refresh using WebSocket.
