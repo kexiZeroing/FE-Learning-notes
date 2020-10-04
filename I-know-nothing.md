@@ -1,6 +1,8 @@
-### Worth learning repeatedly
+## Worth learning repeatedly
 
 baseCS: https://github.com/vaidehijoshi/basecs-series
+
+Learn Data Structure & Algorithm in JavaScript: https://dev.to/edisonpebojots/data-structure-algorithm-chapter-01-2538
 
 Tania Rascia's blog: https://www.taniarascia.com/blog
 
@@ -28,8 +30,6 @@ Modern JavaScript-based web development: https://fullstackopen.com/en
 
 Complete roadmap for web development: https://andreasbm.github.io/web-skills
 
-Webpack Introduction: https://ui.dev/webpack
-
 Code Tidbits: https://www.samanthaming.com/
 
 Bash Commands and Tips: https://dev.to/awwsmm/101-bash-commands-and-tips-for-beginners-to-experts-30je
@@ -38,7 +38,7 @@ Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
 
 ---
 
-### Tools and Cool websites
+## Tools and Cool websites
 
 Frontend build config generator: https://createapp.dev/
 
@@ -65,3 +65,15 @@ Things happening every second around the world: https://everysecond.io/
 HTTP Cats: https://http.cat/
 
 wenyan‑lang: https://wy-lang.org/
+
+---
+
+## React ecosystem
+
+A Complete Beginner's Guide to React: https://dev.to/aspittel/a-complete-beginner-s-guide-to-react-hooks-edition-1bi0
+
+Webpack Introduction: https://ui.dev/webpack
+
+Making Sense of React Hooks: https://dev.to/dan_abramov/making-sense-of-react-hooks-2eib
+
+Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo

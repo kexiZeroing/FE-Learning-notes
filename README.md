@@ -8,7 +8,8 @@
 
 ---
 
-### Tips
+## Tips
+
 - Quickly browse the history of a file in the repo: Go to a file in GitHub, replace `github.com` with `github.githistory.xyz` (i.e. https://github.githistory.xyz/kexiZeroing/FE-Learning-notes/blob/master/README.md)
 - `Cmd + Shift + .` toggles hidden files in Mac
 - Open VS Code in terminal: `Cmd + Shift + p` -> type **Shell Command: Install 'code' command in PATH** -> restart the terminal for the new `$PATH` value to take effect
@@ -16,3 +17,5 @@
 - `git log --pretty=format:"%h %ad%x09%an%x09%s" --date=short` (%h = commit hash, %x09 = tab, %an = author name, %ad = author date, %s = subject)
 - Browser notepad: `data:text/html,<html contenteditable>`
 - Ever struggled with some forgotten processes taking over a port you're trying to use? Just run `npx kill-port [port-number]`
+- Type `printenv` in the terminal to list all the default environment variables.
+- Learn a command quickly https://tldr.sh and can install it from `npm install -g tldr`
