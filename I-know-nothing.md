@@ -77,3 +77,5 @@ Webpack Introduction: https://ui.dev/webpack
 Making Sense of React Hooks: https://dev.to/dan_abramov/making-sense-of-react-hooks-2eib
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
+
+Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
