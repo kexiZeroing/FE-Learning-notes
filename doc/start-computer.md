@@ -58,4 +58,4 @@ The first thing you should do when you install Git is to set your user name and 
    - When you git clone using HTTPS URLs on the command line, Git will ask for your GitHub username and password the first time. It is likely that Git will use a credential helper provided by your operating system. If so, your GitHub credentials were cached and this setup applies across repos. (Password-based authentication for Git is deprecated, and we recommend using a personal access token (PAT) when prompted for a password instead. https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
    
    - SSH URLs provide access to a Git repository via SSH, a secure protocol. To use these URLs, you must generate an SSH keypair on your computer and add the public key to your GitHub account.
-    ![git https ssh](https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png)
+    <img alt="https ssh" src="https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png" width="900" height="300">
