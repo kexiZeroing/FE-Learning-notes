@@ -58,10 +58,11 @@ The first thing you should do when you install Git is to set your user name and 
    - When you git clone using HTTPS URLs on the command line, Git will ask for your GitHub username and password the first time. It is likely that Git will use a credential helper provided by your operating system. If so, your GitHub credentials were cached and this setup applies across repos. (Password-based authentication for Git is deprecated, and we recommend using a personal access token (PAT) when prompted for a password instead. https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
    
    - SSH URLs provide access to a Git repository via SSH, a secure protocol. To use these URLs, you must generate an SSH keypair on your computer and add the public key to your GitHub account.
-    ![git https ssh](https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png)
+    <img alt="https ssh" src="https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png" width="900" height="300">
 
 **Merge, Rebase, Squsah**
 <img alt="git merge" src="https://ftp.bmp.ovh/imgs/2020/10/1cb887d4302c8363.png">
 <img alt="git rebase" src="https://ftp.bmp.ovh/imgs/2020/10/4e03971d9a22e879.png">
 - `git pull --merge`  # the default way, your local changes are merged with the remote changes. This results in a merge commit that points to the latest local commit and the latest remote commit.
 - `git pull --rebase`  # your local changes are re-applied on top of the remote changes.
+
