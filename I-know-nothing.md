@@ -34,6 +34,8 @@ Code Tidbits: https://www.samanthaming.com/
 
 Bash Commands and Tips: https://dev.to/awwsmm/101-bash-commands-and-tips-for-beginners-to-experts-30je
 
+Git Concepts I Wish I Knew Years Ago: https://dev.to/g_abud/advanced-git-reference-1o9j
+
 Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
 
 ---
@@ -79,3 +81,5 @@ Making Sense of React Hooks: https://dev.to/dan_abramov/making-sense-of-react-ho
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
 
 Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
+
+Build Your First JAMstack Site: https://www.jeremymorgan.com/blog/programming/how-to-build-jamstack-site

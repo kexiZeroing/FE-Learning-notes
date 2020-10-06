@@ -59,3 +59,9 @@ The first thing you should do when you install Git is to set your user name and 
    
    - SSH URLs provide access to a Git repository via SSH, a secure protocol. To use these URLs, you must generate an SSH keypair on your computer and add the public key to your GitHub account.
     ![git https ssh](https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png)
+
+**Merge, Rebase, Squsah**
+<img alt="git merge" src="https://ftp.bmp.ovh/imgs/2020/10/1cb887d4302c8363.png">
+<img alt="git rebase" src="https://ftp.bmp.ovh/imgs/2020/10/4e03971d9a22e879.png">
+- `git pull --merge`  # the default way, your local changes are merged with the remote changes. This results in a merge commit that points to the latest local commit and the latest remote commit.
+- `git pull --rebase`  # your local changes are re-applied on top of the remote changes.
