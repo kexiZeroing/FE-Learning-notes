@@ -76,9 +76,13 @@ A Complete Beginner's Guide to React: https://dev.to/aspittel/a-complete-beginne
 
 Webpack Introduction: https://ui.dev/webpack
 
+React Router Introduction: https://ui.dev/react-router-v4-philosophy-introduction
+
 Making Sense of React Hooks: https://dev.to/dan_abramov/making-sense-of-react-hooks-2eib
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
+
+How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
 
 Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
 
