@@ -1,5 +1,14 @@
 ## Concepts not clear
 
+### git reset --hard &lt;last good SHA&gt;
+You’ve made some commits locally (not yet pushed), but everything is terrible, you want to undo last commits like they never happened.
+
+`--soft`, does not touch the index file or the working tree at all (but resets the head). This leaves all your changed files "Changes to be committed", as git status would put it.
+
+`--mixed`, resets the index but not the working tree. The commits are gone, but the contents are still on disk. This is the default action.
+
+`--hard`, resets the index and working tree. Any changes to tracked files in the working tree are discarded.
+
 ### git merge --no-ff
 The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it detects that your current `HEAD` is an ancestor of the commit you're trying to merge. A fast-forward is when, instead of constructing a merge commit, git just moves your branch pointer to point at the incoming commit. This commonly occurs when doing a `git pull` without any local changes.
 
