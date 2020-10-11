@@ -10,3 +10,4 @@
 10. Type `printenv` in the terminal to list all the default environment variables.
 11. Install tldr pages `npm install -g tldr` which simplify the `man pages` with practical examples, e.g. try to run `tldr tar`
 12. Short link `react.new`, `vue.new`, `ng.new`, `js.new`, `csb.new` to create a new codeSandbox project.
+13. Use `if (typeof window === 'undefined')` to execute code only in the server-side. We can’t do it using `if (window === undefined)` because we’d get a “window is not defined” runtime error.

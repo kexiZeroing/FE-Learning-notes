@@ -30,8 +30,6 @@ Modern JavaScript-based web development: https://fullstackopen.com/en
 
 Complete roadmap for web development: https://andreasbm.github.io/web-skills
 
-Code Tidbits: https://www.samanthaming.com/
-
 Bash Commands and Tips: https://dev.to/awwsmm/101-bash-commands-and-tips-for-beginners-to-experts-30je
 
 Git Concepts I Wish I Knew Years Ago: https://dev.to/g_abud/advanced-git-reference-1o9j

@@ -1,0 +1,156 @@
+## Destructuring assignments
+The destructuring assignment syntax is a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
+
+### Array destructuring
+```javascript
+const foo = ['one', 'two', 'three'];
+const [one, two, three] = foo;
+
+// Assignment separate from declaration
+let a, b;
+[a, b] = [1, 2];
+console.log(a); // 1
+console.log(b); // 2
+
+// default value
+const colors = [];
+const [firstColor = 'white'] = colors;
+console.log(firstColor); // 'white'
+
+// Ignoring some values
+const [a, , b] = [1, 2, 3];
+console.log(a); // 1
+console.log(b); // 3
+
+// rest pattern
+const [a, ...b] = [1, 2, 3];
+console.log(a); // 1
+console.log(b); // [2, 3]
+
+// Swapping variables
+let a = 1, b = 3;
+[a, b] = [b, a];
+console.log(a); // 3
+console.log(b); // 1
+```
+
+### Object destructuring
+```javascript
+const o = {p: 42, q: true};
+const {p, q} = o;
+console.log(p); // 42
+console.log(q); // true
+
+// Assigning to new variable names
+const o = {p: 42, q: true};
+const {p: foo, q: bar} = o;
+console.log(foo); // 42 
+console.log(bar); // true
+console.log(p); // ReferenceError: p is not defined
+console.log(q); // ReferenceError: q is not defined
+
+// Assignment separate from declaration
+// The parentheses around the assignment statement are required when using 
+// object literal destructuring assignment without a declaration.
+// {a, b} = {a: 1, b: 2} is not valid stand-alone syntax, as the {a, b} 
+// is considered a block and not an object literal.
+let a, b, rest;
+({a, b, ...rest} = {a: 10, b: 20, c: 30, d: 40});
+console.log(a); // 10
+console.log(b); // 20
+console.log(rest); // {c: 30, d: 40}
+
+// destructuring dynamic properties
+function greet(obj, nameProp) {
+ const { [nameProp]: name = 'Unknown' } = obj;
+ return `Hello, ${name}!`;
+}
+greet({ name: 'Batman' }, 'name'); // => 'Hello, Batman!'
+greet({ }, 'name'); // => 'Hello, Unknown!'
+```
+
+## Spread operator
+1. Expand an array, an object or a string using the spread operator `...` .
+2. The **rest parameter** syntax allows us to represent an indefinite number of arguments as an array. Only the last parameter can be a "rest parameter". The `arguments` object is not a real array, while **rest parameters are Array instances**, meaning Array methods can be used on rest parameters.
+
+```javascript
+// spread syntax
+var arr1 = [0, 1, 2];
+var arr2 = [3, 4, 5];
+arr1 = [...arr1, ...arr2]; // arr1 is now [0, 1, 2, 3, 4, 5]
+
+// create a copy of an array or an object
+const c = [...arr];
+const newObj = { ...oldObj };
+
+// rest parameter
+function myFun(a, b, ...manyMoreArgs) {
+  console.log(a);  // one
+  console.log(b);  // two
+  console.log(manyMoreArgs);  // [three, four, five, six]
+}
+myFun("one", "two", "three", "four", "five", "six");
+myFun("one", "two");  // manyMoreArgs will be []
+
+// replace apply() when you want to use an array as arguments to a function
+function myFunction(x, y, z) { }
+var args = [0, 1, 2];
+myFunction(...args);
+```
+
+## Shorthand and Computed property names (Enhanced Object Literals)
+```javascript
+// Shorthand property names
+const a = 'foo', b = 42, c = {};
+const o = {a, b, c};
+
+// Shorthand method names
+const o = {
+  property(parameters) {}
+};
+
+// Computed property names
+var prop = 'foo';
+var o = {
+  [prop]: 'hey',
+  ['b' + 'ar']: 'there'
+};
+
+// The shorthand syntax also supports computed property names
+var bar = {
+  foo1() { return 1; },
+  ['foo' + 2]() { return 2; }
+};
+
+// prototype and super()
+const o = { y: 'y', test: () => 'zoo' }
+const x = {
+  __proto__: anObject, 
+  test() { return super.test() + 'x' }
+}  
+x.test(); // zoox
+```
+
+## getter and setter in Object
+The `get syntax` binds an object property to a function that will be called when that property is looked up. The `set syntax` binds an object property to a function to be called when there is an attempt to set that property.
+
+```javascript
+// getter
+const obj = {
+  log: ['example', 'test'],
+  get latest() {
+    return this.log[this.log.length - 1];
+  }
+}
+console.log(obj.latest); // "test"
+
+// setter
+const language = {
+  set current(name) {
+    this.log.push(name);
+  },
+  log: []
+}
+language.current = 'EN';
+console.log(language.log); // ['EN']
+```
