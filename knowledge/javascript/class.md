@@ -1,3 +1,4 @@
+## Classes
 JavaScript classes are primarily **syntactical sugar over existing prototype-based inheritance**. The class syntax does not introduce a new object-oriented model to JavaScript. **The body of a class is executed in strict mode**.
 
 Classes are in fact "special functions", and just as you can define function expressions and function declarations, the class syntax also includes class expressions and class declarations. An important difference between function declarations and class declarations is that **function declarations are hoisted and class declarations are not**.
