@@ -2,8 +2,6 @@
 
 baseCS: https://github.com/vaidehijoshi/basecs-series
 
-Learn Data Structure & Algorithm in JavaScript: https://dev.to/edisonpebojots/data-structure-algorithm-chapter-01-2538
-
 Tania Rascia's blog: https://www.taniarascia.com/blog
 
 Web Security: https://web.stanford.edu/class/cs253
@@ -22,7 +20,7 @@ CS 61B: Data Structures: https://inst.eecs.berkeley.edu/~cs61b/sp20/index.html
 
 Intro to Computer Systems: http://www.cs.cmu.edu/~213/schedule.html
 
-I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
+Learn Data Structure & Algorithm in JavaScript: https://dev.to/edisonpebojots/data-structure-algorithm-chapter-01-2538
 
 The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-to-react
 
@@ -84,4 +82,4 @@ How styled-components works: https://medium.com/styled-components/how-styled-com
 
 Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
 
-Build Your First JAMstack Site: https://www.jeremymorgan.com/blog/programming/how-to-build-jamstack-site
+I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
