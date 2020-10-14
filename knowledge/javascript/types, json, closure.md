@@ -32,7 +32,7 @@ The Number type is a double-precision 64-bit binary format IEEE 754 value. To ch
 - `Number.MAX_VALUE` is the largest number possible to represent using a double precision floating point representation. 
 - With the introduction of `BigInt`, you can operate with numbers beyond the `Number.MAX_SAFE_INTEGER`. A `BigInt` is created by appending `n` to the end of an integer or by calling the constructor.
 
-### JSON.stringify(value[, replacer[, space]])
+## JSON.stringify(value[, replacer[, space]])
 `JSON.stringify` turns a JavaScript object into JSON text and stores that JSON text in a string. `JSON.parse` turns a string of JSON text into a JavaScript object.
 - If the value has a `toJSON()` method, it's responsible to define what data will be serialized.
 - `Boolean`, `Number`, and `String` objects are converted to the corresponding primitive values.
@@ -82,3 +82,123 @@ JSON.stringify({ uno: 1, dos: 2 }, null, '\t');
 //     "dos": 2
 // }'
 ```
+
+## Closure
+**Lexical scoping**, which describes how a parser resolves variable names when functions are nested. The word "lexical" refers to the fact that lexical scoping uses **the location where a variable is declared within the source code to determine where that variable is available**. Nested functions have access to variables declared in their outer scope.
+
+**A closure is the combination of a function and the lexical environment within which that function was declared.** This environment consists of any local variables that were in-scope at the time the closure was created. The instance of function maintains a reference to its lexical environment, within which the variable name exists. Closures are useful because they let you associate data (the lexical environment) with a function that operates on that data. This has obvious parallels to object-oriented programming, where objects allow you to associate data (the object's properties) with one or more methods.
+
+```javascript
+function makeAdder(x) {
+  return function(y) {
+    return x + y;
+  };
+}
+
+// add5 and add10 are both closures. They store different lexical environments.
+var add5 = makeAdder(5);
+var add10 = makeAdder(10);
+
+console.log(add5(2));  // 7
+console.log(add10(2)); // 12
+```
+
+It is possible to emulate private methods using closures. Private methods provide a way to **manage global namespace**. Using closures in this way is known as the **module pattern**. The shared lexical environment is created in the body of an anonymous function, which is executed as soon as it has been defined. The lexical environment contains private items, and neither of these private items can be accessed directly from outside. Instead, **they must be accessed by the public functions that are returned from the anonymous wrapper**. Using closures in this way provides a number of benefits that are normally associated with object-oriented programming -- in particular, data hiding and encapsulation.
+
+```javascript
+const counter = (function() {
+  let privateCounter = 0;
+
+  function changeBy(val) {
+    privateCounter += val;
+  }
+
+  return {
+    increment: function() {
+      changeBy(1);
+    },
+    decrement: function() {
+      changeBy(-1);
+    },
+    value: function() {
+      return privateCounter;
+    }
+  };
+})();
+
+console.log(counter.value()); // logs 0
+counter.increment();
+counter.increment();
+console.log(counter.value()); // logs 2
+counter.decrement();
+console.log(counter.value()); // logs 1
+```
+
+### Creating closures in loops: A common mistake
+```javascript
+const helpText = [
+    {'id': 'email', 'help': 'Your e-mail address'},
+    {'id': 'name', 'help': 'Your full name'},
+    {'id': 'age', 'help': 'Your age (you must be over 16)'}
+  ];
+
+for (var i = 0; i < helpText.length; i++) {
+  var item = helpText[i];
+  document.getElementById(item.id).onfocus = function() {
+    showHelp(item.help);
+  }
+}
+```
+Three closures have been created by the loop, but each one **shares the same single lexical environment. This is because the variable item is declared with `var` and thus has function scope due to hoisting**. 
+
+```javascript
+// solution 1: use anonymous closures
+for (var i = 0; i < helpText.length; i++) {
+  (function() {
+    var item = helpText[i];
+    document.getElementById(item.id).onfocus = function() {
+      showHelp(item.help);
+    }
+  })();
+}
+
+// solution 2: use `let` instead of `var`, binds the block-scoped variable
+for (let i = 0; i < helpText.length; i++) {
+  let item = helpText[i];
+  document.getElementById(item.id).onfocus = function() {
+    showHelp(item.help);
+  }
+}
+
+// solution 3: use `forEach`, it automatically has a callback function
+helpText.forEach(function(text) {
+  document.getElementById(text.id).onfocus = function() {
+    showHelp(text.help);
+  }
+});
+```
+
+```javascript
+// another common mistake
+for(var i = 0; i < 3; i++) {
+  setTimeout(function() {
+    console.log(i);
+  }, 0)
+}
+
+for(var i = 0; i < 3; i++) {
+  (function(j){
+    setTimeout(function() {
+      console.log(j);
+    }, 0)
+  })(i)
+}
+
+for(let i = 0; i < 3; i++) {
+  setTimeout(function() {
+    console.log(i);
+  }, 0)
+}
+```
+
+**Performance consideration**: It is unwise to unnecessarily create functions within other functions if closures are not needed for a particular task, as it will negatively affect script performance both in terms of processing speed and memory consumption.
