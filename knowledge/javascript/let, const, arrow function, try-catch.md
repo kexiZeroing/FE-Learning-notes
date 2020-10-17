@@ -97,3 +97,35 @@ const doSomething = (param1 = 'test') => {...}
 const colorize = ({ color = 'yellow' }) => {...} 
 const colorize = ({ color = 'yellow' } = {}) => {...}
 ```
+
+## try...catch...finally
+The try statement consists of a try block, which contains one or more statements. `{}` must always be used, even for single statements. **At least one catch clause, or a finally clause, must be present**. If any statement within the try-block throws an exception, control is immediately shifted to the catch-block. If no exception is thrown in the try-block, the catch-block is skipped.
+
+- You can nest one or more try statements. If an inner try statement does not have a catch clause, the enclosing try statement's catch clause is entered.
+- **The finally block always run, even if there is an exception or a return**. This is the perfect place to put code that needs to run regardless of what happens.
+
+```javascript
+(function() {
+  try {
+    console.log("I'm picking up my ball and going home.")  // run 
+    return
+  }
+  finally {
+    console.log('Finally?')  // finally always run  
+  }
+})()
+
+(function() {
+  try {
+    fail()
+  }
+  catch (e) {
+    console.log("Will finally run?")  // run
+    throw e
+  }
+  finally {
+    console.log("FINALLY RUNS!")  // run
+  }
+  console.log("This shouldn't be called eh?")  // does not run because throw in catch
+})()
+```

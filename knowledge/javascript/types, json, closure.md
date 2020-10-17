@@ -32,8 +32,11 @@ The Number type is a double-precision 64-bit binary format IEEE 754 value. To ch
 - `Number.MAX_VALUE` is the largest number possible to represent using a double precision floating point representation. 
 - With the introduction of `BigInt`, you can operate with numbers beyond the `Number.MAX_SAFE_INTEGER`. A `BigInt` is created by appending `n` to the end of an integer or by calling the constructor.
 
-## JSON.stringify(value[, replacer[, space]])
-`JSON.stringify` turns a JavaScript object into JSON text and stores that JSON text in a string. `JSON.parse` turns a string of JSON text into a JavaScript object.
+## JSON stringify and parse
+### JSON.stringify(value[, replacer[, space]])
+You will get `[object Object]` if you are concatenating an object to string. The default conversion from an object to string is "[object Object]", which uses `toString()` method in the object. 
+
+`JSON.stringify` turns a JavaScript object into JSON text and stores that JSON text in a string. 
 - If the value has a `toJSON()` method, it's responsible to define what data will be serialized.
 - `Boolean`, `Number`, and `String` objects are converted to the corresponding primitive values.
 - `undefined`, `Functions`, and `Symbols` are not valid JSON values. If any such values are encountered during conversion they are either omitted (when found in an object) or changed to `null` (when found in an array).
@@ -81,6 +84,27 @@ JSON.stringify({ uno: 1, dos: 2 }, null, '\t');
 //     "uno": 1,
 //     "dos": 2
 // }'
+```
+
+### JSON.parse(text[, reviver])
+`JSON.parse` parses a JSON string, constructing the JavaScript value or object described by the string. An optional reviver function can be provided to perform a transformation on the resulting object before it is returned. **`JSON.parse()` does not allow trailing commas and single quotes.**
+
+```javascript
+JSON.parse('{}');              // {}
+JSON.parse('true');            // true
+JSON.parse('[1, 5, "false"]'); // [1, 5, "false"]
+JSON.parse('null');            // null
+
+JSON.parse('{"p": 5}', (key, value) =>
+  typeof value === 'number' ? value * 2 : value
+);
+// { p: 10 }
+
+JSON.parse('{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}', (key, value) => {
+  console.log(key); // log the current property name, the last is ""
+  return value; 
+});
+//1 2 4 6 5 3 ""
 ```
 
 ## Closure
