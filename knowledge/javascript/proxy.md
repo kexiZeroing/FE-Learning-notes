@@ -1,0 +1,2 @@
+## Proxy
+Starting with ECMAScript 2015, JavaScript gains support for the `Proxy` and `Reflect` objects allowing you to **intercept and define custom behavior** for fundamental language operations (e.g. property lookup, assignment, enumeration, function invocation, etc). With the help of these two objects you are able to program at the meta level of JavaScript.
