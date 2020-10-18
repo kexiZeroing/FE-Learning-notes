@@ -2,16 +2,16 @@
 JavaScript is **single-threaded**, and it has a concurrency model based on an event loop, which is responsible for executing the code, collecting and processing events, and executing queued tasks. 
 
 ### Runtime concepts
-- Stack (Call Stack)
+- Stack (Call Stack)  
 A single call stack in which it keeps track of what function we’re currently executing and what function is to be executed after that.
 
-- Heap
+- Heap  
 Objects are allocated in a heap which is just a name to denote a large (mostly unstructured) region of memory.
 
-- Queue (Message Queue / Callback Queue / Task Queue)
+- Queue (Message Queue / Callback Queue / Task Queue)  
 A JavaScript runtime uses a message queue, which is a list of messages to be processed. Each message has an associated function which gets called in order to handle the message. 
 
-- Event Loop
+- Event Loop  
 The Event Loop is a constantly running process and it has one simple job — to monitor the Call Stack and the Callback Queue. If the Call Stack is empty, it will take the first event from the queue and will push it to the Call Stack.
 
 <img alt="event loop" src="https://cdn.nlark.com/yuque/0/2019/png/398686/1562831601090-3cc36a70-c081-498f-986b-3333c0dc8dd0.png" width="800">  
