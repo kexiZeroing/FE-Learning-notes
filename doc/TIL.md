@@ -11,3 +11,4 @@
 11. Install tldr pages `npm install -g tldr` which simplify the `man pages` with practical examples, e.g. try to run `tldr tar` or `tldr git branch`.
 12. Short link `react.new`, `vue.new`, `ng.new`, `js.new`, `csb.new` to create a new codeSandbox project.
 13. Use `if (typeof window === 'undefined')` to execute code only in the server-side. We can’t do it using `if (window === undefined)` because we’d get a “window is not defined” runtime error.
+14. `du` command is used to display disk usage statistics. It calculate and print the disk space used by files or directories. `du -ah` (`-a` means display an entry for each file; `-h` for human-readable output).
