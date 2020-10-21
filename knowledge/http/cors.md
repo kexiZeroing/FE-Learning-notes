@@ -2,7 +2,7 @@
 A web application executes a cross-origin HTTP request when it requests a resource that has a different origin (domain, protocol, or port) from its own. For security reasons, browsers restrict cross-origin HTTP requests initiated from scripts. For example, **XMLHttpRequest and the Fetch API follow the same-origin policy**. This means that a web application using those APIs can only request resources from the same origin unless the response from other origins includes the right CORS headers.
 
 ### Overview
-CORS works by adding new HTTP headers that let servers describe which origins are permitted to read that information from a web browser. (If Site A requests a page from Site B, **the browser will actually fetch the requested page on the network level and check if the response headers list Site A as a permitted requester domain**.) Additionally, for HTTP request methods other than GET, or POST with certain MIME types, the specification mandates that browsers **"preflight"** the request, soliciting supported methods from the server with the HTTP OPTIONS request method, and then, upon "approval" from the server, sending the actual request. Servers can also inform clients whether "credentials" (such as Cookies and HTTP Authentication) should be sent with requests.
+CORS works by adding new HTTP headers that let servers describe which origins are permitted to read that information from a web browser. (If *Site A* requests a page from *Site B*, **the browser will actually fetch the requested page on the network level and check if the response headers list *Site A* as a permitted requester domain**.) Additionally, for HTTP request methods other than `GET`, or `POST` with certain MIME types, the specification mandates that browsers **"preflight"** the request, soliciting supported methods from the server with the HTTP `OPTIONS` request method, and then, upon "approval" from the server, sending the actual request. Servers can also inform clients whether "credentials" (such as Cookies and HTTP Authentication) should be sent with requests.
 
 ### Simple requests
 Simple requests don’t trigger a CORS preflight. It should meet all the following conditions:
@@ -83,3 +83,22 @@ Content-Type: text/plain
 ```
 
 ### Requests with credentials
+By default, in cross-site XMLHttpRequest or Fetch invocations, **browsers will not send credentials**. A specific flag has to be set on the XMLHttpRequest object or the `Request` constructor when it is invoked. When responding to a credentialed request, the server must specify an origin in the value of the `Access-Control-Allow-Origin` header, instead of specifying the `"*"` wildcard. 
+
+- The server must respond with the `Access-Control-Allow-Credentials: true` header to allow Cookies to be included on cross-origin requests. The browser will **reject** any response that does not have the `Access-Control-Allow-Credentials: true` header, and not make the response available.
+- The client must set the `XMLHttpRequest.withCredentials` flag to true in order to make the invocation with Cookies.
+
+```
+GET /resources/credentialed-content/ HTTP/1.1
+Host: bar.other
+Referer: http://foo.example/examples/credential.html
+Origin: http://foo.example
+Cookie: pageAccess=2
+
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://foo.example
+Access-Control-Allow-Credentials: true
+Set-Cookie: pageAccess=3; expires=Wed, 31-Dec-2008 01:34:53 GMT
+```
+
+Note that Cookies set in CORS responses are subject to normal third-party cookie policies. In the example above, the page is loaded from `foo.example`, but the cookie is sent by `bar.other`, and would thus not be saved if the user has configured their browser to reject all third-party cookies.
