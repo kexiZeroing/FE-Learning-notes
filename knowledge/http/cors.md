@@ -30,7 +30,7 @@ Connection: Keep-Alive
 Content-Type: application/xml
 ```
 
-### Preflighted requests
+### Preflight requests
 ```javascript
 const xhr = new XMLHttpRequest();
 xhr.open('POST', 'https://bar.other/resources/post-here/');
@@ -70,6 +70,7 @@ Access-Control-Allow-Origin: https://foo.example
 Access-Control-Allow-Methods: POST, GET, OPTIONS
 Access-Control-Allow-Headers: X-PINGOTHER, Content-Type
 Access-Control-Max-Age: 86400
+Vary: Origin
 
 POST /doc HTTP/1.1
 Host: bar.other
@@ -81,6 +82,8 @@ HTTP/1.1 200 OK
 Access-Control-Allow-Origin: https://foo.example
 Content-Type: text/plain
 ```
+
+If the server specifies a single origin rather than the `"*"` wildcard, then the server should also **include Origin in the `Vary` response header** — to indicate clients that server responses will differ based on the value of the Origin request header. (It determines how to match future request headers to decide whether a cached response can be used. `Vary: *` means each request is supposed to be treated as a unique and uncacheable one). The `Origin` is a URI indicating the server from which the request initiated. It does not include any path information, but only the server name. **In any access control request, the `Origin` header is always sent**.
 
 ### Requests with credentials
 By default, in cross-site XMLHttpRequest or Fetch invocations, **browsers will not send credentials**. A specific flag has to be set on the XMLHttpRequest object or the `Request` constructor when it is invoked. When responding to a credentialed request, the server must specify an origin in the value of the `Access-Control-Allow-Origin` header, instead of specifying the `"*"` wildcard. 
@@ -99,6 +102,5 @@ HTTP/1.1 200 OK
 Access-Control-Allow-Origin: https://foo.example
 Access-Control-Allow-Credentials: true
 Set-Cookie: pageAccess=3; expires=Wed, 31-Dec-2008 01:34:53 GMT
+Vary: Accept-Encoding, Origin
 ```
-
-Note that Cookies set in CORS responses are subject to normal third-party cookie policies. In the example above, the page is loaded from `foo.example`, but the cookie is sent by `bar.other`, and would thus not be saved if the user has configured their browser to reject all third-party cookies.
