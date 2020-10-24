@@ -12,6 +12,10 @@ A common technique for preventing XSS vulnerabilities is "escaping". The purpose
 
 We do not recommend that you manually escape user-supplied data. Instead, we strongly recommend that you use a templating system or web development framework that provides context-aware auto-escaping. If this is impossible for your website, use existing libraries and functions that are known to work, and apply these functions consistently to all user-supplied data.
 
+> By default, **React** DOM escapes any values embedded in JSX before rendering them. Thus it ensures that you can never inject anything that’s not explicitly written in your application. Everything is converted to a string before being rendered. This helps prevent XSS attacks.
+
+> To systematically block XSS bugs, **Angular** treats all values as untrusted by default. When a value is inserted into the DOM from a template, via property, attribute, style, class binding, or interpolation, Angular sanitizes and escapes untrusted values. (Recognizes the value as unsafe and automatically sanitizes it, which removes the `<script>` tag but keeps safe content such as the `<b>` element).
+
 
 ## Content Security Policy
 Configuring CSP involves adding the Content-Security-Policy HTTP response header to a web page and giving it values to control what resources the user agent is allowed to load for that page. For example, a page that uploads and displays images could allow images from anywhere, but restrict a form action to a specific endpoint. A properly designed Content Security Policy helps protect a page against a cross site scripting attack.
