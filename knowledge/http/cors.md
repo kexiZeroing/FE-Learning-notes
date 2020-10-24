@@ -104,3 +104,5 @@ Access-Control-Allow-Credentials: true
 Set-Cookie: pageAccess=3; expires=Wed, 31-Dec-2008 01:34:53 GMT
 Vary: Accept-Encoding, Origin
 ```
+
+Note that cookies set in CORS responses are subject to normal third-party cookie policies. In the example above, the page is loaded from `foo.example`, but the cookie is sent by `bar.other`, and would thus not be saved if the user has configured their browser to reject all third-party cookies.
