@@ -41,7 +41,7 @@
     ```
 7. Install Chrome extension `DevTools Theme: New Moon`, then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
 8. Install `Prettier`, `GitLens`, `New Moon Theme` for VS Code.
-9. May use other's dotfiles https://github.com/mathiasbynens/dotfiles
+9. May use other's dotfiles https://github.com/mathiasbynens/dotfiles, https://github.com/kentcdodds/dotfiles
 10. Try this tool to correct errors in previous console command: https://github.com/nvbn/thefuck
 
 ---

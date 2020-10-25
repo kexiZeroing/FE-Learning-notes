@@ -154,3 +154,31 @@ const language = {
 language.current = 'EN';
 console.log(language.log); // ['EN']
 ```
+
+## Nullish coalescing and Optional chaining
+The **nullish coalescing operator (??)** is a logical operator that returns its right-hand side operand when its left-hand side operand is `null` or `undefined`, and otherwise returns its left-hand side operand. Earlier, when one wanted to assign a default value to a variable, a common pattern was to use the **logical OR operator (||)**. However, due to `||` being a boolean logical operator, any falsy value (`0`, `''`, `NaN`, `null`, `undefined`) is not returned. This behavior may cause unexpected consequences if you consider `0` or `''` as valid values.
+
+```javascript
+const nullValue = null;
+const emptyText = "";
+
+const valA = nullValue ?? "default for A";
+const valB = emptyText ?? "default for B";
+const valC = emptyText || "default for C";
+
+console.log(valA); // "default for A"
+console.log(valB); // ""
+console.log(valC); // "default for C"
+```
+
+The **optional chaining operator (?.)** functions similarly to the `.` chaining operator, except that instead of causing an error if a reference is nullish (`null` or `undefined`), the expression short-circuits with a return value of undefined. When used with function calls, it returns undefined if the given function does not exist.
+
+```javascript
+let customerCity = customer.details?.address?.city;
+let duration = vacations.trip?.getTime?.();
+let nestedProp = obj?.['prop' + 'Name'];
+
+let foo = { someFooProp: "hi" };
+console.log(foo.someFooProp?.toUpperCase() ?? "not available"); // "HI"
+console.log(foo.someBarProp?.toUpperCase() ?? "not available"); // "not available"
+```

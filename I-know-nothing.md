@@ -22,8 +22,6 @@ Intro to Computer Systems: http://www.cs.cmu.edu/~213/schedule.html
 
 Learn Data Structure & Algorithm in JavaScript: https://dev.to/edisonpebojots/data-structure-algorithm-chapter-01-2538
 
-The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-to-react
-
 Modern JavaScript-based web development: https://fullstackopen.com/en
 
 Complete roadmap for web development: https://andreasbm.github.io/web-skills
@@ -31,6 +29,8 @@ Complete roadmap for web development: https://andreasbm.github.io/web-skills
 Bash Commands and Tips: https://dev.to/awwsmm/101-bash-commands-and-tips-for-beginners-to-experts-30je
 
 Git Concepts I Wish I Knew Years Ago: https://dev.to/g_abud/advanced-git-reference-1o9j
+
+Learn Git with interactive visualizatio: https://learngitbranching.js.org
 
 Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
 
@@ -56,6 +56,8 @@ Images of source code: https://carbon.now.sh/
 
 CSS animations on demand: https://animista.net/
 
+CSS percentage: https://wattenberger.com/blog/css-percents
+
 Interactive website with live coding: https://www.strml.net/
 
 Things happening every second around the world: https://everysecond.io/
@@ -68,13 +70,11 @@ wenyan‑lang: https://wy-lang.org/
 
 ## React ecosystem
 
+The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-to-react
+
 A Complete Beginner's Guide to React: https://dev.to/aspittel/a-complete-beginner-s-guide-to-react-hooks-edition-1bi0
 
 Webpack Introduction: https://ui.dev/webpack
-
-React Router Introduction: https://ui.dev/react-router-v4-philosophy-introduction
-
-Making Sense of React Hooks: https://dev.to/dan_abramov/making-sense-of-react-hooks-2eib
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
 
