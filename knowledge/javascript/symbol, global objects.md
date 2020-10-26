@@ -78,7 +78,7 @@ The global object itself can be accessed using `this` operator in the global sco
 - Indexed collections: Array, Int8Array, Uint8Array, Int16Array, Uint16Array
 - Keyed collections: Map, Set, WeakMap, WeakSet
 - Reflection: Proxy, Reflect
-- Internationalization: Intl, Intl.DateTimeFormat, Intl.NumberFormat
+- Internationalization: Intl, Intl.DateTimeFormat, Intl.NumberFormat, Intl.RelativeTimeFormat
 
 ### encodeURI() and encodeURIComponent()
 `encodeURI` and `encodeURIComponent` are used to encode Uniform Resource Identifier (URI) by replacing each instance of certain characters by one, two, three, or four escape sequences representing the UTF-8 encoding of the character.

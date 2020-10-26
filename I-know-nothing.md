@@ -54,9 +54,7 @@ Sketch UI with a hand-drawn look: https://excalidraw.com/
 
 Images of source code: https://carbon.now.sh/
 
-CSS animations on demand: https://animista.net/
-
-CSS percentage: https://wattenberger.com/blog/css-percents
+Manage node_modules in the system: https://github.com/voidcosmos/npkill
 
 Interactive website with live coding: https://www.strml.net/
 
@@ -65,6 +63,26 @@ Things happening every second around the world: https://everysecond.io/
 HTTP Cats: https://http.cat/
 
 wenyan‑lang: https://wy-lang.org/
+
+Build your own X: https://github.com/danistefanovic/build-your-own-x
+
+---
+
+## CSS tools
+
+CSS percentage: https://wattenberger.com/blog/css-percents
+
+Centering in CSS: https://ishadeed.com/article/learn-css-centering
+
+Learn CSS Positioning: https://ishadeed.com/article/learn-css-positioning
+
+Box alignment in Grid and Flexbox: https://ishadeed.com/article/learn-box-alignment
+
+Flexbox: https://github.com/samanthaming/Flexbox30
+
+Box-shadow: https://neumorphism.io
+
+CSS animations on demand: https://animista.net
 
 ---
 
@@ -75,6 +93,8 @@ The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-t
 A Complete Beginner's Guide to React: https://dev.to/aspittel/a-complete-beginner-s-guide-to-react-hooks-edition-1bi0
 
 Webpack Introduction: https://ui.dev/webpack
+
+Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
 

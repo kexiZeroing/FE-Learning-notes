@@ -49,6 +49,10 @@ console.log(bar); // true
 console.log(p); // ReferenceError: p is not defined
 console.log(q); // ReferenceError: q is not defined
 
+// get both `a` and `b` as variables in one line of destructuring
+const o = {a: {b: 'hi'}};
+const {a, a: {b}} = o;
+
 // Assignment separate from declaration
 // The parentheses around the assignment statement are required when using 
 // object literal destructuring assignment without a declaration.

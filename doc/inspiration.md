@@ -20,6 +20,7 @@ However, I should remember what I have and lower expectations. Take a relief, I
 - @EmmaBostian @kvlly ladybug podcast https://ladybug.dev/
 - @vaidehijoshi basecs https://www.codenewbie.org/basecs
 - @devdevcharlie ML for front-end developers
+- @shadeed9 css articles https://ishadeed.com/articles/
 
 ---
 

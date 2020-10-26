@@ -68,7 +68,7 @@ Square.reportArea();
 ```
 
 ### Applying the module to HTML
-Now we just need to apply the JavaScript module to our HTML page. This is very similar to how we apply a regular script to a page. You need to **include `type="module"` in the &lt;script&gt; element to declare this script as a module**. **You can only use `import` and `export` statements inside modules; not regular scripts**. Note that **modules use strict mode automatically**. 
+Now we just need to apply the JavaScript module to our HTML page. This is very similar to how we apply a regular script to a page. You need to **include `type="module"` in the `<script>` element to declare this script as a module**. You can only use `import` and `export` statements inside modules; not regular scripts. Note that **modules use strict mode automatically**. JavaScript module scripts are **deferred by default** (`<script defer>`). This means the download for the module can happen in parallel with HTML parsing and the execuation is after the DOM is loaded.
 
 If a browser does not support modules, we need to use a combination of `type="module"` and `nomodule` attribute. 
 - In modern browsers that support module scripts, the script element with the `nomodule` attribute will be ignored, and the script element with a type of `module` will be fetched and evaluated as a module script. 
