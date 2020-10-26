@@ -16,4 +16,4 @@
 16. Underneath the file system, files are represented by inodes. **A file in the file system is basically a link to an inode**. When you delete a file, it removes the link to the underlying inode. The inode is only deleted when all links to the inode have been deleted. 
 17. A **hard link** (`ln <source> <target>`) creates another file with a link to the same underlying inode. If the real copy is deleted, the link still works, because it accesses the underlying data which the real copy was accessing. A **symbolic link** (`ln -s <source> <target>`) is a link to another name in the file system. It is something like a shortcut in Windows. If the real copy is deleted, the link will not work.
 18. You can set the parameters of the function passed to setInterval and setTimeout by specifying extra arguments in the call, e.g. `setTimeout(console.log, 1000, 'hello');`.
-19. Scroll the window to a particular place in the document, `window.scroll({top: 100, left: 100, behavior: 'smooth'});`.
+19. Scroll the window to a particular place in the document, `window.scroll({top: 100, left: 100, behavior: 'smooth'});`

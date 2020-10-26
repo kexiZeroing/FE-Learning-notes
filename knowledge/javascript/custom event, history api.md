@@ -53,3 +53,116 @@ document.addEventListener('touchstart', () => { /* ... */ }, { passive: true });
 ```
 
 ## History API
+> Change URL without refreshing the page
+> - HTML5 history API
+> - hashchange event
+
+The `history` object exposes ways that let you navigate back and forth through the user's history, and manipulate the contents of the history stack. Moving backward and forward is done using the `back()`, `forward()`, and `go()` methods. Determining the number of pages in the history stack using `window.history.length`. HTML5 introduced the `pushState()` and `replaceState()` methods for adding and modifying history entries. These methods work in conjunction with the `popstate` event.
+
+`history.pushState()` method adds an entry to the browser's session history stack. It takes three parameters: a state object; a title (currently ignored); and (optionally), a URL.
+- The state object is associated with the new history entry. Whenever the user navigates to the new state, a `popstate` event is fired, and the state property of the event contains a copy of the state object.
+- All browsers but Safari currently ignore the title parameter, although they may use it in the future.
+- The new history entry's URL is the third parameter. **Note that the browser won't attempt to load this URL after a call to `pushState()`**. The new URL does not need to be absolute; if it's relative, it's resolved relative to the current URL. **The new URL must be of the same origin as the current URL**. This parameter is optional; if it isn't specified, it's set to the document's current URL.
+
+`history.replaceState()` operates exactly like `history.pushState()`. It modifies the current history entry instead of creating a new one. It is useful when you want to update the state object or URL of the current history entry in response to some user action.
+
+A `popstate` event is dispatched to the window every time the active history entry changes. **When the page reloads, the page will receive an `onload` event, but no `popstate` event**. However, if you read the `history.state` property, you'll get back the state object you would have gotten if a `popstate` had fired.
+
+Suppose `http://mozilla.org/foo.html` executes the code `history.pushState({foo: "bar"}, "page 2", "bar.html");`. This will cause the URL bar to display `http://mozilla.org/bar.html`, but **won't cause the browser to load `bar.html`**. Then the user navigates to `http://google.com`, then clicks the Back button. At this point, the URL bar will display `http://mozilla.org/bar.html` and `history.state` will contain the object `{foo: "bar"}`, but **the `popstate` event won't be fired because the page has been reloaded**. If the user clicks Back once again, the URL will change to `http://mozilla.org/foo.html`, and a `popstate` event will be fired this time with a null state object because this time going back doesn't change the document's contents (no page refresh).
+
+```javascript
+// A page at http://example.com/example.html
+window.addEventListener('popstate', (event) => {
+  console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
+});
+
+history.pushState({page: 1}, "title 1", "?page=1");
+history.pushState({page: 2}, "title 2", "?page=2");
+history.replaceState({page: 3}, "title 3", "?page=3");
+history.back(); // Logs "location: http://example.com/example.html?page=1, state: {"page":1}"
+history.back(); // Logs "location: http://example.com/example.html, state: null"
+history.go(2);  // Logs "location: http://example.com/example.html?page=3, state: {"page":3}"
+```
+
+### Router based on hashchange
+```html
+<body>
+  <ul>
+    <li><a href="#/home">home</a></li>
+    <li><a href="#/about">about</a></li>
+
+    <div id="routeView"></div>
+  </ul>
+</body>
+```
+
+```javascript
+window.addEventListener('DOMContentLoaded', onLoad);
+window.addEventListener('hashchange', onHashChange);
+
+var routerView = null;
+
+// hashchange event need to be triggered manually after page loads
+function onLoad () {
+  routerView = document.querySelector('#routeView');
+  onHashChange();
+}
+
+function onHashChange () {
+  switch (location.hash) {
+    case '#/home':
+      routerView.innerHTML = 'Home';
+      return;
+    case '#/about':
+      routerView.innerHTML = 'About';
+      return;
+    default:
+      return;
+  }
+}
+```
+
+### Router based on History API
+```html
+<body>
+  <ul>
+    <li><a href='/home'>home</a></li>
+    <li><a href='/about'>about</a></li>
+
+    <div id="routeView"></div>
+  </ul>
+</body>
+```
+
+```javascript
+window.addEventListener('DOMContentLoaded', onLoad);
+window.addEventListener('popstate', onPopState);
+
+var routerView = null;
+
+function onLoad () {
+  routerView = document.querySelector('#routeView');
+  onPopState();
+
+  // prevent default behavior for <a> tag
+  var linkList = document.querySelectorAll('a[href]');
+  linkList.forEach(el => el.addEventListener('click', function (e) {
+    e.preventDefault();
+    history.pushState(null, '', el.getAttribute('href'));
+    onPopState();
+  }))
+}
+
+function onPopState () {
+  switch (location.pathname) {
+    case '/home':
+      routerView.innerHTML = 'Home';
+      return;
+    case '/about':
+      routerView.innerHTML = 'About';
+      return;
+    default:
+      return;
+  }
+}
+```

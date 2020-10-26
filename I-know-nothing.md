@@ -90,7 +90,7 @@ CSS animations on demand: https://animista.net
 
 The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-to-react
 
-A Complete Beginner's Guide to React: https://dev.to/aspittel/a-complete-beginner-s-guide-to-react-hooks-edition-1bi0
+React getting started tutorial: https://daveceddia.com/react-getting-started-tutorial
 
 Webpack Introduction: https://ui.dev/webpack
 
