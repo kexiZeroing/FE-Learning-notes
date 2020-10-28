@@ -165,7 +165,7 @@ input.addEventListener('change', e => {
 
 // creates a typed array containing the ASCII codes and converts it to an object URL
 // `TypedArray` object is an array-like view of an underlying binary data buffer
-// `Uint8Array` is 1 byte in size
+// `Uint8Array`: each item is 1 byte (8-bit unsigned integers) 
 const bytes = new Uint8Array(59);  
 for(let i = 0; i < 59; i++) {
   bytes[i] = 32 + i;
