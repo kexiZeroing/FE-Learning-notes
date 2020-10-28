@@ -164,13 +164,15 @@ input.addEventListener('change', e => {
 });
 
 // creates a typed array containing the ASCII codes and converts it to an object URL
-// ' '.charCodeAt(0) is 32; 'Z'.charCodeAt(0) is 90
-const bytes = new Uint8Array(59);
+// `TypedArray` object is an array-like view of an underlying binary data buffer
+// `Uint8Array` is 1 byte in size
+const bytes = new Uint8Array(59);  
 for(let i = 0; i < 59; i++) {
   bytes[i] = 32 + i;
 }
 
-// 'text' means characters of readable material but not its graphical representation nor other objects like floating-point numbers, images, etc. 
+// The computer doesn't know what type a specific address in memory is, that knowledge is baked into the instructions of your program.
+// `text` means characters of readable material but not its graphical representation nor other objects like floating-point numbers, images, etc. 
 const url = URL.createObjectURL(new Blob([bytes.buffer], {type: 'text/plain'}));
 
 const link = document.createElement('a');

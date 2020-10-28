@@ -25,6 +25,8 @@ Object.prototype.toString.call(new Set())       // '[object Set]'
 Object.prototype.toString.call(new Map())       // '[object Map]'
 ```
 
+**The Number type is a double-precision 64-bit binary format IEEE 754 value. The String type is used to represent textual data. It is a set of "elements" of 16-bit unsigned integer values.**
+
 ### About number
 The Number type is a double-precision 64-bit binary format IEEE 754 value. To check for the largest available value or smallest available value within `±Infinity`, you can use the constants `Number.MAX_VALUE` or `Number.MIN_VALUE`. 
 
