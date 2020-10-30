@@ -5,6 +5,8 @@ The Retina screen doubled the PPI while keeping the same screen size, meaning th
 
 A standard resolution image has a scale factor of 1.0 and is referred to as an @1x image. High resolution images have a scale factor of 2.0 or 3.0 and are referred to as @2x and @3x images. Suppose you have a standard resolution @1x image that’s 100px by 100px, then the @2x version of this image would be 200px by 200px. The @3x version would be 300px by 300px. (iPhone X, iPhone 8 Plus, iPhone 7 Plus, and iPhone 6s Plus = @3x; Retina displays and all other high-resolution iOS devices = @2x)
 
+There is another issue in the workplace. Look at the number of pixels in the PSDs. The @2x PSD has four times as many pixels. The @3x has nine times as many. Designers have been working @2x or @3x and then begin to spec their design for developers. The developers get a complete spec in which they need to divide everything by 2 or 3.
+
 ### Window.devicePixelRatio
 The devicePixelRatio interface returns the ratio of the resolution in physical pixels to the resolution in CSS pixels for the current display device. This tells the browser **how many of the screen's actual pixels should be used to draw a single CSS pixel**. A value of 1 indicates a classic display, while a value of 2 is expected for Retina displays. Other values may be returned as well in the case of when a screen has a higher pixel density than simply double the standard resolution.
 
@@ -21,4 +23,22 @@ canvas.style.height = size + "px";
 const scale = window.devicePixelRatio;
 canvas.width = Math.floor(size * scale);
 canvas.height = Math.floor(size * scale);
+```
+
+```css
+/*
+The -webkit-device-pixel-ratio is a non-standard CSS media feature which is an alternative to the standard resolution media feature.
+*/
+@media (-webkit-device-pixel-ratio: 1) {}
+@media (-webkit-min-device-pixel-ratio: 2) {}
+@media (-webkit-max-device-pixel-ratio: 3) {}
+
+@media (resolution: 150dpi) {}
+@media (min-resolution: 72dpi) {}
+@media (max-resolution: 300dpi) {}
+
+/* 
+`image-set()` method lets the browser pick the most appropriate CSS image from a given set, primarily for high pixel density screens.
+*/
+background-image: image-set("cat.png" 1x, "cat-2x.png" 2x);
 ```
