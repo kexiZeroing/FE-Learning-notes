@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Throttle and debounce</title>
+    <style>
+        .content {
+            padding: 10px;
+        }
+        #panel1 {
+            width: 200px;
+            height: 200px;
+            background: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h2>Throttle: the function is called at regular intervals</h2>
+        <div id="panel1"></div>
+
+        <script>
+            const panel1 = document.getElementById('panel1');
+            let throttleTimer = null;
+
+            panel1.addEventListener('mousemove', (e) => {
+                // first check if it is allowed , if it is, then set a timer to redo it. 
+                if(!throttleTimer) {
+                    e.target.style.background = '#' + parseInt(Math.random() * 0xffffff).toString(16);
+                    throttleTimer = setTimeout(() => {
+                        throttleTimer = null;
+                    }, 300);
+                }
+            });
+        </script>
+    </div>
+
+    <div class="content">
+        <h2>Debounce: the function is called at the end of a bunch of events</h2>
+        <div id="panel2">
+            <canvas></canvas>
+        </div>
+
+        <script>
+            const panel2 = document.getElementById('panel2');
+            const canvas = document.querySelector('canvas');
+
+            const resize = () => {
+                canvas.width = panel2.clientWidth;
+                canvas.height = canvas.width;
+            }
+
+            const draw = () => {
+                const ctx = canvas.getContext('2d');
+                const radius = canvas.width / 2;
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+                ctx.fillStyle = 'green';
+                ctx.fill();
+                ctx.restore();
+            }
+
+            resize();
+            draw();
+
+            let debounceTimer = null;
+            window.addEventListener('resize', () => {
+                // don't want to do anything, so first clear timer every time,
+                // then start a new timer and only handle the last one.
+                if(debounceTimer) {
+                    clearTimeout(debounceTimer);
+                }
+                debounceTimer = setTimeout(() => {
+                    resize();
+                    draw();
+                }, 300);
+            });
+        </script>
+    </div>
+</body>
+</html>
