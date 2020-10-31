@@ -25,12 +25,34 @@ Object.prototype.toString.call(new Set())       // '[object Set]'
 Object.prototype.toString.call(new Map())       // '[object Map]'
 ```
 
-**The Number type is a double-precision 64-bit binary format IEEE 754 value. The String type is used to represent textual data. It is a set of "elements" of 16-bit unsigned integer values.**
+**The Number type is a double-precision 64-bit binary format IEEE 754 value. The String type is used to represent textual data. It is a set of "elements" of 16-bit unsigned integer values (UTF-16 code unit).**
 
-### About number
-The Number type is a double-precision 64-bit binary format IEEE 754 value. To check for the largest available value or smallest available value within `±Infinity`, you can use the constants `Number.MAX_VALUE` or `Number.MIN_VALUE`. 
+> Typically an `int` contains 32 bits. Let's look at 4-bit integers. Tiny, but useful for illustration purposes. Since there are four bits in such an integer, it can assume one of 16 values. What are those values? The answer depends on whether this integer is a `signed int` or an `unsigned int`. Signed integers can represent both positive and negative numbers, while unsigned integers are only non-negative.
 
-- `Number.MAX_SAFE_INTEGER` is the largest integer which can be used safely in calculations. For example, `Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2` is true — any integer larger than `Number.MAX_SAFE_INTEGER` cannot always be represented in memory accurately and will be a double-precision floating point approximation of the value.
+```js
+// Here are the 16 possible values of a four-bit signed int
+bits  value   
+0000    0
+0001    1
+0010    2
+0011    3
+0100    4
+0101    5
+0110    6
+0111    7
+1000   -8
+1001   -7
+1010   -6
+1011   -5
+1100   -4
+1101   -3
+1110   -2
+1111   -1
+```
+
+### Number static properties and BigInt
+- To check for the largest available value or smallest available value within `±Infinity`, you can use the constants `Number.MAX_VALUE` or `Number.MIN_VALUE`. Values larger than `MAX_VALUE` are represented as `Infinity`.
+- `Number.MAX_SAFE_INTEGER` is the largest integer which can be used safely in calculations, for example, `Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2` is true. Any integer larger than `Number.MAX_SAFE_INTEGER` cannot always be represented in memory accurately and will be a double-precision floating point approximation of the value. (also have `Number.MIN_SAFE_INTEGER` constant)
 - `Number.MAX_VALUE` is the largest number possible to represent using a double precision floating point representation. 
 - With the introduction of `BigInt`, you can operate with numbers beyond the `Number.MAX_SAFE_INTEGER`. A `BigInt` is created by appending `n` to the end of an integer or by calling the constructor.
 

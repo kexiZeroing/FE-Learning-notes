@@ -103,6 +103,7 @@ The try statement consists of a try block, which contains one or more statements
 
 - You can nest one or more try statements. If an inner try statement does not have a catch clause, the enclosing try statement's catch clause is entered.
 - **The finally block always run, even if there is an exception or a return**. This is the perfect place to put code that needs to run regardless of what happens.
+- In ES2019, catch can now be used without a binding (omit the parameter). This is useful if you don’t have a need for the exception object in the code that handles the exception.
 
 ```javascript
 (function() {
