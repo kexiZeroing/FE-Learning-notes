@@ -76,6 +76,8 @@ Centering in CSS: https://ishadeed.com/article/learn-css-centering
 
 Learn CSS Positioning: https://ishadeed.com/article/learn-css-positioning
 
+The blueprint HTML and CSS for website headers: https://headers-css.vercel.app
+
 Box alignment in Grid and Flexbox: https://ishadeed.com/article/learn-box-alignment
 
 Flexbox: https://github.com/samanthaming/Flexbox30
