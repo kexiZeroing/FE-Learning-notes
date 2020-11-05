@@ -20,7 +20,7 @@ CS 61B: Data Structures: https://inst.eecs.berkeley.edu/~cs61b/sp20/index.html
 
 Intro to Computer Systems: http://www.cs.cmu.edu/~213/schedule.html
 
-Learn Data Structure & Algorithm in JavaScript: https://dev.to/edisonpebojots/data-structure-algorithm-chapter-01-2538
+High Performance Browser Networking: https://hpbn.co
 
 Modern JavaScript-based web development: https://fullstackopen.com/en
 
