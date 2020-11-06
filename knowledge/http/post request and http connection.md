@@ -46,6 +46,17 @@ PUT /questions/<existing_question> HTTP/1.1
 POST /questions/<new_question> HTTP/1.1
 ```
 
+### POST and GET
+GET data is appended to the URL as a query string, so there is a hard limit to the amount of data you can transfer. (GET is idempotent.) POST data is included in the body of the HTTP request and isn't visible in the URL. As such, there's no limit to the amount of data you can transfer over POST. As far as security, **POST method is not more secure than GET as it also gets sent unencrypted over network**.
+
+> Should data in an HTTPS request appear as encrypted in Chrome developer tools? The browser is obviously going to know what data it is sending, and the Chrome developer tools wouldn't be very helpful if they just showed the encrypted data. These tools are located in the network stack before the data gets encrypted and sent to the server.
+
+HTTPS encrypts the data in transit and the remote server will decrypt it upon receipt; it protects against any 3rd parties in the middle being able to read or manipulate the data. A packet sniffer will show that the HTTP message sent over SSL is encrypted on the wire. **The domain names are not encrypted** because those are needed in plain text for DNS and TCP to send your data to the correct server.
+
+JSONP doesn't support other methods than GET and also doesn't support custom headers.
+
+> Enter JSONP, use a script tag (the domain limitation is ignored) and pass a special parameter that tells the server a little bit about your page. Then the server is able to wrap up its response in a way that your page can handle. For example, say the server expects a parameter called `callback` to enable its JSONP capabilities. Then your request would look like `/abc?callback=mycallback`. Without JSONP, this might return some basic JavaScript object, like `{ foo: 'bar' }`. However, with JSONP, it wraps up the result a little differently, returning something like `mycallback({ foo: 'bar' })`, and it will invoke the method specified in your page `mycallback = function(data){ }`
+
 ## Connection management
 Opening and maintaining connections largely impacts the performance of Web sites and Web applications. In HTTP/1.x, there are several models: **short-lived connections, persistent connections, and HTTP pipelining**.
 

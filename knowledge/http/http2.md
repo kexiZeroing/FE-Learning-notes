@@ -17,7 +17,7 @@ With HTTP/1.x, if the client wants to make multiple parallel requests, then mult
 
 <img alt="multiplexing" src="https://ftp.bmp.ovh/imgs/2020/11/d058e930aebac04d.png" width="700" />
 
-The client is transmitting a DATA frame (stream 5) to the server, while the server is transmitting an interleaved sequence of frames to the client for streams 1 and 3. As a result, there are three parallel streams in flight. All HTTP/2 connections are persistent, and only one connection per origin is required.
+The client is transmitting a DATA frame (stream 5) to the server, while the server is transmitting an interleaved sequence of frames to the client for streams 1 and 3. As a result, there are three parallel streams in flight. All HTTP/2 connections are persistent, and only **one connection per origin** is required.
 
 - Interleave multiple requests in parallel without blocking on any one
 - Interleave multiple responses in parallel without blocking on any one
@@ -34,7 +34,7 @@ HTTP/1.x must rely on the use of parallel connections, which enables limited par
 ### Server Push
 **HTTP/2 breaks away from the strict request-response semantics and enables one-to-many and server-initiated push workflows** that open up a world of new interaction possibilities both within and outside the browser. 
 
-Why would we need such a mechanism in a browser? A typical web application consists of dozens of resources, all of which are discovered by the client by examining the document provided by the server. As a result, why not eliminate the extra latency and let the server push the associated resources ahead of time? The server already knows which resources the client will require; that’s server push. Each pushed resource is a stream that allows it to be individually multiplexed, prioritized, and processed by the client.
+Why would we need such a mechanism in a browser? A typical web application consists of dozens of resources, all of which are discovered by the client by examining the document provided by the server. As a result, why not eliminate the extra latency and let the server push the associated resources ahead of time? The server already knows which resources the client will require; that’s **server push**. Each pushed resource is a stream that allows it to be individually multiplexed, prioritized, and processed by the client.
 
 All server push streams are initiated via `PUSH_PROMISE` frames. The delivery order is critical: the client needs to know which resources the server intends to push to avoid creating own and duplicate requests for these resources. The simplest strategy to satisfy this requirement is to send all `PUSH_PROMISE` frames (just contain the HTTP headers) ahead of the parent’s response (DATA frames). Pushed resources can be prioritized by the server and declined by the client.
 
