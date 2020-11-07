@@ -25,6 +25,8 @@ Another advantage of npx is the ability to execute a package which wasn't previo
 ### Live Reload and Hot Reload
 **Live Reload** refreshes the entire app when a file changes. For example, if you were four links deep into your navigation and saved a change, live reloading would restart the app and load the app back to the initial route. **Hot Reload** only refreshes the files that were changed without losing the state of the app. (Webpack's **Hot Module Replacement** replaces the modules that have been modified on the fly without reloading the entire page). The advantage of this is that it doesn't lose your app state, e.g. your inputs on your form fields, your currently selected tab.
 
+> When a file is edited, the dev server recompiles with the changes, then pushes a notification to the client code in the browser. The app code can then subscribe to "some file changed" notifications, re-import the new version of the code, and swap out the old code for the new code as the app is still running.
+
 ## Set up Prettier and ESLint
 1. Install `Prettier` and `ESLint` plugins and enable `format on save` in settings (execute `save without formatting` command to disable). We can edit some default settings for prettier in settings (`cmd + ,`, then input prettier).
 2. Install eslint and prettier npm packages `npm i -D eslint prettier`

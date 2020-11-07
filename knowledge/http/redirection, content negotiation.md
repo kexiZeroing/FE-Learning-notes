@@ -10,7 +10,7 @@ The `307 (Temporary Redirect)` status code indicates that the target resource re
 The `308 (Permanent Redirect)` status code, that is similar to `301 (Moved Permanently)` but does not allow the request method to be changed from `POST` to `GET`.
 
 ### Use cases
-- When a site resides at `www.example.com`, but accessing it from `example.com` should also work. Redirections for `example.com` to `www.example.com` are thus set up.
+- When a site resides at `www.example.com`, but accessing it from `example.com` should also work. Redirections for `example.com` to `www.example.com` are thus set up. The server answers with a code `301` with the header `Location: http://www.example.com`
 - Your company was renamed, but you want existing links or bookmarks to still find you under the new name.
 - Requests to the `http://` version of your site will redirect to the `https://` version of your site.
 
@@ -30,4 +30,4 @@ Accept-Encoding: br;q=1.0, gzip;q=0.8, *;q=0.1
 Accept-Language: en-US,en;q=0.5
 ```
 
-Quality values (q-factors), are used to describe the order of priority of values in a comma-separated list. The importance of a value is marked by the suffix `';q='` immediately followed by a value between 0 and 1 included, with up to three decimal digits, the highest value denoting the highest priority. When not present, the default value is 1. With the same quality, more specific values have priority over less specific ones.
+**Quality values (q-factors)**, are used to describe the order of priority of values in a comma-separated list. The importance of a value is marked by the suffix `';q='` immediately followed by a value between 0 and 1 included, with up to three decimal digits, the highest value denoting the highest priority. When not present, the default value is 1. With the same quality, more specific values have priority over less specific ones.
