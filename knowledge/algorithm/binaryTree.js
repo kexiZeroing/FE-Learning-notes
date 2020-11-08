@@ -58,3 +58,72 @@ function createBinaryTree(rootKey) {
     }
   }
 }
+
+// iterative pre-order and in-order traversal
+var preorderTraversal = function(root) {
+  if (root == null) return [];
+  let stack = [];
+  let result = [];
+  stack.push(root);
+
+  while (stack.length > 0) {
+    let node = stack.pop();
+    result.push(node.val);
+    if (node.right) {
+      stack.push(node.right);
+    }
+    if (node.left) {
+      stack.push(node.left);
+    }
+  }
+  return result;
+};
+
+var inorderTraversal = function(root) {
+  if (root == null) return [];
+  let result = [];
+  let stack = [];
+  let pointerNode = root;
+
+  while (stack.length > 0 || pointerNode !== null) {
+    if (pointerNode !== null) {
+      stack.push(pointerNode);
+      pointerNode = pointerNode.left;
+    } else {
+      pointerNode = stack.pop();
+      result.push(pointerNode.val);
+      pointerNode = pointerNode.right;
+    }
+  }
+  return result;
+};
+
+// Level-Order traversal
+var levelOrderTraversal = function(root) {
+  if (!root) return [];
+  let result = [];
+  let queue = [root, null];
+  let levelNodes = [];
+
+  while (queue.length) {
+    const t = queue.shift();
+
+    if (t) {
+      levelNodes.push(t.val)
+      if (t.left) {
+        queue.push(t.left);
+      }
+      if (t.right) {
+        queue.push(t.right);
+      }
+    } else {
+      result.push(levelNodes);
+      levelNodes.length = 0 ;
+      if (queue.length > 0) {
+        queue.push(null)
+      }
+    }
+  }
+
+  return result;
+};

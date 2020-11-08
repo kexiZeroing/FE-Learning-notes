@@ -5,7 +5,9 @@ Object is similar to Map, and Objects have been used as Maps historically; howev
 - The keys of an Object are String and Symbol, whereas they can be any value for a Map, including functions, objects, and any primitive.
 - The keys in Map are ordered while keys added to object are not. Thus, when iterating over it, a Map object returns keys in order of insertion.
 - You can get the size of a Map easily with the size property, while the number of properties in an Object must be determined manually.
-- An Object has a prototype, so there are default keys that could collide with your keys. This can be bypassed by using Object.create(null), but this is seldom done.
+- An Object has a prototype, so there are default keys that could collide with your keys. This can be bypassed by using `Object.create(null)`, but this is seldom done.
+
+> Traversing the keys of an object: Integer keys in ascending order (and strings like "1" that parse as ints); String keys in insertion order; Symbol keys in insertion order.
 
 ```javascript
 var myMap = new Map();
@@ -124,7 +126,7 @@ wm.set(k2, 'k2');
 
 k1 = null;
 map.forEach(function (val, key) {
-    console.log(key, val); // {a: 1} "k1"
+  console.log(key, val); // {a: 1} "k1"
 });
 
 k2 = null;

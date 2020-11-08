@@ -28,3 +28,25 @@ function quickSort(arr) {
   _quickSort(result, 0, result.length - 1);
   return result;
 }
+
+
+// another way to do the partition with two pointers
+function partition(arr, left, right) {
+  const pivot = arr[Math.floor((right + left) / 2)];
+  while (left <= right) {
+    while (arr[left] < pivot) {
+      left++;
+    }
+    while (arr[right] > pivot) {
+      right--;
+    }
+    if (left <= right) {
+      let temp = arr[left];
+      arr[left] = arr[right];
+      arr[right] = temp;
+      left++;
+      right--;
+    }
+  }
+  return left;
+}
