@@ -58,8 +58,6 @@ Manage node_modules in the system: https://github.com/voidcosmos/npkill
 
 Interactive website with live coding: https://www.strml.net/
 
-Things happening every second around the world: https://everysecond.io/
-
 HTTP Cats: https://http.cat/
 
 wenyan‑lang: https://wy-lang.org/
@@ -68,7 +66,7 @@ Build your own X: https://github.com/danistefanovic/build-your-own-x
 
 ---
 
-## CSS tools
+## CSS related
 
 CSS percentage: https://wattenberger.com/blog/css-percents
 
@@ -85,6 +83,8 @@ Flexbox: https://github.com/samanthaming/Flexbox30
 Box-shadow: https://neumorphism.io
 
 CSS animations on demand: https://animista.net
+
+A Complete Guide to CSS Media Queries: https://css-tricks.com/a-complete-guide-to-css-media-queries
 
 ---
 
@@ -105,3 +105,20 @@ How styled-components works: https://medium.com/styled-components/how-styled-com
 Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
 
 I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
+
+---
+
+## Web links from Cassidy
+https://github.com/starship/starship
+
+https://pixo.sh/creating-a-fancy-stepper-component-in-react/
+
+https://briantracy.xyz/writing/copy-paste-shell.html
+
+https://zserge.com/posts/awfice/
+
+https://frankforce.com/1keys-how-i-made-a-keyboard-in-only-1kb-of-javascript/
+
+https://webcomponents.dev/blog/all-the-ways-to-make-a-web-component/
+
+https://robertovitillo.com/default-timeouts/
