@@ -1,4 +1,4 @@
-## Coding Interview
+## Whiteboard coding interview
 Implement the js bind function.
 ```js
 Function.prototype.myBind = function(ctx, ...args) {
@@ -183,7 +183,7 @@ bindData(obj, foo);
 obj.a = 2; 
 ```
 
-Basic Javascript promise implementation (after simplified).
+Basic Promise implementation after simplified.
 ```js
 const PENDING = 0;
 const FULFILLED = 1;
