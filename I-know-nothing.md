@@ -80,6 +80,8 @@ Box alignment in Grid and Flexbox: https://ishadeed.com/article/learn-box-alignm
 
 Flexbox: https://github.com/samanthaming/Flexbox30
 
+1-Line Layouts: https://1linelayouts.glitch.me
+
 Box-shadow: https://neumorphism.io
 
 CSS animations on demand: https://animista.net
@@ -99,6 +101,8 @@ Webpack Introduction: https://ui.dev/webpack
 Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
+
+Beautiful React Hooks: https://github.com/beautifulinteractions/beautiful-react-hooks
 
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
 
@@ -122,3 +126,5 @@ https://frankforce.com/1keys-how-i-made-a-keyboard-in-only-1kb-of-javascript/
 https://webcomponents.dev/blog/all-the-ways-to-make-a-web-component/
 
 https://robertovitillo.com/default-timeouts/
+
+https://roughnotation.com/
