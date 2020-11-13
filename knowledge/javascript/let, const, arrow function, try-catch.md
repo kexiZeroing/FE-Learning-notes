@@ -40,6 +40,13 @@ let alet
 console.log(alet) // undefined
 alet = 10
 console.log(alet) // 10
+
+// but let is still hoisted
+let x = 'outer value';
+(function() {
+  console.log(x);  // ReferenceError: Cannot access 'x' before initialization
+  let x = 'inner value';
+}());
 ```
 
 - No re-declaring  
