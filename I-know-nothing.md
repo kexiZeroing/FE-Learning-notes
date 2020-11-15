@@ -64,6 +64,8 @@ wenyan‑lang: https://wy-lang.org/
 
 Build your own X: https://github.com/danistefanovic/build-your-own-x
 
+You Don't Need: https://github.com/you-dont-need/You-Dont-Need
+
 ---
 
 ## CSS related
