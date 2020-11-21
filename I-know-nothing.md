@@ -32,6 +32,8 @@ Git Concepts I Wish I Knew Years Ago: https://dev.to/g_abud/advanced-git-referen
 
 Learn Git with interactive visualizatio: https://learngitbranching.js.org
 
+Docker Guide: https://www.robertcooper.me/docker-guide
+
 Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
 
 ---
@@ -49,6 +51,8 @@ Chrome DevTools tips: https://umaar.com/dev-tips/
 HTML DOM with vanilla JavaScript: https://htmldom.dev/
 
 Git explorer: https://gitexplorer.com/
+
+Linux Command Library: https://linuxcommandlibrary.com/basics.html
 
 Sketch UI with a hand-drawn look: https://excalidraw.com/
 
@@ -87,8 +91,6 @@ Flexbox: https://github.com/samanthaming/Flexbox30
 Box-shadow: https://neumorphism.io
 
 CSS animations on demand: https://animista.net
-
-A Complete Guide to CSS Media Queries: https://css-tricks.com/a-complete-guide-to-css-media-queries
 
 ---
 
