@@ -20,6 +20,8 @@ CS 61B: Data Structures: https://inst.eecs.berkeley.edu/~cs61b/sp20/index.html
 
 Intro to Computer Systems: http://www.cs.cmu.edu/~213/schedule.html
 
+The Missing Semester of Your CS Education: https://missing.csail.mit.edu
+
 High Performance Browser Networking: https://hpbn.co
 
 Modern JavaScript-based web development: https://fullstackopen.com/en

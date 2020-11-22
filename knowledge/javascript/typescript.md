@@ -102,7 +102,7 @@ dog = {
   weight: 10,
 };
 
-// Generics
+// Generics (type as the parameter)
 // There are situations where the specific type of a variable doesn't matter, but a relationship between the types of different variables should be enforced.
 const fillArray = <T>(len: number, elem: T) => {
   return new Array<T>(len).fill(elem);
