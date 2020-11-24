@@ -47,7 +47,7 @@ Indicates the client wants a response that will still be fresh for at least the 
 - must-revalidate  
 Indicates that once a resource becomes stale, caches must not use their stale copy without successful validation on the origin server. Whereas `no-cache` implies `must-revalidate` plus the fact that the response becomes stale right away.
 
-- stale-while-revalidate
+- stale-while-revalidate  
 Indicates the client will accept a stale response, while asynchronously checking in the background for a fresh one. The seconds value indicates how long the client will accept a stale response.
 
 > A `Cache-Control` response header that contains `stale-while-revalidate` should also contain `max-age` which determines staleness. If the locally cached response is still fresh, then it can be used to fulfill a browser's request. But if the cached response is stale, then another age-based check is performed: is the age of the cached response within the window of time covered by the `stale-while-revalidate setting`? If the age of a stale response falls into this window, then it will be used to fulfill the browser's request. At the same time, a "revalidation" request will be made against the network in a way that doesn't delay the use of the cached response. Then the network response is stored locally, replacing whatever was previously cache, and resetting the "freshness" timer. If the stale cached response is old enough that it falls outside the `stale-while-revalidate` window of time, then it will not fulfill the browser's request. The browser will instead retrieve a response from the network, and use that for both fulfilling the request and also populating the local cache with a fresh response.
