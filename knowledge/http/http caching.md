@@ -21,6 +21,8 @@ Cache-Control: no-store
 Cache-Control: public
 Cache-Control: private
 Cache-Control: max-age=<seconds>
+Cache-Control: s-maxage=<seconds>
+Cache-Control: stale-while-revalidate=<seconds>
 ```
 - no-cache  
 The stored response must always go through validation with the origin server first before using it. If you mean to not store the response in any cache, use `no-store` instead. This directive is not effective in preventing caches from storing your response.
@@ -34,6 +36,8 @@ For example, your ISP could have an invisible proxy between you and the Internet
 - max-age  
 The maximum amount of time a resource is considered fresh. One day cache would be `Cache-Control: max-age=86400`.
 
+> If a response includes an `s-maxage` directive, then for a shared cache (but not for a private cache), the maximum age specified by this directive overrides the maximum age specified by either the `max-age` directive or the `Expires` header.`s-maxage` is similar to `max-age` but it applies to proxies (CDN) instead of clients.
+
 - max-stale  
 Indicates the client will accept a stale response. An optional value in seconds indicates the upper limit of staleness the client will accept.
 
@@ -42,6 +46,11 @@ Indicates the client wants a response that will still be fresh for at least the 
 
 - must-revalidate  
 Indicates that once a resource becomes stale, caches must not use their stale copy without successful validation on the origin server. Whereas `no-cache` implies `must-revalidate` plus the fact that the response becomes stale right away.
+
+- stale-while-revalidate
+Indicates the client will accept a stale response, while asynchronously checking in the background for a fresh one. The seconds value indicates how long the client will accept a stale response.
+
+> A `Cache-Control` response header that contains `stale-while-revalidate` should also contain `max-age` which determines staleness. If the locally cached response is still fresh, then it can be used to fulfill a browser's request. But if the cached response is stale, then another age-based check is performed: is the age of the cached response within the window of time covered by the `stale-while-revalidate setting`? If the age of a stale response falls into this window, then it will be used to fulfill the browser's request. At the same time, a "revalidation" request will be made against the network in a way that doesn't delay the use of the cached response. Then the network response is stored locally, replacing whatever was previously cache, and resetting the "freshness" timer. If the stale cached response is old enough that it falls outside the `stale-while-revalidate` window of time, then it will not fulfill the browser's request. The browser will instead retrieve a response from the network, and use that for both fulfilling the request and also populating the local cache with a fresh response.
 
 ### Freshness
 Before this expiration time, the resource is **fresh**; after the expiration time, the resource is **stale**. Note that a stale resource is not evicted or ignored; when the cache receives a request for a stale resource, it forwards this request with a `If-None-Match` to check if it is in fact still fresh. If so, the server **returns a `304 (Not Modified)` header without sending the body of the requested resource**, saving some bandwidth.
