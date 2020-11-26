@@ -56,6 +56,13 @@ bits  value
 - `Number.MAX_VALUE` is the largest number possible to represent using a double precision floating point representation. 
 - With the introduction of `BigInt`, you can operate with numbers beyond the `Number.MAX_SAFE_INTEGER`. A `BigInt` is created by appending `n` to the end of an integer or by calling the constructor.
 
+### Why `[] + {}` is `"[object Object]"`
+Firstly convert both operands to primitive values, and try `valueOf()` followed by `toString()`. If either of them is a string, do `String(a) + String(b)`, otherwise do `Number(a) + Number(b)`.
+
+Another example is `{} > []`. In the case of `{}`, it first tries to call `valueOf` on the object but that returns `{}`. Since `typeof {} === "object"`, it then calls `toString` and gets `"[object Object]"`. In the case of `[]`, calling `valueOf` returns `[]`, and since `typeof [] === "object"`, it calls `toString` and the return value of `Array.prototype.toString()` on an empty array is an empty string. So we get `"[object Object]" > ""`.
+
+> Why you get an error when you attempt to run `{} > []` in the browser? **Block statements are evaluated before expressions**, so when the interpreter sees curly braces when not in an expression context, it interprets them as a block rather than an object literal. The way to force the interpreter to see `{}` as an object literal instead of as a block is to wrap it in parentheses.
+
 ## JSON stringify and parse
 ### JSON.stringify(value[, replacer[, space]])
 You will get `[object Object]` if you are concatenating an object to string. The default conversion from an object to string is "[object Object]", which uses `toString()` method in the object. 
