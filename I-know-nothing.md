@@ -102,6 +102,8 @@ The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-t
 
 React getting started tutorial: https://daveceddia.com/react-getting-started-tutorial
 
+React component code smells: https://antongunnarsson.com/react-component-code-smells
+
 Webpack Introduction: https://ui.dev/webpack
 
 Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack

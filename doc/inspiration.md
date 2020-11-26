@@ -10,8 +10,8 @@ However, I should remember what I have and lower expectations. Take a relief, I
 
 #### Inspiring
 
-- @kentcdodds @dan_abramov @dceddia learn React
-- @umaar @stefanjudis @sulco recommended reources and TIL
+- @kentcdodds @dan_abramov @dceddia about React, Dan's blog https://overreacted.io/
+- @umaar @stefanjudis @sulco recommended dev reources and TIL
 - @mgechev programming podcast https://podcast.mgechev.com/
 - @flavio short courses https://flaviocopes.com/
 - @addyosmani almost every tweet
