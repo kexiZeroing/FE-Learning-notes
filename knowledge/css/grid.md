@@ -182,10 +182,10 @@ li:first-child {
 ```
 
 ### Alignment
-We can align all grid items inside the container. `justify-items` aligns grid items along the row axis. `align-items` aligns grid items along the column axis. `stretch` (fills the whole width or height of the cell) is the default value. This behavior can also be set on individual grid items via the `justify-self` and `align-self` property.
-
-Sometimes the total size of the grid might be less than the size of its grid container. This could happen if all of the grid items are sized with non-flexible units like `px`. In this case you can set the alignment of the grid within the grid container. `justify-content` aligns the grid along the row axis. `align-content` aligns the grid along the column axis.
+We can align all grid items inside the container. `justify-items` aligns grid items along the row axis. `align-items` aligns grid items along the column axis. `stretch` (fills the whole width or height of the cell) is the default value. This behavior can also be set on individual grid items via the `justify-self` and `align-self` property.  
 
 <img alt="grid-justify-items" src="https://cdn.nlark.com/yuque/0/2019/png/398686/1563708047392-2bcc8488-8f93-4246-8529-5703e966d18e.png" width="600">
+
+Sometimes the total size of the grid might be less than the size of its grid container. This could happen if all of the grid items are sized with non-flexible units like `px`. In this case you can set the alignment of the grid within the grid container. `justify-content` aligns the grid along the row axis. `align-content` aligns the grid along the column axis.  
 
 <img alt="grid-justify-content" src="https://cdn.nlark.com/yuque/0/2019/png/398686/1563708186116-cb4bfed5-8010-412e-86b1-d42967249d90.png" width="800">
