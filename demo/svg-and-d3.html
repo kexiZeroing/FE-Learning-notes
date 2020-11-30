@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn SVG and D3.js</title>
+  <!-- D3 stands for Data-Driven Documents -->
+  <script src="https://unpkg.com/d3@5.7.0/dist/d3.min.js"></script>
+</head>
+<body>
+  <svg id="svg-shapes" width="600" height="200">
+    <!-- Google search color picker -->
+    <circle cx="30" cy="30" r="30" fill="red"></circle>
+    <rect x="80" y="10" width="50" height="30" fill="#5db32b"></rect>
+    <circle cx="200" cy="40" r="30" fill="#adf6ff" stroke="#000" stroke-width="5"></circle>
+
+    <!-- Group elements -->
+    <g transform="translate(0, 80) scale(1.5)" fill="blue"> 
+      <circle cx="30" cy="30" r="30"></circle>
+      <rect x="80" y="10" width="50" height="30"></rect>
+    </g>
+
+    <g transform="translate(280, 10)" stroke="#000" stroke-width="5">
+      <!-- We can also use CSS to add style for elements -->
+      <line x1="0" y1="0" x2="80" y2="80" style="stroke: #0373fc"></line>
+      <!-- The `d` attribute defines a path to be drawn (the default fill is black), 
+        M means MoveTo and L means LineTo -->
+      <path fill="none" d="M80 80 L120 40 L160 80" stroke-linejoin="round"></path>
+    </g>
+  </svg> 
+
+  <svg id="d3-face" width="300" height="100"></svg>
+  <script>
+    const faceSvg = d3.select('#d3-face');
+    faceSvg.style('background-color', '#ebebeb');
+
+    const width = +faceSvg.attr('width'),
+          height = +faceSvg.attr('height');
+    const eyeRadius = 8,
+          eyeYOffset = -18,
+          eyeSpacing = 34;
+    const g = faceSvg
+      .append('g')
+        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+    const face = g
+      .append('circle')
+        .attr('r', height / 2)
+        .attr('fill', 'yellow')
+        .attr('stroke', 'black');
+    const eyes = g
+      .append('g')
+        .attr('transform', `translate(0, ${eyeYOffset})`)
+        .attr('fill', 'black');
+    const leftEye = eyes
+      .append('circle')
+        .attr('r', eyeRadius)
+        .attr('cx', -eyeSpacing / 2)
+    const rightEye = eyes
+      .append('circle')
+        .attr('r', eyeRadius)
+        .attr('cx', eyeSpacing / 2)
+      .transition().duration(2000)
+        .attr('r', eyeRadius + 5)
+      .transition().duration(2000)
+        .attr('r', eyeRadius);
+    const mouth = g
+      .append('path')
+        .attr('d', d3.arc()({
+          innerRadius: 28,
+          outerRadius: 32,
+          startAngle: Math.PI / 2,
+          endAngle: Math.PI * 3 / 2
+        }));
+  </script>
+
+  <svg id="d3-bar-chart" width="600" height="200"></svg>
+  <style>
+    #d3-bar-chart rect {
+      fill: steelblue;
+    }
+    #d3-bar-chart text {
+      font-size: 1.4em;
+    }
+  </style>
+  <script>
+    const barChartData = [
+      {name: 'a', value: 300},
+      {name: 'b', value: 200},
+      {name: 'c', value: 360},
+      {name: 'd', value: 120},
+      {name: 'e', value: 340},
+      {name: 'f', value: 260}
+    ];
+    const barChartSvg = d3.select('#d3-bar-chart');
+    const barChartSvgWidth = +barChartSvg.attr('width'),
+          barChartSvgHeight = +barChartSvg.attr('height');
+
+    const xValue = d => d.value,
+          yValue = d => d.name;
+
+    const margin = {top: 50, left: 30, bottom: 30, right: 10},
+          barChartInnerWidth = barChartSvgWidth - margin.left - margin.right,
+          barChartInnerHeight = barChartSvgHeight - margin.top - margin.bottom;
+
+    // `domain` is the range of input data, `range` deals with the width of bars in the chart
+    // `scaleLinear` function maps the `domain` to `range`.
+    // Now xScale is a function that accepts input between [dataMin, dataMax] and linearly maps it to [0, barChartInnerWidth].
+    const xScale = d3.scaleLinear()
+      .domain([0, d3.max(barChartData, xValue)])
+      .range([0, barChartInnerWidth]);
+
+    // `scaleBand` will split the range into n bands where n is the number of values in the domain array,
+    // and compute the positions and width of the bands taking into account the padding.
+    // The width of each band can be accessed using `.bandwidth()`
+    // Now yScale is a function that accepts one band value and maps it to a value in the range.
+    const yScale = d3.scaleBand()
+      .domain(barChartData.map(yValue))
+      .range([0, barChartInnerHeight])
+      .padding(0.1);
+
+    // `axisLeft()` is used to create a left vertical axis. It will construct a left-oriented axis generator for the given scale.
+    // `axisBottom()` is used to create a bottom horizontal axis. It will construct a bottom-oriented axis generator for the given scale.
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+
+    const barChartG = barChartSvg.append('g')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+      
+    // When you use `call()` on a selection, you are calling the function named `xAxis` on the elements of the selection g.
+    // It's the same as xAxis(svg.append('g'))
+    // Use CSS selector to remove unnecessary lines (DOM) in axes.
+    barChartG.append('g')
+      .call(yAxis)
+      .selectAll('.domain, .tick line')
+        .remove();
+        
+    barChartG.append('g')
+      .call(xAxis)
+      .attr('transform', `translate(0, ${barChartInnerHeight})`)
+      .select('.domain')
+        .remove();
+
+    barChartG.selectAll('rect').data(barChartData)
+      .enter().append('rect')
+        .attr('y', d => yScale(yValue(d)))
+        .attr('width', d => xScale(xValue(d)))
+        .attr('height', yScale.bandwidth());
+
+    // For styling, we can also use .attr('class', 'class-name') to add a CSS class
+    barChartG.append('text')
+      .attr('y', -8)
+      .attr('fill', 'darkblue')
+      .text('This is the Bar Chart Title');
+  </script>
+</body>
+</html>
