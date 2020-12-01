@@ -1,10 +1,9 @@
 ## Setting up development environment
-
 1. Install the Homebrew package manager, and you can install almost any app from the command line. Make sure everything is up to date `brew update`.
-2. Install VS Code, Chrome, iTerm2 through Homebrew
+2. Install VS Code, Chrome, iTerm2, Docker through Homebrew
     ```shell
     brew install git yarn make
-    brew cask install visual-studio-code google-chrome iterm2 docker rectangle
+    brew cask install visual-studio-code google-chrome iterm2 docker
     ```
 3. Catalina comes with `zsh` as the default shell. Install `Oh My Zsh`.
 4. Use `nvm` to install Node.js, and install the latest version of node `nvm install node` (or `nvm install xx.xx` and `nvm use xx.xx`). Run `node -v && npm -v` to check the version.
@@ -44,7 +43,14 @@
 9. May use other's dotfiles https://github.com/mathiasbynens/dotfiles, https://github.com/kentcdodds/dotfiles
 10. Try this tool to correct errors in previous console command: https://github.com/nvbn/thefuck
 
----
+### Moving to zsh
+> From macOS 10.15 Catalina the default shell is `zsh`. 
+
+`zsh` has a list of configuration files (`.z*` files) that will get executed at shell startup. `zsh` will start with `/etc/zshenv`, then the user’s `.zshenv`. Since changes in the `zshenv` will affect `zsh` behavior in all contexts, you should be very cautious about the changes applied here. Next, when the shell is a login shell, `zsh` will run `/etc/zprofile` and `.zprofile`. For interactive shells `/etc/zshrc` and `.zshrc`. Then, again, for login shells `/etc/zlogin` and `.zlogin`.
+
+**macOS Terminal considers every new shell to be a login shell and an interactive shell**. So, in Terminal a new `zsh` will potentially run all configuration files. For simplicity’s sake, you should use just one file and the common choice is `.zshrc`. Most tools you download to configure `zsh`, such as `Oh My Zsh`, will override or re-configure your `.zshrc`. You could consider moving your code to `.zlogin` since `.zlogin` is sourced after `.zshrc`. The most common situation where you do not get a login shell with macOS Terminal, is when you switch to `zsh` from another shell by typing the `zsh` command.
+
+To switch your script from using `bash` to `zsh`, you have to change the shebang in the first line from `#!/bin/bash` to `#!/bin/zsh`. Since `/bin/bash` will still be present in macOS Catalina, you do not have to move all scripts immediately. Nearly all syntax from `bash` scripts will still work in `zsh`. There are just a few different behaviors.
 
 ## Git for the first time
 The first thing you should do when you install Git is to set your user name and email address. This is important because every Git commit uses this information. Use `git config --list` command to list all the settings.
