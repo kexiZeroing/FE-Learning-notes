@@ -72,6 +72,10 @@ Build your own X: https://github.com/danistefanovic/build-your-own-x
 
 You Don't Need: https://github.com/you-dont-need/You-Dont-Need
 
+World smallest Office suite: https://zserge.com/posts/awfice/
+
+All the Ways to Make a Web Component: https://webcomponents.dev/blog/all-the-ways-to-make-a-web-component/
+
 ---
 
 ## CSS related
@@ -116,23 +120,6 @@ How styled-components works: https://medium.com/styled-components/how-styled-com
 
 Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
 
+Beginner’s Guide to Static Site Generators: https://bejamas.io/blog/static-site-generators
+
 I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
-
----
-
-## Web links from Cassidy
-https://github.com/starship/starship
-
-https://pixo.sh/creating-a-fancy-stepper-component-in-react/
-
-https://briantracy.xyz/writing/copy-paste-shell.html
-
-https://zserge.com/posts/awfice/
-
-https://frankforce.com/1keys-how-i-made-a-keyboard-in-only-1kb-of-javascript/
-
-https://webcomponents.dev/blog/all-the-ways-to-make-a-web-component/
-
-https://robertovitillo.com/default-timeouts/
-
-https://roughnotation.com/

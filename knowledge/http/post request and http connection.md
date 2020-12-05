@@ -86,3 +86,45 @@ HTTP is an application protocol and used mostly for browsing the internet. HTTP 
 Sockets are an **API that most operating systems provide** to be able to talk with the network **at the transport layer**. A socket API provided by the OS can be accessed using libraries in all programming languages. Plain sockets are more powerful and generic. They run over TCP/IP but they are not restricted to browsers or HTTP protocol. They could be used to implement any kind of communication, but you need to take care of all the lower-level details of a TCP/IP connection.
 
 WebSocket is another application level protocol over TCP protocol. A webSocket runs over a regular socket, but runs its own connection scheme and framing protocol on top of the regular socket.
+
+## Always set timeouts when making network calls
+Modern applications don’t crash; they hang. One of the main reasons for it is the assumption that the network is reliable. It isn’t. You are leaking sockets if your asynchronous network calls don’t return. Client-side timeouts are as crucial as server-side ones. There is a maximum number of sockets your browser can open for a particular host. If you make network requests that never returns, you are going to exhaust the socket pool. When the pool is exhausted, you are no longer able to connect to the host. So **never use “infinity” as a default timeout**.
+
+Javascript’s XMLHttpRequest is the web API to retrieve data from a server asynchronously. Its default timeout is zero, which means there is no timeout.
+
+```js
+const xhr = new XMLHttpRequest();
+xhr.open('GET', '/api', true);
+
+// No timeout by default!
+xhr.timeout = 10000; 
+
+xhr.onload = function () {
+ // Request finished
+};
+
+xhr.ontimeout = function (e) {
+ // Request timed out
+};
+
+xhr.send(null);
+```
+
+The fetch web API is a modern replacement for the XMLHttpRequest API, which uses Promises. When the API was initially introduced, there was no way to set a timeout at all. Browsers have recently added experimental support for the `Abort API` to support timeouts.
+
+```js
+const controller = new AbortController();
+
+const signal = controller.signal;
+
+const fetchPromise = fetch(url, {signal});  
+
+// No timeout by default!
+setTimeout(() => controller.abort(), 10000); 
+
+fetchPromise.then(response => {
+ // Request finished
+})
+```
+
+Things aren’t much rosier in Python. The requests library uses a default timeout of infinity. Go’s HTTP package doesn’t use timeouts by default either. Modern HTTP clients for Java and .NET do a much better job and usually, come with default timeouts. That comes as no surprise since those languages are used to build large scale distributed systems that need to be robust against network failures. As a rule of thumb, always set timeouts when making network calls. And if you build libraries, always set reasonable default timeouts and make them configurable for your clients.
