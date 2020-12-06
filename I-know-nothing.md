@@ -116,10 +116,10 @@ Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJ
 
 Beautiful React Hooks: https://github.com/beautifulinteractions/beautiful-react-hooks
 
+useHooks Code Examples: https://usehooks.com
+
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
 
 Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
-
-Beginner’s Guide to Static Site Generators: https://bejamas.io/blog/static-site-generators
 
 I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
