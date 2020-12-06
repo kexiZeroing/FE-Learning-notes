@@ -56,6 +56,8 @@ Git explorer: https://gitexplorer.com/
 
 Linux Command Library: https://linuxcommandlibrary.com/basics.html
 
+Devhints for developer documentation: https://devhints.io/
+
 Sketch UI with a hand-drawn look: https://excalidraw.com/
 
 Images of source code: https://carbon.now.sh/

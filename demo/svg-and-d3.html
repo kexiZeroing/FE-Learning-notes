@@ -152,5 +152,102 @@
       .attr('fill', 'darkblue')
       .text('This is the Bar Chart Title');
   </script>
+
+  <svg id="d3-update-fruits" width="500" height="100"></svg>
+  <script>
+    const updateFruitsSvg = d3.select('#d3-update-fruits');
+    const updateFruitsSvgWidth = +updateFruitsSvg.attr('width'),
+          updateFruitsSvgHeight = +updateFruitsSvg.attr('height');
+
+    const colorScale = d3.scaleOrdinal()
+      .domain(['apple', 'lemon'])
+      .range(['#c11d1d', '#eae600']);
+
+    const radiusScale = d3.scaleOrdinal()
+      .domain(['apple', 'lemon'])
+      .range([20, 15]);
+
+    const fruitBowlRender = (selection, { fruits }) => {
+      // D3 data join: an array of data and DOM elements together create a join
+      // `enter` selection means have the data but no corresponding DOM elements
+      // `exit` selection means have the element but no data (old DOM elements that don't correspond to any data) 
+      // `update` is the case where there are existing DOM elements that correspond to the data we want to update (the join itself is an update selection)
+      // merge function is for both `enter` and `update` 
+     
+      const bowl = selection.selectAll('rect').data([null])
+        .enter().append('rect')
+          .attr('width', updateFruitsSvgWidth)
+          .attr('height', updateFruitsSvgHeight)
+          .attr('rx', 30)
+          .attr('fill', '#73ceff');
+
+      const circles = selection.selectAll('circle').data(fruits);
+      circles
+        .enter().append('circle')
+          .attr('cx', (d, i) => i * 60 + 30)
+          .attr('cy', updateFruitsSvgHeight / 2)
+        .merge(circles)
+          .attr('r', d => radiusScale(d.type))
+          .attr('fill', d => colorScale(d.type));
+
+      // circles
+      //   .attr('r', d => radiusScale(d.type))
+      //   .attr('fill', d => colorScale(d.type));
+
+      circles
+        .exit().remove();
+
+      const labels = selection.selectAll('text').data(fruits);
+      labels
+        .enter().append('text')
+          .attr('x', (d, i) => i * 60 + 15)
+          .attr('y', updateFruitsSvgHeight / 2 + 40)
+        .merge(labels)
+          .text(d => d.type)
+      labels
+        .exit().remove();
+
+      // Group the circle and text as a `g`
+      // const fruitGroups = selection.selectAll('g').data(fruits);
+      // const groupsEnter = fruitGroups.enter().append('g');
+      // groupsEnter
+      //   .merge(fruitGroups)
+      //     .attr('transform', (d, i) => `translate(${i * 60 + 30}, ${updateFruitsSvgHeight / 2})`)
+      // fruitGroups.exit().remove();
+
+      // groupsEnter.append('circle')
+      //   .merge(fruitGroups.select('circle'))
+      //     .attr('r', d => radiusScale(d.type))
+      //     .attr('fill', d => colorScale(d.type));
+
+      // groupsEnter.append('text')
+      //   .merge(fruitGroups.select('text'))
+      //     .attr('x', -15)
+      //     .attr('y', 40)
+      //     .text(d => d.type);
+    }
+
+    const makeFruit = type => ({ type });
+    let fruits = d3.range(5).map(() => makeFruit('apple'));
+    fruitBowlRender(updateFruitsSvg, { fruits });
+
+    // eat an apple after 1s
+    setTimeout(() => {
+      fruits.pop();
+      fruitBowlRender(updateFruitsSvg, { fruits });
+    }, 1000);
+
+    // replace an apple with a lemon after 2s
+    setTimeout(() => {
+      fruits[2].type = 'lemon'
+      fruitBowlRender(updateFruitsSvg, { fruits });
+    }, 2000);
+
+    // eat the second apple
+    setTimeout(() => {
+      fruits = fruits.filter((f, i) => i !== 1);
+      fruitBowlRender(updateFruitsSvg, { fruits });
+    }, 3000);
+  </script>
 </body>
 </html>
