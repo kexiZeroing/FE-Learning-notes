@@ -167,13 +167,14 @@
       .domain(['apple', 'lemon'])
       .range([20, 15]);
 
-    const fruitBowlRender = (selection, { fruits }) => {
+    let selectedFruit = null; 
+
+    const fruitBowlRender = (selection, { fruits, onSelectedFruit }) => {
       // D3 data join: an array of data and DOM elements together create a join
       // `enter` selection means have the data but no corresponding DOM elements
       // `exit` selection means have the element but no data (old DOM elements that don't correspond to any data) 
       // `update` is the case where there are existing DOM elements that correspond to the data we want to update (the join itself is an update selection)
       // merge function is for both `enter` and `update` 
-     
       const bowl = selection.selectAll('rect').data([null])
         .enter().append('rect')
           .attr('width', updateFruitsSvgWidth)
@@ -188,7 +189,11 @@
           .attr('cy', updateFruitsSvgHeight / 2)
         .merge(circles)
           .attr('r', d => radiusScale(d.type))
-          .attr('fill', d => colorScale(d.type));
+          .attr('fill', d => colorScale(d.type))
+          .attr('stroke-width', 5)
+          .attr('stroke', d => d.id === selectedFruit ? 'black' : 'none')
+          // add event listener
+          .on('click', d => onSelectedFruit(d.id));
 
       // circles
       //   .attr('r', d => radiusScale(d.type))
@@ -227,27 +232,70 @@
       //     .text(d => d.type);
     }
 
-    const makeFruit = type => ({ type });
+    const makeFruit = type => ({ type, id: Math.random() });
     let fruits = d3.range(5).map(() => makeFruit('apple'));
-    fruitBowlRender(updateFruitsSvg, { fruits });
+
+    const onSelectedFruit = id => {
+      selectedFruit = id;
+      renderFruit();
+    }
+
+    const renderFruit = () => fruitBowlRender(updateFruitsSvg, { fruits, onSelectedFruit });
+    renderFruit();
 
     // eat an apple after 1s
     setTimeout(() => {
       fruits.pop();
-      fruitBowlRender(updateFruitsSvg, { fruits });
+      renderFruit();
     }, 1000);
 
     // replace an apple with a lemon after 2s
     setTimeout(() => {
       fruits[2].type = 'lemon'
-      fruitBowlRender(updateFruitsSvg, { fruits });
+      renderFruit();
     }, 2000);
 
     // eat the second apple
     setTimeout(() => {
       fruits = fruits.filter((f, i) => i !== 1);
-      fruitBowlRender(updateFruitsSvg, { fruits });
+      renderFruit();
     }, 3000);
+  </script>
+
+  <svg id="d3-map" width="960" height="600" style="margin-top: 40px"></svg>
+  <style>
+    .country {
+      fill: lightgreen;
+      stroke: black;
+    }
+    .country:hover {
+      fill: red;
+    }
+  </style>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+  <script>
+    const mapSvg = d3.select('#d3-map');
+    const mapSvgWidth = +mapSvg.attr('width'),
+          mapSvgHeight = +mapSvg.attr('height');
+    
+    // https://github.com/d3/d3-geo-projection
+    const projection = d3.geoNaturalEarth1();
+    const pathGenerator = d3.geoPath().projection(projection);
+
+    mapSvg.append('path')
+      .attr('fill', 'darkblue')
+      .attr('d', pathGenerator({type: 'Sphere'}));
+
+    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+      .then(data => {
+        const countries = topojson.feature(data, data.objects.countries);
+        mapSvg.selectAll('path').data(countries.features)
+          .enter().append('path')
+            .attr('d', d => pathGenerator(d))
+            .attr('class', 'country')
+          .append('title')
+            .text(d => d.properties.name);
+      });
   </script>
 </body>
 </html>
