@@ -116,6 +116,8 @@ Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
 
+Build your own React: https://pomb.us/build-your-own-react
+
 Beautiful React Hooks: https://github.com/beautifulinteractions/beautiful-react-hooks
 
 useHooks Code Examples: https://usehooks.com
