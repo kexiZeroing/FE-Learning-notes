@@ -32,7 +32,7 @@ Bash Commands and Tips: https://dev.to/awwsmm/101-bash-commands-and-tips-for-beg
 
 Git Concepts I Wish I Knew Years Ago: https://dev.to/g_abud/advanced-git-reference-1o9j
 
-Learn Git with interactive visualizatio: https://learngitbranching.js.org
+Flight rules for Git: https://github.com/k88hudson/git-flight-rules
 
 Docker Guide: https://www.robertcooper.me/docker-guide
 

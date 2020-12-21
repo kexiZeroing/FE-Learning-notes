@@ -5,6 +5,8 @@ I admit that I'm not a typical geek who is so smart and addicted to the coding. 
 
 However, I should remember what I have and lower expectations. Take a relief, I'm just a normal person who wants to be happy, make money, and not feel a void. No one can know everything. You don't need to learn and acquire every aspect, so just keep going at your pace. Furthermore, learning is not a direct and straight way. Interest, energy, time, and results are always fluctuating along with you.
 
+Dan Abramov has a blog [Things I Don’t Know as of 2018](https://overreacted.io/things-i-dont-know-as-of-2018)
+
 ## Inspiring
 - @kentcdodds @dan_abramov @dceddia about React
 - @umaar @stefanjudis @sulco recommended dev reources and TIL
