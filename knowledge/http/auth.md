@@ -1,3 +1,14 @@
+## Authentication
+### Cookie/session approach
+A very common and legit way to do auth is you'll have your user login. So username and password go into the box. They hit submit. And if everything checks out, you'll have a cookie be sent back to the browser, which lines up via some kind of ID with a session that gets created on the server. And a session is an in memory kind of piece of data. It could be in memory on the server. It can be in some kind of store like a Redis store. And the session just points to a user record, or it holds some user data. The purpose is that when subsequent requests go to the server for new data or for a new page, the cookie that was sent back when the user initially logged in is automatically going to go to the server. The cookie will end up at the server. It will try to line itself up with a session that exists on the server. And if that is there then the user can be considered authenticated and they can get to the page or get the data they're looking for. It's a very valid approach even with single page applications, but there are other approaches too these days.
+
+### Token-based authentication
+- Browsers will automatically send cookies, where bearer tokens need to be added explicitly to the HTTP request. The browser automatically sending cookies has a big downside which is CSRF attack.
+- Cookies are for sending and storing arbitrary data, whereas bearer tokens are specifically for sending authorization data. That data is often encoded as a JWT.
+- Cookies make it more difficult for non-browser based applications like mobile or tablet apps to consume your API.
+
+We manually store the bearer token in our clients and add that value to the HTTP `Authorization` header (Now in 2020, simply store the JWT token in a cookie with `SameSite=strict` to defeat CSRF. Of course, keep `secure` and `httpOnly` too). JWT is an abbreviation for JSON Web Token. JWTs are nothing more than a cryptographically signed, base64 representation of a JSON object (a signed assertion of some facts). JWT offers many features, and puts them in a standard so they can be used between parties. It can be used from browser to back end, between back ends controlled by different parties, or within back end services of one party.
+
 ## Authorization and Authentication
 **Authorization** deals with granting or denying access to access resources. **Authentication** refers to the process of verifying that a user is who they say they are.
 

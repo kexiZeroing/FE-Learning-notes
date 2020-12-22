@@ -3,6 +3,8 @@ When you view source of a webpage from a web app initialized with create-react-a
 
 Server-side rendering (SSR) is when content on your webpage is loaded via HTTP, which was rendered on the server and comes as fully rendered HTML. Client-rendered apps are great at any subsequent user interaction after the first page load. **Server Side Rendering allows us to get the sweet spot in the middle of client-rendered apps and backend-rendered apps: the page is generated server-side, but all interactions with the page once it’s been loaded are handled client-side**. 
 
+> Server-side rendering of client-side JavaScript can be suboptimal. JavaScript still needs to be fetched for interactivity which is often achieved via a hydration step. Server-side rendering is generally used for the initial page load, so post-hydration you're unlikely to see it used again. With **React Server Components**, our components can be refetched regularly. An application with components which rerender when there is new data can be run on the server, limiting how much code needs to be sent to the client. Code for Server Components is never delivered to the client. Server Components may be refetched while maintaining client-side state inside of the tree.
+
 ### Enable SSR for React using CRA and Express
 
 > Next.js offers a modern approach to creating static and server-rendered applications built with React.
