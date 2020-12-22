@@ -16,8 +16,8 @@ import App from './App';
 
 ReactDOM.hydrate(<App />, document.getElementById('root'));
 ```
-1. Now we have our app in place, let’s set up a server that will send along a rendered version. We use Express, so create a `server` directory next to the app’s `src` directory. Then create a new `server/index.js` file that contains the Express server code.
-2. We can import the `<App>` component from the client app directly to the server.
+3. Now we have our app in place, let’s set up a server that will send along a rendered version. We use Express, so create a `server` directory next to the app’s `src` directory. Then create a new `server/index.js` file that contains the Express server code.
+4. We can import the `<App>` component from the client app directly to the server.
     - We use a method `ReactDOMServer.renderToString()` to render our app to a static HTML string.
     - We read the static `index.html` file from the built client app, inject our app’s static content in the `<div id="root">`, and send that as the response to the request.
     - We tell Express to serve contents from the `build` directory as static files.
