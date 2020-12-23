@@ -9,7 +9,7 @@
 9. Browser notepad: `data:text/html,<html contenteditable>`
 10. Ever struggled with some forgotten processes taking over a port you're trying to use? Just run `npx kill-port [port-number]`
 11. Type `env` or `printenv` in the terminal to list all the default environment variables. The `env` command can run other commands with modified environments. If no command is given, `env` prints environment variables. `printenv` can only print environment variables and cannot run commands.
-12. Install tldr pages `npm install -g tldr` which simplify the `man pages` with practical examples, e.g. try to run `tldr tar` or `tldr git branch`.
+12. Install [tldr-pages](https://github.com/tldr-pages/tldr) `npm install -g tldr` which simplify the `man pages` with practical examples, e.g. try to run `tldr tar` or `tldr git branch`.
 13. Short link `react.new`, `vue.new`, `ng.new`, `js.new`, `csb.new` to create a new codeSandbox project.
 14. Use `if (typeof window === 'undefined')` to execute code only in the server-side. We can’t do it using `if (window === undefined)` because we’d get a “window is not defined” runtime error.
 15. `du` command is used to display disk usage statistics. It calculate and print the disk space used by files or directories. `du -ah` (`-a` means display an entry for each file; `-h` for human-readable output).

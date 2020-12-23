@@ -5,7 +5,7 @@
     brew install git yarn make
     brew cask install visual-studio-code google-chrome iterm2 docker
     ```
-3. Catalina comes with `zsh` as the default shell. Install `Oh My Zsh`.
+3. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh).
 4. Use `nvm` to install Node.js, and install the latest version of node `nvm install node` (or `nvm install xx.xx` and `nvm use xx.xx`). Run `node -v && npm -v` to check the version.
 5. Set global configuration with Git `touch ~/.gitconfig`
     ```
@@ -38,7 +38,10 @@
     # Show status bar
     defaults write com.apple.finder ShowStatusBar -bool true
     ```
-7. Install Chrome extension `DevTools Theme: New Moon`, then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
+    
+    A curated list of shell commands specific to macOS: https://github.com/herrbischoff/awesome-macos-command-line
+
+7. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
 8. Install `Prettier`, `GitLens`, `New Moon Theme` for VS Code.
 9. May use other's dotfiles https://github.com/mathiasbynens/dotfiles, https://github.com/kentcdodds/dotfiles
 10. Try this tool to correct errors in previous console command: https://github.com/nvbn/thefuck
