@@ -110,20 +110,16 @@ React getting started tutorial: https://daveceddia.com/react-getting-started-tut
 
 React component code smells: https://antongunnarsson.com/react-component-code-smells
 
+Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
+
+useHooks Code Examples: https://usehooks.com
+
+Build your own React: https://pomb.us/build-your-own-react
+
 Webpack Introduction: https://ui.dev/webpack
 
 Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack
 
-Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
-
-Build your own React: https://pomb.us/build-your-own-react
-
-Beautiful React Hooks: https://github.com/beautifulinteractions/beautiful-react-hooks
-
-useHooks Code Examples: https://usehooks.com
-
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
-
-Server-Side Rendering vs. Static Site Generation: https://medium.com/better-programming/server-side-rendering-vs-static-site-generation-53a34872728c
 
 I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
