@@ -89,8 +89,54 @@ Usually, the state is first added to the component that needs it for rendering. 
 1. Break The UI Into A Component Hierarchy. Use single responsibility principle, that is, **a component should only do one thing**. If it ends up growing, it should be decomposed into smaller subcomponents.
 2. Build A Static Version in React. The easiest way is to build a version that takes your data model and renders the UI but has no interactivity. Props are a way of passing data from parent to child, and **don’t use state at all to build this static version (state is reserved only for interactivity)**. At the end of this step, you’ll have a library of reusable components that render your data model.
 3. Identify The State. Figure out the absolute minimal representation of the state your application needs and compute everything else you need on-demand. Ask three questions about each piece of data:
-  - Is it passed in from a parent via props? If so, it probably isn’t state.
-  - Does it remain unchanged over time? If so, it probably isn’t state.
-  - Can you compute it based on any other state or props in your component? If so, it isn’t state.
+   - Is it passed in from a parent via props? If so, it probably isn’t state.
+   - Does it remain unchanged over time? If so, it probably isn’t state.
+   - Can you compute it based on any other state or props in your component? If so, it isn’t state.
 4. Identify Where The State Should Live. We need to identify which component mutates or owns the state.
 5. Add Inverse Data Flow. Now it’s time to support data flowing the other way: the components deep in the hierarchy need to update the state in parent. Since components should only update their own state, parent component will pass callbacks to child that will fire whenever the state should be updated.
+
+### Advanced Guides
+
+#### Code Splitting
+Bundling is great, but as your app grows, your bundle will grow too. Especially if you are including large third-party libraries. Code-Splitting is a feature supported by bundlers like Webpack which can create multiple bundles that can be dynamically loaded at runtime. It help you "lazy-load" just the things that are currently needed by the user, which can dramatically improve the performance of your app.
+
+The best way to introduce code-splitting into your app is through the dynamic `import()` syntax. When Webpack comes across this syntax, it automatically starts code-splitting your app. If you’re using Create React App, this is already configured for you and you can start using it immediately.
+
+`React.lazy` takes a function that must call a dynamic `import()`. It resolves to a module with a default export containing a React component. The lazy component should then be rendered inside a `Suspense` component, which allows us to show some fallback content while we’re waiting for the lazy component to load. The bundle containing the lazy component is loaded when this component is first rendered.
+
+```js
+import React, { Suspense } from 'react';
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
+
+function MyComponent() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <OtherComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+#### Context
+Context provides a way to pass data through the component tree without having to pass props down manually at every level. Context is designed to share data that can be considered global, such as **the current authenticated user, theme, or preferred language**. Apply context sparingly because it makes component reuse more difficult.
+
+- `React.createContext(defaultValue)` creates a Context object. The `defaultValue` argument is only used when a component does not have a matching Provider.
+
+- Every Context object comes with a Provider React component `<MyContext.Provider value={/* some value */}>` that allows consuming components to subscribe to context changes. The Provider component accepts a `value` prop to be passed to consuming components. All consumers that are descendants of a Provider will re-render whenever the Provider’s `value` prop changes.
+
+- `Class.contextType` can be assigned a Context object. This lets you consume the nearest current value of that Context using `this.context`. You can only subscribe to a single context using this API.
+
+- Wthin a function component, `<MyContext.Consumer>{value => /* render something based on the context value */}</MyContext.Consumer>` requires a function as a child. The function receives the current context value and returns a React node. The `value` argument will be equal to the `value` prop of the closest Provider for this context.
+
+#### Fragments
+`<React.Fragment>` lets you group a list of children without adding extra nodes to the DOM. Fragments declared with the explicit `<React.Fragment>` syntax may have keys, and key is the only attribute that can be passed to Fragment. You can use `<></>` as a shorter syntax except that it doesn’t support keys or attributes.
+
+### Hooks
+React 16.8.0 is the first release to support Hooks. Hooks don’t replace your knowledge of React concepts. Instead, Hooks provide a more direct API to the React concepts you already know: props, state, context, refs, and lifecycle.
+
+- With Hooks, you can extract stateful logic from a component so it can be tested independently and reused between components without changing your component hierarchy.
+- Hooks let you split one component into smaller functions based on what pieces are related rather than forcing a split based on lifecycle methods. 
+- Hooks let you use more of React’s features without classes. Conceptually, React components have always been closer to functions.
+- We intend for Hooks to cover all existing use cases for classes, but we will keep supporting class components for the foreseeable future.
