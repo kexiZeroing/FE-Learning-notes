@@ -122,7 +122,7 @@ function MyComponent() {
 #### Context
 Context provides a way to pass data through the component tree without having to pass props down manually at every level. Context is designed to share data that can be considered global, such as **the current authenticated user, theme, or preferred language**. Apply context sparingly because it makes component reuse more difficult.
 
-- `React.createContext(defaultValue)` creates a Context object. The `defaultValue` argument is only used when a component does not have a matching Provider.
+- `const MyContext = React.createContext(defaultValue)` creates a Context object. The `defaultValue` argument is only used when a component does not have a matching Provider.
 
 - Every Context object comes with a Provider React component `<MyContext.Provider value={/* some value */}>` that allows consuming components to subscribe to context changes. The Provider component accepts a `value` prop to be passed to consuming components. All consumers that are descendants of a Provider will re-render whenever the Provider’s `value` prop changes.
 
@@ -131,12 +131,60 @@ Context provides a way to pass data through the component tree without having to
 - Wthin a function component, `<MyContext.Consumer>{value => /* render something based on the context value */}</MyContext.Consumer>` requires a function as a child. The function receives the current context value and returns a React node. The `value` argument will be equal to the `value` prop of the closest Provider for this context.
 
 #### Fragments
-`<React.Fragment>` lets you group a list of children without adding extra nodes to the DOM. Fragments declared with the explicit `<React.Fragment>` syntax may have keys, and key is the only attribute that can be passed to Fragment. You can use `<></>` as a shorter syntax except that it doesn’t support keys or attributes.
+Fragment lets you group a list of children without adding extra nodes to the DOM. Fragments declared with the explicit `<React.Fragment>` syntax may have keys, and key is the only attribute that can be passed to Fragment. You can use `<></>` as a shorter syntax except that it doesn’t support keys or attributes.
 
 ### Hooks
-React 16.8.0 is the first release to support Hooks. Hooks don’t replace your knowledge of React concepts. Instead, Hooks provide a more direct API to the React concepts you already know: props, state, context, refs, and lifecycle.
+React 16.8.0 is the first release to support Hooks. **Hooks are functions that let you "hook into" React state and lifecycle features from function components**. Hooks don’t replace your knowledge of React concepts. Instead, Hooks provide a more direct API to the React concepts you already know: props, state, context, refs, and lifecycle. 
 
 - With Hooks, you can extract stateful logic from a component so it can be tested independently and reused between components without changing your component hierarchy.
 - Hooks let you split one component into smaller functions based on what pieces are related rather than forcing a split based on lifecycle methods. 
 - Hooks let you use more of React’s features without classes. Conceptually, React components have always been closer to functions.
 - We intend for Hooks to cover all existing use cases for classes, but we will keep supporting class components for the foreseeable future.
+- Use [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) to enforce rules of hooks automatically. This plugin is included by default in Create React App.
+
+#### useState
+If the new state is computed using the previous state, you can pass a function to `setState`. The function will receive the previous value, and return an updated value.
+
+The `initialState` argument is the state used during the initial render. In subsequent renders, it is disregarded. If the initial state is the result of an expensive computation, you may provide a function instead, which will be executed only on the initial render.
+
+#### useEffect
+Think of useEffect Hook as `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` combined. React guarantees the DOM has been updated by the time it runs the effects.
+
+Every effect may return a function that performs a cleanup. This lets us keep the logic for adding and removing effect close to each other. React performs the cleanup when the component unmounts as well as before running the effects next time.
+
+Use multiple effects to separate concerns. Hooks let us split the code based on what it is doing rather than a lifecycle method name. React will apply every effect in the order they were specified.
+
+You can tell React to skip applying an effect if certain values haven’t changed between re-renders. To do so, pass an array as an optional second argument to useEffect (every value referenced inside the effect function should appear in the dependencies array). If you want to run an effect and clean it up only once, you can pass an empty array as a second argument.
+
+#### useContext
+`const value = useContext(MyContext)` accepts a context object (the value returned from `React.createContext`) and returns the current context value. The current context value is determined by the `value` prop of the nearest `<MyContext.Provider>`. A component calling `useContext` will always re-render when the context value changes.
+
+If you’re familiar with the context API before Hooks, `useContext(MyContext)` is equivalent to `static contextType = MyContext` in a class, or to `<MyContext.Consumer>`, but you still need a Provider above in the tree to provide the value for this context.
+
+#### useReducer
+`const [state, dispatch] = useReducer(reducer, initialState)` accepts a reducer of type `(state, action) => newState`, and returns the current state paired with a `dispatch` method. `useReducer` is usually preferable to `useState` when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one.
+
+#### useCallback
+`const memoizedCallback = useCallback(() => doSomething(a, b), [a, b])`
+
+Pass an inline callback and an array of dependencies. `useCallback` will return a memoized version of the callback that only changes if one of the dependencies has changed. This is useful when passing callbacks to the optimized child components that rely on reference equality to prevent unnecessary renders.
+
+> On every render, everything that's inside a functional component will run again. If a child component has a dependency on a function from the parent component, the child will re-render every time the parent re-renders even if that function "doesn't change" (the reference changes, but what the function does won't).
+It's used for optimization by avoiding unnecessary renders from the child, making the function change the reference only when dependencies change.
+
+#### useMemo
+`const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b])`
+
+Pass a "create" function and an array of dependencies. `useMemo` will only recompute the memoized value when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render. `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`.
+
+#### useRef
+`const refContainer = useRef(initialValue)` returns a mutable ref object whose `current` property is initialized to the passed argument. The returned object will persist for the full lifetime of the component. 
+
+You might be familiar with refs primarily as a way to access the DOM. If you pass a ref object to `<div ref={refContainer} />`, React will set its `current` property to the corresponding DOM node.
+
+`useRef()` creates a plain JavaScript object. The only difference between `useRef()` and creating a `{current: ...}` object yourself is that `useRef` will give you the same ref object on every render. Mutating the `current` property doesn’t cause a re-render.
+
+#### useLayoutEffect
+The function passed to `useEffect` fires after layout and paint, during a deferred event. This makes it suitable for the many common side effects because most types of work shouldn’t block the browser from updating the screen.
+
+However, not all effects can be deferred. For example, a DOM mutation that is visible to the user must fire synchronously before the next paint so that the user does not perceive a visual inconsistency. For these types of effects, React provides one additional Hook called `useLayoutEffect`. It has the same signature as `useEffect`, and only differs in when it is fired. Use `useLayoutEffect` to read layout from the DOM and synchronously re-render before the browser has a chance to paint. (Prefer the standard `useEffect` when possible to avoid blocking visual updates.)
