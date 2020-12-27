@@ -1,16 +1,20 @@
-## Notes From reading offical docs
+## Notes from reading offical docs
 
-### Add React to a Website
+### Getting Started
+
+#### Add React to a Website
 Adding React as a plain `<script>` tag on an HTML page optionally with JSX is the easiest way to integrate React into an existing website. Adding JSX to a project doesn’t require complicated tools like a bundler or a development server.
 
 React’s release channels: `Latest` (stable, use this for user-facing applications), `Next` (candidates for the next minor semver release), `Experimental` (additional features that are not ready for wider release). All releases are published to npm, but only `Latest` uses semantic versioning. Prereleases have versions generated from a hash of their contents.
 
-### Recommended Toolchains
+#### Recommended Toolchains
 The React team primarily recommends these solutions:
 - If you’re learning React or creating a new single-page app, use [Create React App](https://create-react-app.dev/).
 - If you’re building a server-rendered website with Node.js, try Next.js.
 - If you’re building a static content-oriented website, try Gatsby.
 - If you’re building a component library or integrating with an existing codebase, try more flexible toolchains.
+
+---
 
 ### Main Concepts
 React embraces the fact that rendering logic is inherently coupled with other UI logic. Instead of separating technologies by putting markup and logic in separate files, React separates concerns with loosely coupled units called "components" that contain both.
@@ -95,6 +99,8 @@ Usually, the state is first added to the component that needs it for rendering. 
 4. Identify Where The State Should Live. We need to identify which component mutates or owns the state.
 5. Add Inverse Data Flow. Now it’s time to support data flowing the other way: the components deep in the hierarchy need to update the state in parent. Since components should only update their own state, parent component will pass callbacks to child that will fire whenever the state should be updated.
 
+---
+
 ### Advanced Guides
 
 #### Code Splitting
@@ -133,6 +139,8 @@ Context provides a way to pass data through the component tree without having to
 #### Fragments
 Fragment lets you group a list of children without adding extra nodes to the DOM. Fragments declared with the explicit `<React.Fragment>` syntax may have keys, and key is the only attribute that can be passed to Fragment. You can use `<></>` as a shorter syntax except that it doesn’t support keys or attributes.
 
+---
+
 ### Hooks
 React 16.8.0 is the first release to support Hooks. **Hooks are functions that let you "hook into" React state and lifecycle features from function components**. Hooks don’t replace your knowledge of React concepts. Instead, Hooks provide a more direct API to the React concepts you already know: props, state, context, refs, and lifecycle. 
 
@@ -146,6 +154,8 @@ React 16.8.0 is the first release to support Hooks. **Hooks are functions that l
 If the new state is computed using the previous state, you can pass a function to `setState`. The function will receive the previous value, and return an updated value.
 
 The `initialState` argument is the state used during the initial render. In subsequent renders, it is disregarded. If the initial state is the result of an expensive computation, you may provide a function instead, which will be executed only on the initial render.
+
+Unlike the `setState` method in class components, `useState` does not automatically merge update objects. We recommend to split state into multiple state variables.
 
 #### useEffect
 Think of useEffect Hook as `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` combined. React guarantees the DOM has been updated by the time it runs the effects.
@@ -169,22 +179,78 @@ If you’re familiar with the context API before Hooks, `useContext(MyContext)` 
 
 Pass an inline callback and an array of dependencies. `useCallback` will return a memoized version of the callback that only changes if one of the dependencies has changed. This is useful when passing callbacks to the optimized child components that rely on reference equality to prevent unnecessary renders.
 
-> On every render, everything that's inside a functional component will run again. If a child component has a dependency on a function from the parent component, the child will re-render every time the parent re-renders even if that function "doesn't change" (the reference changes, but what the function does won't).
+On every render, everything that's inside a functional component will run again. If a child component has a dependency on a function from the parent component, the child will re-render every time the parent re-renders even if that function "doesn't change" (the reference changes, but what the function does won't).
 It's used for optimization by avoiding unnecessary renders from the child, making the function change the reference only when dependencies change.
 
 #### useMemo
 `const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b])`
 
-Pass a "create" function and an array of dependencies. `useMemo` will only recompute the memoized value when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render. `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`.
+Pass a "create" function and an array of dependencies. `useMemo` will only recompute the memoized value (call that function) when one of the dependencies has changed. This optimization helps to avoid expensive calculations on every render. `useMemo` is similar to `useCallback` except it allows you to apply memoization to any value type, not just functions. `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`.
+
+Most of the time you should not bother optimizing unnecessary rerenders. React is very fast and the need to optimize stuff is so rare. **The reasons why `useCallback` and `useMemo` exist are referential equality and computationally expensive calculations**.
+
+```js
+// Referential equality
+// {} === {} is false
+// () => {} === () => {} is false
+// React uses `Object.is` but it's similar to `===`
+function Foo({bar, baz}) {
+  React.useEffect(() => {
+    const options = {bar, baz}
+    buzz(options)
+  }, [bar, baz])
+  return <div>foobar</div>
+}
+function Blub() {
+  const bar = React.useCallback(() => {}, [])
+  const baz = React.useMemo(() => [1, 2, 3], [])
+  return <Foo bar={bar} baz={baz} />
+}
+
+// Computationally expensive calculations
+function RenderPrimes({iterations, multiplier}) {
+  const primes = React.useMemo(() => calculatePrimes(iterations, multiplier), [
+    iterations,
+    multiplier
+  ])
+  return <div>Primes! {primes}</div>
+}
+```
 
 #### useRef
 `const refContainer = useRef(initialValue)` returns a mutable ref object whose `current` property is initialized to the passed argument. The returned object will persist for the full lifetime of the component. 
 
-You might be familiar with refs primarily as a way to access the DOM. If you pass a ref object to `<div ref={refContainer} />`, React will set its `current` property to the corresponding DOM node.
+You might be familiar with refs primarily as a way to access the DOM. If you pass a ref object to `<div ref={refContainer} />`, React will set its `current` property to the corresponding DOM node. 
 
-`useRef()` creates a plain JavaScript object. The only difference between `useRef()` and creating a `{current: ...}` object yourself is that `useRef` will give you the same ref object on every render. Mutating the `current` property doesn’t cause a re-render.
+`useRef()` isn’t just for DOM refs. `useRef()` creates a plain JavaScript object which is a generic container whose `current` property is mutable and can hold any value. The only difference between `useRef()` and creating a `{current: ...}` object yourself is that `useRef` will give you the same ref object on every render. Mutating the `current` property doesn’t cause a re-render.
+
+```js
+// use `ref` to get the previous state
+function Counter() {
+  const [count, setCount] = useState(0);
+  const prevCount = usePrevious(count);
+  return <h1>Now: {count}, before: {prevCount}</h1>;
+}
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+```
+
+> Every function inside the component (including event handlers, effects, timeouts or API calls) **captures the props and state from the render call that defined it**. If you intentionally want to read the latest state from some asynchronous callback, you could keep it in a `ref`, mutate it, and read from it.
 
 #### useLayoutEffect
 The function passed to `useEffect` fires after layout and paint, during a deferred event. This makes it suitable for the many common side effects because most types of work shouldn’t block the browser from updating the screen.
 
 However, not all effects can be deferred. For example, a DOM mutation that is visible to the user must fire synchronously before the next paint so that the user does not perceive a visual inconsistency. For these types of effects, React provides one additional Hook called `useLayoutEffect`. It has the same signature as `useEffect`, and only differs in when it is fired. Use `useLayoutEffect` to read layout from the DOM and synchronously re-render before the browser has a chance to paint. (Prefer the standard `useEffect` when possible to avoid blocking visual updates.)
+
+#### Custom Hooks
+Building your own Hooks lets you extract component logic into reusable functions. We don’t make any changes to the behavior but extract some common code between two components into a separate function.  
+
+A custom Hook is a function whose name starts with "use" and that may call other Hooks. A custom Hook doesn’t need to have a specific signature. We can decide what it takes as arguments and what it should return. Every time you use a custom Hook, all state and effects inside of it are fully isolated.
+
+Now function components can do more, it’s likely that the average function component in your codebase will become longer. This is normal — don’t feel like you have to immediately split it into Hooks. But we also encourage you to start spotting cases where a custom Hook could hide complex logic behind a simple interface.
