@@ -97,7 +97,7 @@ Usually, the state is first added to the component that needs it for rendering. 
    - Does it remain unchanged over time? If so, it probably isn’t state.
    - Can you compute it based on any other state or props in your component? If so, it isn’t state.
 4. Identify Where The State Should Live. We need to identify which component mutates or owns the state.
-5. Add Inverse Data Flow. Now it’s time to support data flowing the other way: the components deep in the hierarchy need to update the state in parent. Since components should only update their own state, parent component will pass callbacks to child that will fire whenever the state should be updated.
+5. Add Inverse Data Flow. Now it’s time to support data flowing the other way: the components deep in the hierarchy need to update the state in parent. Since **components should only update their own state, parent component will pass callbacks to child** that will fire whenever the state should be updated.
 
 ---
 
@@ -164,7 +164,54 @@ Every effect may return a function that performs a cleanup. This lets us keep th
 
 Use multiple effects to separate concerns. Hooks let us split the code based on what it is doing rather than a lifecycle method name. React will apply every effect in the order they were specified.
 
-You can tell React to skip applying an effect if certain values haven’t changed between re-renders. To do so, pass an array as an optional second argument to useEffect (every value referenced inside the effect function should appear in the dependencies array). If you want to run an effect and clean it up only once, you can pass an empty array as a second argument.
+You can tell React to skip applying an effect if certain values haven’t changed between re-renders. To do so, pass an array as an optional second argument to useEffect (**recommend to declare functions needed by an effect inside of the effect. Then it’s easy to see what values the effect uses, and every value referenced inside the effect function should appear in the dependencies array**). If you want to run an effect and clean it up only once, you can pass an empty array as a second argument.
+
+```js
+// declare `fetchProduct` function inside the effect
+// also handle out-of-order responses with a local variable inside the effect
+useEffect(() => {
+  let ignore = false;
+  async function fetchProduct() {
+    const response = await fetch('http://myapi/product/' + productId);
+    const json = await response.json();
+    if (!ignore) setProduct(json);
+  }
+
+  fetchProduct();
+  return () => { ignore = true };
+}, [productId]);
+```
+
+```js
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    // Every second, this callback calls `setCount(0 + 1)`, so the count never goes above 1.
+    const id = setInterval(() => {
+      setCount(count + 1); // This effect depends on the `count` state
+    }, 1000);
+    return () => clearInterval(id);
+  }, []); // Bug: `count` is not specified as a dependency
+
+  return <h1>{count}</h1>;
+}
+
+// Specifying `count` as a dependency would fix the bug, but would cause the interval to be reset on every change. That may not be desirable.
+// To fix it, we can use the functional update form of `setState`
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCount(c => c + 1); // This doesn't reference the current state
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return <h1>{count}</h1>;
+}
+```
 
 #### useContext
 `const value = useContext(MyContext)` accepts a context object (the value returned from `React.createContext`) and returns the current context value. The current context value is determined by the `value` prop of the nearest `<MyContext.Provider>`. A component calling `useContext` will always re-render when the context value changes.
@@ -173,6 +220,33 @@ If you’re familiar with the context API before Hooks, `useContext(MyContext)` 
 
 #### useReducer
 `const [state, dispatch] = useReducer(reducer, initialState)` accepts a reducer of type `(state, action) => newState`, and returns the current state paired with a `dispatch` method. `useReducer` is usually preferable to `useState` when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one.
+
+```js
+// In large component trees, passing `dispatch` down via context is the recommended pattern for deep updates.
+const TodosDispatch = React.createContext(null);
+
+function TodosApp() {
+  // Note: `dispatch` won't change between re-renders
+  const [todos, dispatch] = useReducer(todosReducer);
+
+  return (
+    <TodosDispatch.Provider value={dispatch}>
+      <DeepTree todos={todos} />
+    </TodosDispatch.Provider>
+  );
+}
+
+function DeepChild(props) {
+  const dispatch = useContext(TodosDispatch);
+  function handleClick() {
+    dispatch({ type: 'add', text: 'hello' });
+  }
+
+  return (
+    <button onClick={handleClick}>Add todo</button>
+  );
+}
+```
 
 #### useCallback
 `const memoizedCallback = useCallback(() => doSomething(a, b), [a, b])`
@@ -241,7 +315,27 @@ function usePrevious(value) {
 }
 ```
 
-> Every function inside the component (including event handlers, effects, timeouts or API calls) **captures the props and state from the render call that defined it**. If you intentionally want to read the latest state from some asynchronous callback, you could keep it in a `ref`, mutate it, and read from it.
+Every function inside the component (including event handlers, effects, timeouts or API calls) **captures the props and state from the render call that defined it**. If you intentionally want to read the latest state from some asynchronous callback, you could keep it in a `ref`, mutate it, and read from it.
+
+```js
+function Example(props) {
+  // Keep latest props in a ref
+  const latestProps = useRef(props);
+  useEffect(() => {
+    latestProps.current = props;
+  });
+
+  useEffect(() => {
+    function tick() {
+      // Read latest props at any time
+      console.log(latestProps.current);
+    }
+
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+}
+```
 
 #### useLayoutEffect
 The function passed to `useEffect` fires after layout and paint, during a deferred event. This makes it suitable for the many common side effects because most types of work shouldn’t block the browser from updating the screen.
