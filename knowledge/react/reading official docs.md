@@ -80,7 +80,7 @@ The problem with `onClick={() => this.handleClick()}` is that a different callba
 #### List and Form
 A "key" is a special string attribute you need to include when creating lists of elements. Keys help React identify which items have changed, are added, or are removed. Keys serve as a hint to React but they don’t get passed to your components.
 
-Keys used within arrays should be unique among their siblings. We don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues with component state.
+Keys used within arrays should be unique among their siblings (not globally unique). We don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues with component state.
 
 The React component that renders a form also controls what happens in that form on subsequent user input. An input form element whose value is controlled by React in this way is called a "controlled component". With a controlled component, the input’s value is always driven by the React state.
 
@@ -104,7 +104,7 @@ Usually, the state is first added to the component that needs it for rendering. 
 ### Advanced Guides
 
 #### Code Splitting
-Bundling is great, but as your app grows, your bundle will grow too. Especially if you are including large third-party libraries. Code-Splitting is a feature supported by bundlers like Webpack which can create multiple bundles that can be dynamically loaded at runtime. It help you "lazy-load" just the things that are currently needed by the user, which can dramatically improve the performance of your app.
+Bundling is great, but as your app grows, your bundle will grow too. Code-Splitting is a feature supported by bundlers like Webpack which can create multiple bundles that can be dynamically loaded at runtime. It help you "lazy-load" just the things that are currently needed by the user, which can dramatically improve the performance of your app.
 
 The best way to introduce code-splitting into your app is through the dynamic `import()` syntax. When Webpack comes across this syntax, it automatically starts code-splitting your app. If you’re using Create React App, this is already configured for you and you can start using it immediately.
 
@@ -138,6 +138,13 @@ Context provides a way to pass data through the component tree without having to
 
 #### Fragments
 Fragment lets you group a list of children without adding extra nodes to the DOM. Fragments declared with the explicit `<React.Fragment>` syntax may have keys, and key is the only attribute that can be passed to Fragment. You can use `<></>` as a shorter syntax except that it doesn’t support keys or attributes.
+
+#### Reconciliation
+You can think of the `render()` function as creating a tree of React elements. On the next state or props update, that `render()` function will return a different tree of React elements. React then needs to figure out how to efficiently update the UI to match the most recent tree (The Diffing Algorithm).
+
+- Whenever the root elements have different types, React will tear down the old tree and build the new tree from scratch.
+- When comparing two React DOM elements of the same type, React looks at the attributes of both, keeps the same underlying DOM node, and only updates the changed attributes.
+- When recursing on the children of a DOM node, React supports a `key` attribute, using the `key` to match children in the original tree with children in the subsequent tree. 
 
 ---
 
