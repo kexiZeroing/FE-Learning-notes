@@ -20,7 +20,7 @@ The React team primarily recommends these solutions:
 React embraces the fact that rendering logic is inherently coupled with other UI logic. Instead of separating technologies by putting markup and logic in separate files, React separates concerns with loosely coupled units called "components" that contain both.
 
 #### JSX and Rendering Elements
-JSX produces React elements. After compilation, JSX expressions become regular JavaScript function calls and evaluate to JavaScript objects. React elements are plain objects, and are cheap to create. React DOM takes care of updating the DOM to match the React elements.
+JSX produces React elements. After compilation, JSX expressions become regular JavaScript function calls (JSX is syntactic sugar for calling `React.createElement(component, props, ...children)`) and evaluate to React elements which are plain JavaScript objects. React DOM takes care of updating the DOM to match the React elements.
 
 Don’t put quotes around curly braces when embedding a JavaScript expression in an attribute. You should either use quotes (for string values) or curly braces (for expressions), but not both in the same attribute.
 
@@ -144,7 +144,149 @@ You can think of the `render()` function as creating a tree of React elements. O
 
 - Whenever the root elements have different types, React will tear down the old tree and build the new tree from scratch.
 - When comparing two React DOM elements of the same type, React looks at the attributes of both, keeps the same underlying DOM node, and only updates the changed attributes.
-- When recursing on the children of a DOM node, React supports a `key` attribute, using the `key` to match children in the original tree with children in the subsequent tree. 
+- When recursing on the children of a DOM node, React supports a `key` attribute, using the `key` to match children in the original tree with children in the subsequent tree.
+
+#### Refs and the DOM
+There are a few good use cases for refs:
+- Managing focus, text selection, or media playback.
+- Triggering imperative animations.
+- Integrating with third-party DOM libraries.
+
+Avoid using refs for anything that can be done declaratively. By default, you may not use the ref attribute on function components because they don’t have instances. You can, however, use the ref attribute inside a function component (using `useRef` hook) as long as you refer to a DOM element or a class component.
+
+Ref forwarding is an opt-in feature that lets some components take a ref they receive, and pass it further down to a child. In the example below, the component using `FancyButton` can get a ref to the underlying button DOM node and access it if necessary—just like if they used a DOM button directly.
+
+```js
+// `React.forwardRef` accepts a rendering function as an argument
+const FancyButton = React.forwardRef((props, ref) => (
+  <button ref={ref} className="FancyButton">
+    {props.children}
+  </button>
+));
+
+// You can now get a ref directly to the DOM button
+const ref = React.createRef();
+<FancyButton ref={ref}>Click me</FancyButton>;
+```
+
+#### Error Boundaries
+Error boundaries are React components that catch errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed. (Error boundaries do not catch errors for event handlers, asynchronous code, and server side rendering.)
+
+Error boundaries work like a JavaScript `catch {}` block, but for components. Only class components can be error boundaries. Use `static getDerivedStateFromError()` to render a fallback UI after an error has been thrown. Use `componentDidCatch()` to log error information. Note that error boundaries only catch errors in the components below them in the tree, and it can’t catch an error within itself.
+
+```js
+class ErrorBoundary extends React.Component {
+  // ...
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // You can log the error to an error reporting service
+    logErrorToMyService(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children; 
+  }
+}
+```
+
+As of React 16, errors that were not caught by any error boundary will result in unmounting of the whole React component tree. Adding error boundaries lets you provide better user experience when something goes wrong.
+
+#### Render Props
+Components are the primary unit of code reuse in React, but it’s not always obvious how to share the state or behavior that one component encapsulates to other components that need that same state.
+
+```js
+class MouseTracker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.state = { x: 0, y: 0 };
+  }
+
+  handleMouseMove(event) {
+    this.setState({
+      x: event.clientX,
+      y: event.clientY
+    });
+  }
+
+  render() {
+    return (
+      <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
+        <p>The current mouse position is ({this.state.x}, {this.state.y})</p>
+      </div>
+    );
+  }
+}
+```
+
+Now if another component needs to know about the cursor position, can we encapsulate that behavior so that we can easily share it with that component? For example, let’s say we have a `<Cat>` component that renders the image of a cat chasing the mouse around the screen. We might use a `<Cat mouse={{ x, y }}>` prop to tell the component the coordinates of the mouse. At first, you might try rendering the `<Cat>` inside `<Mouse>`’s render method, like this `<Cat mouse={this.state} />`, but we haven’t achieved the objective of truly encapsulating the behavior in a reusable way. Now, every time we want the mouse position for a different use case, we have to create a new `<MouseWithSomethingElse>` component that renders something specifically for that use case.
+
+Here’s where the render prop comes in: Instead of hard-coding something else in the render method to solve for a specific use case, we provide `<Mouse>` with a function prop that it uses to dynamically determine what to render. More concretely, **a render prop is a function prop that a component uses to know what to render**.
+
+```js
+class Cat extends React.Component {
+  render() {
+    const mouse = this.props.mouse;
+    return (
+      <img src="/cat.jpg" style={{ position: 'absolute', left: mouse.x, top: mouse.y }} />
+    );
+  }
+}
+
+class Mouse extends React.Component {
+  // ...
+  render() {
+    return (
+      <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
+        {this.props.render(this.state)}
+      </div>
+    );
+  }
+}
+
+class MouseTracker extends React.Component {
+  render() {
+    return (
+      <div>
+        <Mouse render={mouse => (
+          <Cat mouse={mouse} />
+        )}/>
+      </div>
+    );
+  }
+}
+```
+
+It’s important to remember that just because the pattern is called "render props" you don’t have to use a prop named render to use this pattern. In fact, any prop that is a function that a component uses to know what to render is technically a "render prop".
+
+#### Higher-Order Components
+A higher-order component is a function that takes a component and returns a new component. Whereas a component transforms props into UI, a higher-order component transforms a component into another component. HOCs are common in third-party React libraries.
+
+```js
+// This function takes a component and returns another component
+function withSubscription(WrappedComponent) {
+  return class extends React.Component {
+    // ...
+    render(){
+      // render the wrapped component with the fresh data and pass through any additional props
+      return <WrappedComponent data={this.state.data} {...this.props} />;
+    }
+  }
+}
+
+// When `CommentListWithSubscription` is rendered `<CommentListWithSubscription />`, component `CommentList` will be passed a prop with the most current data
+const CommentListWithSubscription = withSubscription(CommentList);
+```
+
+Note that a HOC doesn’t modify the input component, but composes the original component by wrapping it in a container component. The wrapped component receives all the props of the container, along with a new prop, data, which it uses to render its output. The HOC isn’t concerned with how or why the data is used, and the wrapped component isn’t concerned with where the data came from.
 
 ---
 

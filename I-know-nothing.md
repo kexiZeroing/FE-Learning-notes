@@ -100,6 +100,8 @@ Box-shadow: https://neumorphism.io
 
 CSS animations on demand: https://animista.net
 
+Build faithful recreations of old UIs: https://jdan.github.io/98.css, https://botoxparty.github.io/XP.css, https://khang-nd.github.io/7.css
+
 ---
 
 ## React ecosystem

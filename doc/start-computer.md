@@ -42,9 +42,10 @@
     A curated list of shell commands specific to macOS: https://github.com/herrbischoff/awesome-macos-command-line
 
 7. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
-8. Install `Prettier`, `GitLens`, `New Moon Theme` for VS Code.
-9. May use other's dotfiles https://github.com/mathiasbynens/dotfiles, https://github.com/kentcdodds/dotfiles
-10. Try this tool to correct errors in previous console command: https://github.com/nvbn/thefuck
+8. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
+   - `Emoji Snippets` (typing `:smile`) helps to insert emoji in HTML, JS, CSS, React and more. You can also add `"editor.quickSuggestions": true` in user settings.
+   - `Markdown Emoji` (typing `:smile:`) supports to built-in Markdown preview.
+9.  May use other's dotfiles https://github.com/mathiasbynens/dotfiles, https://github.com/kentcdodds/dotfiles
 
 ### Moving to zsh
 > From macOS 10.15 Catalina the default shell is `zsh`. 

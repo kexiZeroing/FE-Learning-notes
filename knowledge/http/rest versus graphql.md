@@ -49,7 +49,7 @@ Property are not strongly typed from REST API, and some are not properly given a
 
 GraphQL is dominated by schema which are strongly typed. These types can either be primitive or derived. The strong typing system allows the API to be self documented, and making the client aware on what response it will get.
 
-### GraphQL — Disadvantages
+### GraphQL Disadvantages
 Although GraphQL solves a number of problems, it still has flaws and deficiencies. 
 
 - Error management in REST is quite simple. With HTTP status code, we can quickly know the error as well as the suitable way to resolve it. But with GraphQL, we always receive a `200 OK` status.
