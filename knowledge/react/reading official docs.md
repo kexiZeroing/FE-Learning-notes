@@ -3,7 +3,7 @@
 ### Getting Started
 
 #### Add React to a Website
-Adding React as a plain `<script>` tag on an HTML page optionally with JSX is the easiest way to integrate React into an existing website. Adding JSX to a project doesn’t require complicated tools like a bundler or a development server.
+Adding React as a plain `<script>` tag on an HTML page optionally with JSX is the easiest way to integrate React into an existing website. Adding JSX to a project doesn’t require complicated tools like a bundler or a development server. (It's worth checking out: https://github.com/kentcdodds/beginners-guide-to-react)
 
 React’s release channels: `Latest` (stable, use this for user-facing applications), `Next` (candidates for the next minor semver release), `Experimental` (additional features that are not ready for wider release). All releases are published to npm, but only `Latest` uses semantic versioning. Prereleases have versions generated from a hash of their contents.
 
@@ -24,17 +24,50 @@ JSX produces React elements. After compilation, JSX expressions become regular J
 
 Don’t put quotes around curly braces when embedding a JavaScript expression in an attribute. You should either use quotes (for string values) or curly braces (for expressions), but not both in the same attribute.
 
-We split JSX over multiple lines for readability and recommend wrapping it in parentheses.
+We split JSX over multiple lines for readability and recommend wrapping it in parentheses. It can be handy for conditionally rendering an element using logical `&&` operator or conditional (ternary) operator.
 
 By default, React DOM escapes any values embedded in JSX before rendering them. Everything is converted to a string before being rendered, which helps prevent XSS (cross-site-scripting) attacks.
 
-React elements are immutable. Once you create an element, you can’t change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time. React DOM compares the element and its children to the previous one, and only applies the necessary DOM updates.
+You cannot use a general expression as the React element type. If you do want to use a general expression to indicate the type of the element, just assign it to a capitalized variable first.
 
-It can be handy for conditionally rendering an element using logical `&&` operator or conditional (ternary) operator.
+```js
+import React from 'react';
+import { PhotoStory, VideoStory } from './stories';
+
+const components = {
+  photo: PhotoStory,
+  video: VideoStory
+};
+
+function Story(props) {
+  // render a component based on the prop, but using `<components[props.storyType] />` is wrong
+  const SpecificStory = components[props.storyType];
+  return <SpecificStory />;
+}
+```
 
 React elements are just objects, so you can pass them as props like any other data. This approach may remind you of “slots” in other libraries but there are no limitations on what you can pass as props in React.
 
-#### Components
+#### Props and Children in JSX
+- You can pass any JavaScript expression as a prop.
+- If you pass no value for a prop, it defaults to `true`. 
+- If you already have props as an object, and you want to pass it in JSX, you can use spread operator to pass the whole props object `<Hello {...props} />`.
+- The content between an opening tag and a closing tag is passed as a special prop: `props.children`. **JSX removes blank lines and whitespace at the beginning and ending of a line**. New lines that occur in the middle of string literals are condensed into a single space.
+- `false`, `true`, `null`, and `undefined` are valid children. They simply don’t render. This can be useful to conditionally render React elements. One caveat is that some falsy values, such as `0`, are still rendered.
+
+```js
+// `0` is still printed when `props.messages` is an empty array
+<div>
+  { props.messages.length && <MessageList messages={props.messages} /> }
+</div>
+
+// To fix this, make sure that the expression before `&&` is always boolean
+<div>
+  { props.messages.length > 0 && <MessageList messages={props.messages} /> }
+</div>
+```
+
+#### Component and State
 Conceptually, components are like JavaScript functions. They accept arbitrary inputs called "props" and return React elements describing what should appear on the screen.
 
 Always start component names with a capital letter. React treats components starting with lowercase letters as DOM tags.
@@ -83,6 +116,8 @@ A "key" is a special string attribute you need to include when creating lists of
 Keys used within arrays should be unique among their siblings (not globally unique). We don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues with component state.
 
 The React component that renders a form also controls what happens in that form on subsequent user input. An input form element whose value is controlled by React in this way is called a "controlled component". With a controlled component, the input’s value is always driven by the React state.
+
+> The alternative is uncontrolled components, where form data is handled by the DOM itself. To write an uncontrolled component, instead of writing an event handler for every state update, you can use a ref to get form values from the DOM.
 
 In HTML, a `<textarea>` element defines its text by its children. In React, a `<textarea>` uses a `value` attribute instead. This way, a form using a `<textarea>` can be written very similarly to a form that uses a single-line input.For `<select>` element, instead of using `selected` attribute on `<option>`, React uses a `value` attribute on the root `select` tag.
 
@@ -288,6 +323,64 @@ const CommentListWithSubscription = withSubscription(CommentList);
 
 Note that a HOC doesn’t modify the input component, but composes the original component by wrapping it in a container component. The wrapped component receives all the props of the container, along with a new prop, data, which it uses to render its output. The HOC isn’t concerned with how or why the data is used, and the wrapped component isn’t concerned with where the data came from.
 
+#### Type Checking
+As your app grows, you can catch a lot of bugs with typechecking. React has some built-in typechecking abilities. To run typechecking on the props for a component, you can assign the special `propTypes` property. [PropTypes](https://www.npmjs.com/package/prop-types) exports a range of validators that can be used to make sure the data you receive is valid. When an invalid value is provided for a prop, a warning will be shown in the JavaScript console. For performance reasons, `propTypes` is only checked in development mode.
+
+We recommend using Flow or TypeScript instead of PropTypes for larger code bases to typecheck the whole application. Being a typed language, TypeScript can catch errors and bugs at build time, long before your app goes live. Create React App supports TypeScript out of the box. To create a new project with TypeScript support, run `npx create-react-app my-app --template typescript`. If you are not Create React App users, you need to add TypeScript to your project and setup in `tsconfig.json`. We have two file extensions for TypeScript: `.ts` is the default file extension while `.tsx` is a special extension used for files which contain JSX.
+
+#### Profiler
+A Profiler can be added anywhere in a React tree to measure the cost of rendering that part of the tree. The purpose is to help identify parts of an application that are slow and may benefit from optimizations. Profiling adds some additional overhead, so it is disabled in the production build.
+
+It requires two props: an `id` and an `onRender` callback which React calls any time a component within the tree "commits" an update. The `onRender` function receives parameters describing what was rendered and how long it took.
+
+> React does work in two phases:
+> - The **render** phase determines what changes need to be made to the DOM. During this phase, React calls `render` and then compares the result to the previous render.
+> - The **commit** phase is when React applies any changes. In the case of React DOM, this is when React inserts, updates, and removes DOM nodes. React also calls lifecycles like `componentDidMount` and `componentDidUpdate` during this phase.
+
+```js
+render(
+  <App>
+    <Profiler id="Navigation" onRender={onRenderCallback}>
+      <Navigation {...props} />
+    </Profiler>
+    <Main {...props} />
+  </App>
+);
+
+function onRenderCallback(
+  id, // the "id" prop of the Profiler tree that has just committed
+  phase, // either "mount" or "update"
+  actualDuration, // time spent rendering the committed update
+  baseDuration, // estimated time to render the entire subtree without memoization
+  startTime, // when React began rendering this update
+  commitTime, // when React committed this update
+  interactions // the Set of interactions belonging to this update
+) {
+  // Aggregate or log render timings...
+}
+```
+
+#### Optimizing Performance
+Using React will lead to a fast user interface without doing much work to specifically optimize for performance.
+
+`shouldComponentUpdate` is triggered before the re-rendering process starts. The default implementation of this function returns `true`, leaving React to perform the update. If you know that in some situations your component doesn’t need to update, you can return `false` from your overriding lifecycle function `shouldComponentUpdate` to skip the whole rendering process, including calling `render` function on this component and below.
+
+`React.PureComponent` is equivalent to implementing `shouldComponentUpdate` with a shallow comparison of current and previous props and state. If you shallow compare a nested object it will just check the reference, not the value inside the object. (Using spread syntax or `Object.assign` to return a new object rather than mutating the old one, otherwise a shallow comparison would miss it). 
+
+Use `React.memo` to implement `shouldComponentUpdate`. You can wrap a function component with `React.memo` to shallowly compare its props. `React.memo` is equivalent to `React.PureComponent`, but it only compares props. You can also add a second argument to specify a custom comparison function. If it returns `true`, the update is skipped and reuse the last rendered result. `React.memo` only exists as a performance optimization.
+
+```js
+function Movie(props) {
+  /* render using props */
+}
+function areEqual(prevProps, nextProps) {
+  /*
+    return true if passing `nextProps` to render would return the same result as passing `prevProps` to render, otherwise return false
+  */
+}
+export const MemoizedMovie = React.memo(Movie, areEqual)
+```
+
 ---
 
 ### Hooks
@@ -305,6 +398,8 @@ If the new state is computed using the previous state, you can pass a function t
 The `initialState` argument is the state used during the initial render. In subsequent renders, it is disregarded. If the initial state is the result of an expensive computation, you may provide a function instead, which will be executed only on the initial render.
 
 Unlike the `setState` method in class components, `useState` does not automatically merge update objects. We recommend to split state into multiple state variables.
+
+If you update to the same value as the current state, React will bail out without rendering the children or firing effects. (React uses the `Object.is` comparison)
 
 #### useEffect
 Think of useEffect Hook as `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` combined. React guarantees the DOM has been updated by the time it runs the effects.
@@ -416,7 +511,6 @@ Most of the time you should not bother optimizing unnecessary rerenders. React i
 // Referential equality
 // {} === {} is false
 // () => {} === () => {} is false
-// React uses `Object.is` but it's similar to `===`
 function Foo({bar, baz}) {
   React.useEffect(() => {
     const options = {bar, baz}
