@@ -118,8 +118,6 @@ useHooks Code Examples: https://usehooks.com
 
 Build your own React: https://pomb.us/build-your-own-react
 
-Webpack Introduction: https://ui.dev/webpack
-
 Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack
 
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
