@@ -45,16 +45,19 @@
 8. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
    - `Emoji Snippets` (typing `:smile`) helps to insert emoji in HTML, JS, CSS, React and more. You can also add `"editor.quickSuggestions": true` in user settings.
    - `Markdown Emoji` (typing `:smile:`) supports to built-in Markdown preview.
-9.  May use other's dotfiles https://github.com/mathiasbynens/dotfiles, https://github.com/kentcdodds/dotfiles
+9. Check out dotfiles https://github.com/mathiasbynens/dotfiles
+
+Some references:
+- https://dev.to/swyx/my-new-mac-setup-4ibi
+- https://www.taniarascia.com/setting-up-a-brand-new-mac-for-development
+- https://github.com/nicolashery/mac-dev-setup
+- https://github.com/kentcdodds/dotfiles
+- https://github.com/stefanjudis/dotfiles
 
 ### Moving to zsh
-> From macOS 10.15 Catalina the default shell is `zsh`. 
+From macOS Catalina the default shell is `zsh`. `zsh` has a list of configuration files (`.z*` files) that will get executed at shell startup. `zsh` will start with `/etc/zshenv`, then the user’s `.zshenv`. Since changes in the `zshenv` will affect `zsh` behavior in all contexts, you should be very cautious about the changes applied here. Next, when the shell is a login shell, `zsh` will run `/etc/zprofile` and `.zprofile`. For interactive shells `/etc/zshrc` and `.zshrc`. Then, again, for login shells `/etc/zlogin` and `.zlogin`.
 
-`zsh` has a list of configuration files (`.z*` files) that will get executed at shell startup. `zsh` will start with `/etc/zshenv`, then the user’s `.zshenv`. Since changes in the `zshenv` will affect `zsh` behavior in all contexts, you should be very cautious about the changes applied here. Next, when the shell is a login shell, `zsh` will run `/etc/zprofile` and `.zprofile`. For interactive shells `/etc/zshrc` and `.zshrc`. Then, again, for login shells `/etc/zlogin` and `.zlogin`.
-
-**macOS Terminal considers every new shell to be a login shell and an interactive shell**. So, in Terminal a new `zsh` will potentially run all configuration files. For simplicity’s sake, you should use just one file and the common choice is `.zshrc`. Most tools you download to configure `zsh`, such as `Oh My Zsh`, will override or re-configure your `.zshrc`. You could consider moving your code to `.zlogin` since `.zlogin` is sourced after `.zshrc`. The most common situation where you do not get a login shell with macOS Terminal, is when you switch to `zsh` from another shell by typing the `zsh` command.
-
-To switch your script from using `bash` to `zsh`, you have to change the shebang in the first line from `#!/bin/bash` to `#!/bin/zsh`. Since `/bin/bash` will still be present in macOS Catalina, you do not have to move all scripts immediately. Nearly all syntax from `bash` scripts will still work in `zsh`. There are just a few different behaviors.
+macOS Terminal considers every new shell to be a login shell and an interactive shell. So, in Terminal a new `zsh` will potentially run all configuration files. For simplicity’s sake, you should use just one file and the common choice is `.zshrc`. Most tools you download to configure `zsh`, such as `Oh My Zsh`, will override or re-configure your `.zshrc`.
 
 ## Git for the first time
 The first thing you should do when you install Git is to set your user name and email address. This is important because every Git commit uses this information. Use `git config --list` command to list all the settings.
