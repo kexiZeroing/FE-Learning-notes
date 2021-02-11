@@ -117,13 +117,15 @@ Npm scripts also have pre and post lifecycles. If we add pre and post with comma
 ```
 
 ## Jamstack
-> JAMstack is a movement, a community collection of best practices and workflows that result in high-speed websites that are a pleasure to work on.
-
 Jamstack is a frontend architecture and stands for **J**avascript, **A**PIs, and **M**arkup stack. In this architecture, the frontend and the backend are completely separate. All interactions with the backend and third parties are done using APIs. Markup that incorporates Javascript, is pre-built into static assets, served to a client from a CDN, and relies on reusable APIs for its functionalities.
 
 Jamstack sites have better performance, are easier to secure and scale, and cost a lot less than sites built with traditional architectures. Pre-building pages ensure that any errors can be detected early enough. Most importantly, Jamstack allows teams to outsource complex services to vendors who provide, maintain, and secure APIs used on their sites. The APIs can provide specific functionality to static sites like payments, authentication, search, image uploads using Paypal, Auth0, Algolia, Cloudinary.
 
 The most common types of Jamstack site build tools include static site generators (SSG) and headless content management systems (CMS). **Static site generators** are build tools that add content to templates and produce static web pages of a site. These generators can be used for Jamstack sites. Some well-known site generators include Hugo, Gatsby, Jekyll, Next.js, etc.
+
+There are two points in time that you can integrate dynamic content into a Jamsack application:
+- **Build time** - A Jamstack application may load data from files, APIs, third-party services or even a database at build time. You can think of it like a content cache that applies to all your site’s users. Parts of the cache may need to be refreshed at specific intervals - that could be once a month, once a day or even multiple times a day dependent on the type of content.
+- **Run time** - This should typically be content that is user specific, needs to update frequently, or is in response to a specific user action. For example, an ecommerce site may have product details populated at build time, but things like the current inventory, shipping options/prices based upon the user’s location, or the user’s shopping cart would all be populated at run time in the browser. As you may notice, in this example, the content on a single page (product details) may be a combination of both pre-rendered (build time) content (i.e. the product name, photo and description) and run time content (i.e. the product inventory and shipping options based on location).
 
 ## Serverless
 Your code needs to be hosted on a server. Depending on the size of your code and the amount of users you expect to use your product, you might need many servers. Companies used to have their own facilities and warehouses that held their servers and many still do. But for many, this is not ideal. Servers can be difficult to maintain. Maintaining servers and the buildings that house them can become expensive too. That's where AWS and other cloud providers come in.

@@ -110,13 +110,15 @@ The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-t
 
 React getting started tutorial: https://daveceddia.com/react-getting-started-tutorial
 
-React component code smells: https://antongunnarsson.com/react-component-code-smells
+State of the React Ecosystem in 2021: https://daveceddia.com/react-ecosystem-overview
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
 
-useHooks Code Examples: https://usehooks.com
-
 Build your own React: https://pomb.us/build-your-own-react
+
+React component code smells: https://antongunnarsson.com/react-component-code-smells
+
+useHooks Code Examples: https://usehooks.com
 
 Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack
 
