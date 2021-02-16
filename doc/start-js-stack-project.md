@@ -99,22 +99,53 @@ Install husky `npm i -D husky` and have a "husky" section in the `package.json` 
 }
 ```
 
-Npm scripts also have pre and post lifecycles. If we add pre and post with command, they will run before and after the given script.
-```json
-{
-    "name": "npm-lifecycle-example",
-    "scripts": {
-        "prefoo": "echo prefoo",
-        "foo": "echo foo",
-        "postfoo": "echo postfoo"
-    }
-}
+## NPM Scripts
+NPM Scripts are a set of built-in and custom scripts defined in the `package.json` file. Their goal is to provide a simple way to execute repetitive tasks.
 
-// run `npm run foo`
-// prefoo
-// foo
-// postfoo
-```
+- NPM makes all your dependencies' binaries available in the scripts. So you can access them directly as if they were referenced in your PATH.
+    ```json
+    // Instead of doing this:
+    "scripts": {
+        "lint": "./node_modules/.bin/eslint ."
+    }
+
+    // You can do this:
+    "scripts": {
+        "lint": "eslint ."
+    }
+    ```
+- `npm run` is an alias for `npm run-script`, meaning you could also use `npm run-script lint`.
+- Built-in scripts can be executed using aliases, making the complete command shorter and easier to remember. For example, `npm run-script test`, `npm run test`, `npm test`, and `npm t` are same to run the test script. `npm run-script start`, `npm run start`, and `npm start` are also same.
+- To run multiple scripts sequentially, we use `&&`. For example, `npm run lint && npm test`.
+- When a script finishes with a non-zero exit code, it means an error occurred while running the script, and the execution is terminated.
+- Use `npm run <script> --silent` to reduce logs and to prevent the script from throwing an error. This can be helpful when you want to run a script that you know may fail, but you don't want it to throw an error. Maybe in a CI pipeline, you want your whole pipeline to keep running even when the test command fails. If we don't want to get an error when the script doesn't exists, we can use `npm run <script> --if-present`.
+- We can create "pre" and "post" scripts for any of our scripts, and NPM will automatically run them in order.
+    ```json
+    {
+        "name": "npm-lifecycle-example",
+        "scripts": {
+            "prefoo": "echo prefoo",
+            "foo": "echo foo",
+            "postfoo": "echo postfoo"
+        }
+    }
+
+    // run `npm run foo`
+    // prefoo
+    // foo
+    // postfoo
+    ```
+- You can run `npm config ls -l` to get a list of the configuration parameters, and you can use `$npm_config_` prefix (like `$npm_config_editor`) to access them in the scripts. Any key-value pairs we add to our script will be translated into an environment variable with the `npm_config` prefix.
+    ```json
+    "scripts": {
+        "hello": "echo \"Hello $npm_config_firstname\""
+    }
+
+    // Output: "Hello Paula"
+    npm run hello --firstname=Paula
+    ```
+- Passing arguments to other NPM scripts, we can leverage the `--` separator. e.g. `"pass-flags-to-other-script": "npm run my-script -- --watch"` will pass the `--watch` flag to the `my-script` command.
+- One convention that you may have seen is using a prefix and a colon to group scripts, for example `build:dev` and `build:prod`. This can be helpful to create groups of scripts that are easier to identify by their prefixes.
 
 ## Jamstack
 Jamstack is a frontend architecture and stands for **J**avascript, **A**PIs, and **M**arkup stack. In this architecture, the frontend and the backend are completely separate. All interactions with the backend and third parties are done using APIs. Markup that incorporates Javascript, is pre-built into static assets, served to a client from a CDN, and relies on reusable APIs for its functionalities.

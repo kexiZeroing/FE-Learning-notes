@@ -127,3 +127,5 @@ How styled-components works: https://medium.com/styled-components/how-styled-com
 I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
 
 Jamstack Explorers: https://explorers.netlify.com
+
+Start developing websites like it's 2025: https://react2025.com
