@@ -1,7 +1,7 @@
 ## Image file types
 First, there are two types of compression: Lossless and Lossy.
-- **Lossless** means that the image is made smaller, but at no detriment to the quality. You can save the image over and over and never lose any data.
-- **Lossy** means the image is made (even) smaller, but at a detriment to the quality. If you saved an image in a Lossy format over and over, the image quality would get progressively worse and worse.
+- **Lossless** means that the image is made smaller, but at no detriment to the quality. You can save the image over and over and never lose any data. All the original data can be recovered when the file is uncompressed.
+- **Lossy** means the image is made even smaller, but at a detriment to the quality. If you saved an image in a Lossy format over and over, the image quality would get progressively worse and worse.
 
 There are also different color depths: Indexed color and Direct color.
 - **Indexed** means that the image can only store a limited number of colors (usually 256).
@@ -29,7 +29,7 @@ PNG-24 is a great format that combines lossless encoding with direct color. Unfo
 ### SVG
 SVG is different than all the above in that it's a vector file format (the above are all raster). This means SVG is perfect for logos and icons you wish to retain sharpness on Retina screens or at different sizes. It also means a small SVG logo can be used at a much larger size without degradation in image quality. SVG file sizes are often tiny, even if they're visually very large, which is great. However, it does depend on the complexity of the shapes used, and SVGs require more computing power than raster images because mathematical calculations are involved in drawing the curves and lines.
 
-### webp
+### Webp
 WebP is an image format developed and first released by Google in 2010. It supports encoding images in both lossless and lossy formats, making it a great alternative format to both PNG or JPEG. WebP lossless images are 26% smaller in size compared to PNGs. WebP lossy images are 25-34% smaller than comparable JPEG images. It also supports transparency and animation.
 
 WebP is natively supported in Google Chrome, Firefox, Edge, the Opera browser, and by many other tools and software libraries. (Safari will support WebP in version 14 for macOS Big Sur, iPadOS 14, iOS 14, which is expected to be released in 2020).
@@ -37,3 +37,8 @@ WebP is natively supported in Google Chrome, Firefox, Edge, the Opera browser, a
 > We can use `<picture>` element to rescue. IE doesn't support `<picture>`, but this still works as intended. This is because when the browser finds an element it doesn't understand, it treats it as a `<div>`. So what we get are a bunch of `<div>` and an `<img>` tag.
 
 To check if it's actually working, the best trick is to right-click and "Save as…". On Chrome, you should get a "Google WebP" file format, whereas on Safari or IE you should get a "JPEG". Google has created a suite of tools to help us work with WebP files. One of those tools is **cwebp**, which lets us convert other image formats to WebP.
+
+### AVIF
+WebP is on the verge of replacing JPEG and PNG as the best image to use on the web thanks to Safari 14 finally supporting it. However, an even better image format, AVIF, is already looking to replace it.
+
+AVIF outperformed both JPEG and WebP. Companies like Netflix and Facebook want AVIF to become an image format standard on the web. They provided numerous visual examples that showed how AVIF was a preferred image format compared to JPEG. It’s currently only supported by Chrome. Hopefully AVIF won’t take ten years to get adopted by all major browsers like it did for WebP. Regardless, webmasters can use the AVIF image format now by using the same `srcset` attribute used for WebP.
