@@ -38,9 +38,28 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 **peerDependencies** are dependencies that your project hooks into, or modifies, in the parent project, usually a plugin for some other library. It is just intended to be a check, making sure that the project that will depend on your project has a dependency on the project you hook into. So if you make a plugin C that adds functionality to library B, then someone making a project A will need to have a dependency on B if they have a dependency on C. They are not installed, they are only checked for. *Example: your project adds functionality to grunt and can only be used on projects that use grunt*.
 
 ### Live Reload and Hot Reload
+> When a file is edited, the dev server recompiles with the changes, then pushes a notification to the client code in the browser. The app code can then subscribe to "some file changed" notifications, re-import the new version of the code, and swap out the old code for the new code as the app is still running.
+
 **Live Reload** refreshes the entire app when a file changes. For example, if you were four links deep into your navigation and saved a change, live reloading would restart the app and load the app back to the initial route. **Hot Reload** only refreshes the files that were changed without losing the state of the app. (Webpack's **Hot Module Replacement** replaces the modules that have been modified on the fly without reloading the entire page). The advantage of this is that it doesn't lose your app state, e.g. your inputs on your form fields, your currently selected tab.
 
-> When a file is edited, the dev server recompiles with the changes, then pushes a notification to the client code in the browser. The app code can then subscribe to "some file changed" notifications, re-import the new version of the code, and swap out the old code for the new code as the app is still running.
+### CLI with Node.js
+> Node is useful for I/O based programs that need to be fast and/or handle lots of connections. Node does I/O in a way that is asynchronous (non-blocking) which lets it handle lots of different things simultaneously. At a lower level, node can be described as a tool for writing network programs using the protocols of the web and programs that read and write data to the filesystem or local memory.
+
+To build CLIs with node, we need to add the `bin` property in the `package.json` to run our CLI. For example, the `hello` property is the command name we want to run our file `cli.js`. Use `npm i -g .` to install this file globally (`/usr/local/bin/hello` -> `/usr/local/lib/node_modules/demo/cli.js`), and need to add a shebang `#!/usr/bin/env node` to tell the interpreter it should use node to run the file.
+
+```json
+"bin": {
+    "hello": "cli.js"
+}
+```
+
+- **Prompts** are questions that are asked to the user. This [package](https://www.npmjs.com/package/prompts) allows us to prompt the user and get the response with just a few lines of code.
+- **Chalk** is a [package](https://www.npmjs.com/package/chalk) that helps us add colours into terminals.
+- **Cfonts** [package](https://www.npmjs.com/package/cfonts) lets us play with fonts in terminals.
+- **Yargs** [package](https://www.npmjs.com/package/yargs) lets us process some arguments like `--name` or `--version`. You can use `process.argv` to access the arguments, but yargs will simplify the process.
+- **Ora** is an elegant terminal spinner. Time consuming operations are very common in CLIs, and we don't want to leave the user thinking the computer has hung up. This [package](https://www.npmjs.com/package/ora) is used for loaders. 
+- **Listr** [package](https://www.npmjs.com/package/listr) is used for terminal task list
+- **Execa** [package](https://www.npmjs.com/package/execa) enables access other CLIs and executes commands from the current code.
 
 ## Set up Prettier and ESLint
 1. Install `Prettier` and `ESLint` plugins and enable `format on save` in settings (execute `save without formatting` command to disable). We can edit some default settings for prettier in settings (`cmd + ,`, then input prettier).
