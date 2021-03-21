@@ -24,6 +24,8 @@ The Missing Semester of Your CS Education: https://missing.csail.mit.edu
 
 High Performance Browser Networking: https://hpbn.co
 
+JavaScript Learning: https://exploringjs.com/impatient-js/toc.html, https://exploringjs.com/deep-js/toc.html
+
 Modern JavaScript-based web development: https://fullstackopen.com/en
 
 Complete roadmap for web development: https://andreasbm.github.io/web-skills
@@ -68,6 +70,8 @@ Interactive website with live coding: https://www.strml.net/
 
 HTTP Cats: https://http.cat/
 
+Julia Evans's questions site: https://questions.wizardzines.com/
+
 Github contributions in 3D: https://skyline.github.com/
 
 wenyan‑lang: https://wy-lang.org/
@@ -91,6 +95,8 @@ Centering in CSS: https://ishadeed.com/article/learn-css-centering
 Learn CSS Positioning: https://ishadeed.com/article/learn-css-positioning
 
 Understanding Z-Index: https://ishadeed.com/article/understanding-z-index
+
+Handling short and long content: https://ishadeed.com/article/css-short-long-content
 
 The blueprint HTML and CSS for website headers: https://headers-css.vercel.app
 
