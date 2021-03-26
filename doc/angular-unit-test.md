@@ -5,7 +5,7 @@ When creating Angular projects using the Angular CLI it defaults to create and r
 - **Karma** is a test runner which lets us spawn browsers and run Jasmine tests inside of them all from the command line. The results of the tests are also displayed on the command line. Karma can also watch your development files for changes and re-run the tests automatically. 
 
 ### Basic elements
-The `describe` function defines what we call a Test Suite, a collection of individual Test Specs. The `it` function defines an individual Test Spec, this contains one or more Test Expectations. You can pre-pending `x`(disable) or `f`(focus) to the `describe` or `it`.
+The `describe` function defines what we call a Test Suite, a collection of individual Test Specs. The `it` function defines an individual Test Spec, this contains one or more Test Expectations. You can pre-pending `x(disable)` or `f(focus)` to the `describe` or `it`.
 
 `beforeAll` is called once, before all the specs in a test suite (describe function) are run.  
 `afterAll` is called once after all the specs in a test suite are finished.   
@@ -40,12 +40,12 @@ expect(mySpy).toHaveBeenCalledWith('foo', 'bar', 2);
 We want to test pieces of code in isolation without needing to know about the inner workings of their dependencies. We create mocks using fake classes and taking control of them with Spies.
 
 `spyOn` installs a spy onto an existing object. (can only be used when the method already exists in the object)
-- By chaining the spy with `and.callThrough`, the spy will track all calls to it but delegate to the actual implementation. 
-- By chaining the spy with `and.callFake`, all calls to the spy will delegate to the supplied function (with parameters). This allows you to fake the method call and return a value of your desire. 
-- By chaining the spy with `and.returnValue`, all calls to the function will return a specific value. 
-- When a calling strategy is used for a spy (e.g., use `callThrough` in a beforeEach), the original stubbing behavior can be returned at any time with `and.stub`.
+- By chaining the spy with **`and.callThrough`**, the spy will track all calls to it but delegate to the actual implementation. 
+- By chaining the spy with **`and.callFake`**, all calls to the spy will delegate to the supplied function (with parameters). This allows you to fake the method call and return a value of your desire. 
+- By chaining the spy with **`and.returnValue`**, all calls to the function will return a specific value. 
+- When a calling strategy is used for a spy (e.g., use `callThrough` in a beforeEach), the original stubbing behavior can be returned at any time with **`and.stub`**.
 
-`jasmine.createSpy` creates a bare Spy object. This won't be installed anywhere and will not have any implementation behind it. It will track calls and arguments like a spyOn.
+**`jasmine.createSpy`** creates a bare Spy object. This won't be installed anywhere and will not have any implementation behind it. It will track calls and arguments like a spyOn.
 ```js
   it('jasmine.createSpy', function() {
     const spy = jasmine.createSpy('spy');
@@ -61,7 +61,7 @@ We want to test pieces of code in isolation without needing to know about the in
   });
 ```
 
-`jasmine.createSpyObj` returns the object that was created, which just happens to have each of its properties be a Spy.
+**`jasmine.createSpyObj`** returns the object that was created, which just happens to have each of its properties be a Spy.
 ```js
   it('asmine.createSpyObj', function() {
     let spy = jasmine.createSpyObj('tapeName', ['foo', 'bar']);
@@ -188,7 +188,7 @@ useFactory: () => {
 1. `and` method and `toHaveBeenCalled()` can be only used on a spy.
 2. `spyHelper` only creates the spy for each method in the service, but does not handle the property.
 
-```js
+```ts
 let mockFooService: FooService;
 let mockBarService: jasmine.SpyObj<BarService>;
 let mockBazService: any;
@@ -232,6 +232,6 @@ spyOn(helperUtil, 'helper').and.returnValue({});
 ```
 
 ### Test service and effect
-The basic testing idea and methods are the same, but there are no component lifecycle hooks, so we don't need any preparation work to do like providing observables in `ngOnInit`. We only mock what we want in the specific test we are working on. Basically we can always use `SpyHelper` to mock all the functions and cast the mock service's type as `SpyObj<XXXService>`. Note that we don't handle properties in the `SpyHelper`, so we can directly add a property to the mock object if needed in the spec, e.g., `fooService.bar$ = new BehaviorSubject(1)`, and use `(fooService as any).bar$` if the property is private.
+The basic testing idea and methods are the same, but there are no component lifecycle hooks, so we don't need any preparation work to do like providing observables in `ngOnInit`. We only mock what we want in the specific test we are working on. Basically we can always use `SpyHelper` to mock all the functions and cast the mock service's type as `SpyObj<XXXService>`. As mentioned we don't handle properties in the `SpyHelper`, so we can directly add a property to the mock object if needed in the spec, e.g., `fooService.bar$ = new BehaviorSubject(1)`, and use `(fooService as any).bar$` if the property is private.
 
 #### Writing marble tests
