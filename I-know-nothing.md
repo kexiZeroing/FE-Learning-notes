@@ -54,6 +54,8 @@ Chrome DevTools tips: https://umaar.com/dev-tips/
 
 HTML DOM with vanilla JavaScript: https://htmldom.dev/
 
+JavaScript utilities in single line: https://1loc.dev/
+
 Git explorer: https://gitexplorer.com/
 
 Linux Command Library: https://linuxcommandlibrary.com/basics.html
@@ -103,6 +105,8 @@ The blueprint HTML and CSS for website headers: https://headers-css.vercel.app
 Box alignment in Grid and Flexbox: https://ishadeed.com/article/learn-box-alignment
 
 Flexbox: https://github.com/samanthaming/Flexbox30
+
+CSS Grid generator: https://cssgrid-generator.netlify.app
 
 1-Line Layouts: https://1linelayouts.glitch.me
 

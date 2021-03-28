@@ -235,3 +235,72 @@ spyOn(helperUtil, 'helper').and.returnValue({});
 The basic testing idea and methods are the same, but there are no component lifecycle hooks, so we don't need any preparation work to do like providing observables in `ngOnInit`. We only mock what we want in the specific test we are working on. Basically we can always use `SpyHelper` to mock all the functions and cast the mock service's type as `SpyObj<XXXService>`. As mentioned we don't handle properties in the `SpyHelper`, so we can directly add a property to the mock object if needed in the spec, e.g., `fooService.bar$ = new BehaviorSubject(1)`, and use `(fooService as any).bar$` if the property is private.
 
 #### Writing marble tests
+When we need to test observables, we have two main patterns that we can use. Either the **subscribe and assert pattern**, or the **marble testing pattern** using diagrams (marble diagram is a domain specific language for RxJS).
+
+Marble syntax is a string represents events happening over time. The first character of any marble string always represents the "zero frame". A "frame" is somewhat analogous to a virtual millisecond. During the tests, the sense of time (when values are emitted) is handle by the RxJS `TestScheduler`. We don’t want to have to deal with milliseconds, so we are changing the time reference to use a virtual clock, that will count in frames. This is the role of the `TestScheduler`.
+
+Marble diagrams are parsed that emits **message object**: the values emitted, the frame at which thew were emitted, and the type of notification, including *next*, *error*, and *complete*. These objects will be tested by the expect clause in you tests.
+```json
+{
+  "frame": 10,
+  "notification": {
+    "kind": "N",
+    "value": "a",
+    "hasValue": true
+  }
+}
+```
+
+- `-`: simulate the passage of time, one dash correspond to a frame which can be perceived as 10ms in our tests, `—---` is 40 ms
+- `a-z`: represent an emission, `-a--b---c` stands for "emit `a` at 20ms, `b` at 50ms, `c` at 90ms"
+- `|`: emit a complete (end of the stream), `---a-|` stands for "emit `a` at 40ms then complete at 60ms"
+- `#`: indicate an error (end of the stream), `—--a-#` stands for "emit `a` at 40ms then an error at 60ms"
+- `()`: multiple values together in the same unit of time, `—--(ab|)` stands for "emit `a` and `b` at 40ms then complete"
+- `^`: indicate a subscription point (hot observables only) shows the point at which the tested observables will be subscribed. This is the "zero frame" for that observable, every frame before the `^` will be negative.
+- `!`: indicate the end of a subscription point, `—^--!` subscription starting at `^` and ending at `!`
+- `cold(marbles: string, values?: object, error?: any)` creates a cold observable whose subscription starts when the test begins. `cold(--a--b--|, { a: 'Hello', b: 'World' })` emit 'Hello' at 30ms and 'World' at 60ms, complete at 90ms.
+- `hot(marbles: string, values?: object, error?: any)` creates a hot observable (a subject) that will behave as though it's already running when the test begins. A difference is that hot marbles allow a `^` character to signal where the "zero frame" is (the point when observables being tested begins). `hot(--^--a--b--|, { a: 'Hello', b: 'World' })` means subscription begins at point of caret, then emit 'Hello' at 30ms and 'World' at 60ms, complete at 90ms.
+
+```js
+it('should add 1 to each value emitted', () => {
+  const values = { a: 1, b: 2, c: 3, x: 2, y: 3, z: 4 };
+  const source = cold('-a-b-c-|', values);
+  const expected = cold('-x-y-z-|', values);
+  const result = source.pipe(map(x => x + 1));
+  expect(result).toBeObservable(expected);
+});
+
+it('switchMap', () => {
+  const values = { a: 10, b: 30, x: 20, y: 40 };
+  const obs1 =     cold('-a-----a--b-|', values);
+  const obs2 =     cold('a-a-a|', values);
+  const expected = cold('-x-x-x-x-xy-y-y|', values);
+  const result = obs1.pipe(switchMap(x => obs2.pipe(map(y => x + y))));
+  expect(result).toBeObservable(expected);
+});
+
+it('mergeMap', () => {
+  const values = { a: 'hello', b: 'world', x: 'hello world' };
+  const obs1 =     cold('-a-------a--|', values);
+  const obs2 =     cold('-b-b-b-|', values);
+  const expected = cold('--x-x-x---x-x-x-|', values);
+  const result = obs1.pipe(mergeMap(x => obs2.pipe(map(y => x + ' ' + y))));
+  expect(result).toBeObservable(expected);
+});
+
+it('concatMap', () => {
+  const values = { a: 10, b: 30, x: 20, y: 40 };
+  const obs1 =     cold('-a--------b------ab|', values);
+  const obs2 =     cold('a-a-a|', values);
+  const expected = cold('-x-x-x----y-y-y--x-x-xy-y-y|', values);
+  const result = obs1.pipe(concatMap(x => obs2.pipe(map(y => x + y))));
+  expect(result).toBeObservable(expected);
+});
+
+it('interval', () => {
+  const scheduler = getTestScheduler();
+  const source = interval(10, scheduler).pipe(take(3));
+  const expected = cold('-a-b-c|', { a: 0, b: 1, c: 2 });
+  expect(source).toBeObservable(expected);
+});
+```
