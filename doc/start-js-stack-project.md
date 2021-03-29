@@ -42,6 +42,23 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 
 **Live Reload** refreshes the entire app when a file changes. For example, if you were four links deep into your navigation and saved a change, live reloading would restart the app and load the app back to the initial route. **Hot Reload** only refreshes the files that were changed without losing the state of the app. (Webpack's **Hot Module Replacement** replaces the modules that have been modified on the fly without reloading the entire page). The advantage of this is that it doesn't lose your app state, e.g. your inputs on your form fields, your currently selected tab.
 
+### Source Map
+Once you've compiled and minified your code, normally alongside it will exist a sourceMap file(`file.js.map`). It helps us with debugging transformed code in its original form. By default Babel will add a source map location comment `//# sourceMappingURL=/path/to/file.js.map` at the end of every generated bundle, which is required to **signify to the browser devtools that a source map is available**. 
+
+In development all the source files have associated source maps, but we would not want to ship source maps to our production servers.
+- Source maps are usually large; they could be several hundreds of KBs even after compression.
+- We may not want to share the original source code of our application with the users.
+
+In production, however, you can choose between not generating source maps at all, generating external, or **hidden source maps** (which means generate the source maps but do not reference them in the JavaScript files). If you’re using an error reporting service such as Sentry, you can upload the produced source maps so you can get runtime errors mapped to their original position in the code that you’ve written. For example, in `angular.json` you can set the `sourceMap` property under the production:
+```json
+"production": {
+  "sourceMap": {
+    "scripts": true,
+    "hidden": true
+  }
+}
+```
+
 ### CLI with Node.js
 > Node is useful for I/O based programs that need to be fast and/or handle lots of connections. Node does I/O in a way that is asynchronous (non-blocking) which lets it handle lots of different things simultaneously. At a lower level, node can be described as a tool for writing network programs using the protocols of the web and programs that read and write data to the filesystem or local memory.
 
