@@ -1,10 +1,11 @@
-## Angular Unit Test
+## Angular Unit Testing
+
 ### Jasmine and Karma
-When creating Angular projects using the Angular CLI it defaults to create and run unit tests using Jasmine and Karma.  
+When creating Angular projects using the Angular CLI, it defaults to create and run unit tests using Jasmine and Karma.  
 - **Jasmine** is a JavaScript testing framework that supports a software development practice called Behavior-Driven Development. It attempts to describe tests in a human readable format. 
 - **Karma** is a test runner which lets us spawn browsers and run Jasmine tests inside of them all from the command line. The results of the tests are also displayed on the command line. Karma can also watch your development files for changes and re-run the tests automatically. 
 
-### Basic elements
+### Test Spec
 The `describe` function defines what we call a Test Suite, a collection of individual Test Specs. The `it` function defines an individual Test Spec, this contains one or more Test Expectations. You can pre-pending `x(disable)` or `f(focus)` to the `describe` or `it`.
 
 `beforeAll` is called once, before all the specs in a test suite (describe function) are run.  
@@ -37,7 +38,7 @@ expect(mySpy).toHaveBeenCalledWith('foo', 'bar', 2);
 ```
 
 ### Mock and Spy
-We want to test pieces of code in isolation without needing to know about the inner workings of their dependencies. We create mocks using fake classes and taking control of them with Spies.
+We want to test pieces of code in isolation without needing to know about the inner workings of their dependencies. We create mocks using fake classes and taking control of them with spies.
 
 `spyOn` installs a spy onto an existing object. (can only be used when the method already exists in the object)
 - By chaining the spy with **`and.callThrough`**, the spy will track all calls to it but delegate to the actual implementation. 
@@ -74,14 +75,14 @@ We want to test pieces of code in isolation without needing to know about the in
   });
 
   // another signature: jasmine.createSpyObj(methodNames)
-  // Array of method names to create spies for, or Object whose keys will be method names and values the returnValue.
+  // `methodNames` is an object whose keys will be method names and values the returnValue.
   mockService = jasmine.createSpyObj<AService>({
     foo: () => Promise.resolve(),
     bar: () => {}
   });
 ```
 
-### Access private member 
+### Access Private Member 
 > Only unit test the public API and do not write tests for private methods. The point of "don't test private methods" is to test the class like someone who uses it. There are times when it doesn't seem that simple and you feel you are choosing between compromising either the API or the unit-tests.
 
 Even though TS restricts access to class members using private, protected, public, the compiled JS has no private members, since this isn't a thing in JS. It's purely used for the TS compiler.
@@ -89,7 +90,7 @@ Even though TS restricts access to class members using private, protected, publi
 1. Assert type to `any`: `(component as any)._id = 1`.
 2. Use `// @ts-ignore` comment before the statement.
 
-### Test async operations
+### Test Async Code
 #### setTimeout and done
 Our test specs can take a parameter, and Jasmine lets us create asynchronous tests by giving us an explict `done` function which we call when the test is complete.
 
@@ -134,8 +135,7 @@ it('flushMicrotasks', fakeAsync(() => {
 }));
 ```
 
-### Test a component
-#### TestBed
+### TestBed
 In the `beforeEach` function for our test suite we configure a testing module using the TestBed. Just like configuring an regular `@NgModule`, this creates a test Angular Module where we add any components, modules and services we need (and perform dependency injection).
 
 ```js
@@ -210,16 +210,7 @@ mockFooService.abc$.next(1);  // Wrong! Cannot read property 'next' of undefined
 mockFooService.abc$.next(1);  // Correct
 ```
 
-#### The practice that we can have a try
-The premice is that we don't care about details in the dependent service and don't want the logic in other places affects the current component.
-
-- If a service only has methods, we use `SpyHelper` which returns an object with all the function attributes spied. So in the spec, we can either give it a return value or just check if it gets called. Note that when you call `TestBed.inject` to get that service, you need to cast its type to `SpyObj<FooService>`. (Another way to do this is using provider `useValue` and `jasmine.createSpyObj()` which has return value for each method. We don't choose it since we already import the `SpyHelper`.)
-
-- If a service has many properties(observable) used in `ngOnInit`, we would better to have a mock class with provider `useClass` which creates all properties needed in the component creation, otherwise we need to add them in each test. In this way, we actually overwrite this service class, so if you also want to mock the function in it, you should use `func = jasmine.createSpy()` to spy a function in this mock service class.
-
-- If we only need some tokens or functions that we don't want to spy (the function will never appear in our test spec), we use provider `useValue` and give it a value directly.
-
-#### import and mock an external function
+### Import External Functions
 We need to set `"module": "commonjs"` in `tsconfig.spec.json`.
 
 > This is going to largely come down to what code is being generated by your bundler as to whether this is mockable. If `import { sayHello } from './utils'` becomes `const sayHello = require('./utils').sayHello` then the original function will already be saved off into a local variable and there isn't anything Jasmine can do to replace a local variable. However, if it becomes `const utils = require('./utils')` and usages are `utils.sayHello()`, then mocking `sayHello` function on the object returned by require should work fine.
@@ -231,10 +222,7 @@ import * as helperUtil from './helper';
 spyOn(helperUtil, 'helper').and.returnValue({});
 ```
 
-### Test service and effect
-The basic testing idea and methods are the same, but there are no component lifecycle hooks, so we don't need any preparation work to do like providing observables in `ngOnInit`. We only mock what we want in the specific test we are working on. Basically we can always use `SpyHelper` to mock all the functions and cast the mock service's type as `SpyObj<XXXService>`. As mentioned we don't handle properties in the `SpyHelper`, so we can directly add a property to the mock object if needed in the spec, e.g., `fooService.bar$ = new BehaviorSubject(1)`, and use `(fooService as any).bar$` if the property is private.
-
-#### Writing marble tests
+### Writing Marble Tests
 When we need to test observables, we have two main patterns that we can use. Either the **subscribe and assert pattern**, or the **marble testing pattern** using diagrams (marble diagram is a domain specific language for RxJS).
 
 Marble syntax is a string represents events happening over time. The first character of any marble string always represents the "zero frame". A "frame" is somewhat analogous to a virtual millisecond. During the tests, the sense of time (when values are emitted) is handle by the RxJS `TestScheduler`. We don’t want to have to deal with milliseconds, so we are changing the time reference to use a virtual clock, that will count in frames. This is the role of the `TestScheduler`.
@@ -264,7 +252,7 @@ Marble diagrams are parsed that emits **message object**: the values emitted, th
 ```js
 it('should add 1 to each value emitted', () => {
   const values = { a: 1, b: 2, c: 3, x: 2, y: 3, z: 4 };
-  const source = cold('-a-b-c-|', values);
+  const source =   cold('-a-b-c-|', values);
   const expected = cold('-x-y-z-|', values);
   const result = source.pipe(map(x => x + 1));
   expect(result).toBeObservable(expected);
@@ -304,3 +292,49 @@ it('interval', () => {
   expect(source).toBeObservable(expected);
 });
 ```
+
+### Test in Practice
+One test should be isolated from other tests. We are doing unit testing, so only focus on the current function and mock all the dependecies.
+
+- If we only need a service's methods, we use `SpyHelper` which returns an object with all the function attributes spied. So in the spec, we can either give it a return value or just check if it gets called. Note that when you call `TestBed.inject` to get that service, you need to cast its type to `SpyObj<FooService>`. (Another way to do this is using provider `useValue` and `jasmine.createSpyObj()` which has return value for each method. We don't choose it since we already import the `SpyHelper`.)
+
+- If you need a service's many properties (type of observable), we would better to have a mock class with provider `useClass` which creates all properties needed in the component creation, otherwise we need to add them in each test. In this way, we actually overwrite this service class, so if you also want to mock a function in it, you should use `func = jasmine.createSpy()` to spy the function in this mock service class.
+
+- If we only need some injected tokens or functions which we don't want to spy on (the function will never appear in our test spec), we use provider `useValue` and give it a value directly.
+
+- To test services, there are no component lifecycle hooks, so we don't have any preparation work to do like providing observables in `ngOnInit`. Basically we can always use `SpyHelper` to help mock functions we need. If we also need a property from it, we can directly add a property to the spy object, e.g., `fooService.bar$ = new BehaviorSubject(1)`, and use `(fooService as any).bar$` if the property is private.
+
+#### Component
+1. Test the logic in `ngOnInit` which is triggered automatically by `fixture.detectChanges()`, so we don't need to call `ngOnInit` manually but only let the stream emit a new value. 
+2. Have defined something like `foo$ = new BehaviorSubject(null)` and `bar = jasmine.createSpy()` in the mockService class.
+3. Component code normally has `subscribe` section, so we use `flushMicrotasks` to complete async operations and test the `subscribe`'s code. 
+
+#### Service 
+1. Ideally we don't have `subscribe` section in the service (only use `pipe`), so we suggest to use marble test to check if the result stream is expected.
+2. In the below example, the first `forkJoin` waits one frame then complete at the next frame, and the second `forkJoin` waits another frame and complete, so the result stream should be `--(r|)`.
+3. To understand it better, let's change the mock to `(a|)`, `(b|)`, and `c|`, then the result should be `-(r|)`, because only the second `forkJoin` has a waiting frame.
+4. If we have `subscribe` in the service function and choose marble test, use `getTestScheduler().flush()` to complete async operations before the expect clauses.
+
+```js
+function foo(): Observable<[X, Y, Z]>  {
+  return forkJoin([aaa(), bbb()]).pipe(
+    switchMap(([x, y]: [X, Y]) => {
+      return forkJoin([
+        of(x),
+        of(y),
+        ccc(x, y)
+      ]);
+    })
+  );
+}
+
+/*
+  mock aaa -> cold('a|')
+  mock bbb -> cold('b|')
+  mock ccc -> cold('c|')
+*/
+```
+
+### Action and Reducer
+1. Action: create a new action object, and check if its type and payload are as expected.
+2. Reducer: declare an initial state and create a new action, then run the reducer function with the initial state and the action, and check if the result is as expected.
