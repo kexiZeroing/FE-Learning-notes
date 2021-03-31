@@ -337,7 +337,7 @@ function foo(): Observable<[X, Y, Z]>  {
 */
 ```
 
-### Action and Reducer
+#### Action and Reducer
 1. Action: create a new action object, and check if its type and payload are as expected.
 2. Reducer: declare an initial state and create a new action, then run the reducer function with the initial state and the action, and check if the result is as expected.
 
