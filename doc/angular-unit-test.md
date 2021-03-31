@@ -341,7 +341,7 @@ function foo(): Observable<[X, Y, Z]>  {
 1. Action: create a new action object, and check if its type and payload are as expected.
 2. Reducer: declare an initial state and create a new action, then run the reducer function with the initial state and the action, and check if the result is as expected.
 
-### Effect
+#### Effect
 1. Mock all the dependent service using `SpyHelper`.
 2. When it emits a new action using `hot('-a-', { a: action })`, check the result stream is as expected.
 3. If there is a `catchError` in the `pipe` and we want to test it, we use `.and.throwError()` to throw an error and then the `catchError` logic is going to kick in. The error handling function will return a new observable which is going to be a replacement observable for the stream that just errored out (we cannot use it anymore).
