@@ -15,11 +15,12 @@ The `describe` function defines what we call a Test Suite, a collection of indiv
 
 Create an expectation for a spec:
 ```js
-expect(thing).toBe(realThing);
-expect(something).not.toBe(true);
-expect(result).toBeDefined();
+expect(result).toBe('a');
+expect(result).not.toBe('a');
 expect(result).toBeUndefined();
 expect(result).toBeNull();
+
+expect(aFunction).toThrowError('err');
 
 expect(result).toBeFalse();
 expect(result).toBeFalsy();
@@ -29,7 +30,7 @@ expect(result).toBeTruthy();
 expect(result).toBeGreaterThan(3);
 expect(result).toBeLessThan(0);
 expect(array).toContain(anElement);
-expect(bigObject).toEqual({"foo": ['bar', 'baz']});
+expect(result).toEqual({"foo": ['bar', 'baz']});
 
 expect(mySpy).toHaveBeenCalled();
 expect(mySpy).not.toHaveBeenCalled();
@@ -45,6 +46,7 @@ We want to test pieces of code in isolation without needing to know about the in
 - By chaining the spy with **`and.callFake`**, all calls to the spy will delegate to the supplied function (with parameters). This allows you to fake the method call and return a value of your desire. 
 - By chaining the spy with **`and.returnValue`**, all calls to the function will return a specific value. 
 - When a calling strategy is used for a spy (e.g., use `callThrough` in a beforeEach), the original stubbing behavior can be returned at any time with **`and.stub`**.
+- By chaining the spy with **`and.throwError`**, all calls to the spy will throw the specified value as an error. (can be used to test `catchError` logic)
 
 **`jasmine.createSpy`** creates a bare Spy object. This won't be installed anywhere and will not have any implementation behind it. It will track calls and arguments like a spyOn.
 ```js
@@ -338,3 +340,8 @@ function foo(): Observable<[X, Y, Z]>  {
 ### Action and Reducer
 1. Action: create a new action object, and check if its type and payload are as expected.
 2. Reducer: declare an initial state and create a new action, then run the reducer function with the initial state and the action, and check if the result is as expected.
+
+### Effect
+1. Mock all the dependent service using `SpyHelper`.
+2. When it emits a new action using `hot('-a-', { a: action })`, check the result stream is as expected.
+3. If there is a `catchError` in the `pipe` and we want to test it, we use `.and.throwError()` to throw an error and then the `catchError` logic is going to kick in. The error handling function will return a new observable which is going to be a replacement observable for the stream that just errored out (we cannot use it anymore).
