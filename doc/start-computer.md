@@ -68,26 +68,11 @@ git config --global color.ui true
 ```
 
 ### Cloning with HTTPS or SSH
-When you `git clone` using HTTPS URLs on the command line, Git will ask for your GitHub username and password the first time. It is likely that Git will use a credential helper provided by your operating system. If so, your GitHub credentials were cached and this setup applies across repos. Password-based authentication for Git is deprecated, and we recommend using a **personal access token (PAT)** when prompted for a password instead. Once you have a token, you can enter it instead of your password when performing Git operations over HTTPS. (If you are not prompted for the username and password, your credentials may be cached on your computer. You can update your credentials in the Keychain to replace your old password with the token).
+When you `git clone` using HTTPS URLs on the command line, Git will ask for your GitHub username and password the first time. It is likely that Git will use a credential helper provided by your operating system. If so, your GitHub credentials were cached and this setup applies across repos. Password-based authentication for Git is [deprecated](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations), and we recommend using a **personal access token (PAT)** when prompted for a password instead. Once you have a token, you can enter it instead of your password when performing Git operations over HTTPS. (If you are not prompted for the username and password, your credentials may be cached on your computer. You can update your credentials in the Keychain to replace your old password with the token).
    
 SSH URLs provide access to a Git repository via SSH, a secure protocol. To use these URLs, you must generate an SSH keypair on your computer and add the public key to your GitHub account.
+
 <img alt="https ssh" src="https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png" width="700">
-
-#### Get verified commits
-Commit verification allows other users to know that these commits are actually made by the person claiming to have made them. Aren’t usernames and passwords enough to keep users’ work adequately secured? Or SSH keys? The short answer is no and no. Both mechanisms work to grant or deny access to the Git repository. Once I’m granted access with either password or SSH key, it is very easy to commit pretending to be someone else. Using the `git config` command you can change your email and name to act like someone else made these commits. A simple run of the `git log` would tell me all I need to know about user's identity.
-
-Git turns to GPG, a widely-adopted and open-source program. The team behind GPG, or the GNU Privacy Guard, describes it as a program that “allows you to encrypt and sign your data and communications.” All of the major players in the Git world reward those who go the extra mile to provide their identity with GPG. GitLab, GitHub, and Bitbucket all **show a badge next to each commit whose author has signed it with GPG**. 
-
-> 1. Type `gpg --full-generate-key` to enter the creation flow.
-> 2. Select the desired key type `RSA and RSA (default)`.
-> 3. Enter the key size `4096 bits`.
-> 4. Specify the validity duration, using `0` to indicate no expiration.
-> 5. For the next few prompts, enter your name and email to identify the key.
-> 6. Verify that GPG keys have been generated successfully by using `gpg --list-secret-keys --keyid-format LONG` command. The IDs beside the word `sec` refer to your short and long key IDs respectively.
-
-Now that you have successfully generated the GPG key, the next step is to tell Git to use this key for signing your commits. Just like telling Git your name and email, you can also provide the GPG key configuration (using the long key ID is preferable here for greater precision): `git config --global user.signingkey <long-key-id>` and `git config --global commit.gpgsign true`. 
-
-Export both your Public and Private keys using the commands: `gpg --export -a long-key-id > my-key-public.asc` and `gpg --export-secret-key -a long-key-id > my-key-private.asc`. Open the Public key file in a text editor and copy its contents from `-----BEGIN PGP PUBLIC KEY BLOCK-----` till `-----END PGP PUBLIC KEY BLOCK-----` (included). Then you need to share the public key with a Git provider. (Settings - Choose SSH and GPG Keys - New GPG Key - Paste the public key into the text box, and press the Add Key button.)
 
 ### PAT in Azure DevOps
 > A personal access token (PAT) is used as an alternate password to authenticate into Azure DevOps. Treat and use a PAT like your password.
