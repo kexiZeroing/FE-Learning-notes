@@ -86,9 +86,14 @@ World smallest Office suite: https://zserge.com/posts/awfice/
 
 All the Ways to Make a Web Component: https://webcomponents.dev/blog/all-the-ways-to-make-a-web-component/
 
+Code Generator for HTTP Requests: https://www.labnol.org/apps/urlfetch.html
+
+Create temporary REST APIs: https://tempapi.proj.me/
+
 ---
 
 ## CSS related
+Sorted CSS Colors: https://enes.in/sorted-colors
 
 CSS percentage: https://wattenberger.com/blog/css-percents
 

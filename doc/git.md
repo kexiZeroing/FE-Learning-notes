@@ -38,3 +38,10 @@ The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it de
 ### Rewrite History: squash commit, fixup and autosquash
 - https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
 - https://fle.github.io/git-tip-keep-your-branch-clean-with-fixup-and-autosquash.html
+
+### git restore and git switch
+`git checkout` is one of the many reasons why newcomers find git confusing, and that is because its effect is context-dependent. In version 2.23 of git, two new commands have been introduced to split the old `git checkout` in two.
+
+`git restore` implements the behavior of `git checkout` when running it against a file, `git restore -- test.txt`. 
+
+`git switch` implements the behavior of `git checkout` when running it only against a branch name, so you can use it to switch between branches: `git switch develop`. While with `git checkout` you can switch to a commit and transition into a detached HEAD state, by default `git switch` does not allow that. You need to provide the `-d` flag: `git switch -d commit_id`. Another difference is that with `git checkout` you can create and switch to the new branch using the `-b` flag. You can do the same with the new one, but the flag is `-c`: `git switch -c new_branch`.

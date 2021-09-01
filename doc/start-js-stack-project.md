@@ -59,25 +59,6 @@ In production, however, you can choose between not generating source maps at all
 }
 ```
 
-### CLI with Node.js
-> Node is useful for I/O based programs that need to be fast and/or handle lots of connections. Node does I/O in a way that is asynchronous (non-blocking) which lets it handle lots of different things simultaneously. At a lower level, node can be described as a tool for writing network programs using the protocols of the web and programs that read and write data to the filesystem or local memory.
-
-To build CLIs with node, we need to add the `bin` property in the `package.json` to run our CLI. For example, the `hello` property is the command name we want to run our file `cli.js`. Use `npm i -g .` to install this file globally (`/usr/local/bin/hello` -> `/usr/local/lib/node_modules/demo/cli.js`), and need to add a shebang `#!/usr/bin/env node` to tell the interpreter it should use node to run the file.
-
-```json
-"bin": {
-    "hello": "cli.js"
-}
-```
-
-- **Prompts** are questions that are asked to the user. This [package](https://www.npmjs.com/package/prompts) allows us to prompt the user and get the response with just a few lines of code.
-- **Chalk** is a [package](https://www.npmjs.com/package/chalk) that helps us add colours into terminals.
-- **Cfonts** [package](https://www.npmjs.com/package/cfonts) lets us play with fonts in terminals.
-- **Yargs** [package](https://www.npmjs.com/package/yargs) lets us process some arguments like `--name` or `--version`. You can use `process.argv` to access the arguments, but yargs will simplify the process.
-- **Ora** is an elegant terminal spinner. Time consuming operations are very common in CLIs, and we don't want to leave the user thinking the computer has hung up. This [package](https://www.npmjs.com/package/ora) is used for loaders. 
-- **Listr** [package](https://www.npmjs.com/package/listr) is used for terminal task list
-- **Execa** [package](https://www.npmjs.com/package/execa) enables access other CLIs and executes commands from the current code.
-
 ## Set up Prettier and ESLint
 1. Install `Prettier` and `ESLint` plugins and enable `format on save` in settings (execute `save without formatting` command to disable). We can edit some default settings for prettier in settings (`cmd + ,`, then input prettier).
 2. Install eslint and prettier npm packages `npm i -D eslint prettier`

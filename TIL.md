@@ -1,3 +1,5 @@
+## Today I Learned
+
 1. **major.minor.patch** version (also known as **breaking.feature.fix**): `^` instructs npm to install the newest version of the package with the same major version; Use `~` to have both the major and minor version match.
 2. `__dirname` and `__filename`: running `node example.js` from `/Users/mjr`, **__dirname** is `/Users/mjr` and **__filename** is `/Users/mjr/example.js`
 3. Quickly browse the history of a file in the repo: Go to a file in GitHub (or GitLab, or Bitbucket), replace `github.com` with `github.githistory.xyz` (i.e. https://github.githistory.xyz/kexiZeroing/FE-Learning-notes/blob/master/README.md)
@@ -40,3 +42,4 @@
 40. The `<a>` tag has the `ping` attribute, which specifies a URL that will be called when the link is clicked. The URL would get a POST message with the content "PING" (literally), which can be used for tracking purposes and providing stats and information about how the visitors used the site.
 41. Why I don't need to clean up my downloads folder in macOS? There's the `/tmp` directory (symlinking to `/private/tmp`). This directory is used for temporary operating system files, and it's automatically cleaned up after you reboot your machine. I configure the browser to store downloads by default in `/private/tmp`.
 42. As part of the default build process, Angular CLI will produce two bundles `polyfills.js` and `es2015-polyfills.js`. `polyfills.js` includes only the polyfills required by the browsers which have all the ES2015 features implemented natively. In contrast, `es2015-polyfills.js` contains all the polyfills from `polyfills.js` + ES2015 ones (such as Map, Set, etc). Users who’re using newer browsers will only download `polyfills.js` which will load, parse, and execute faster.
+43. `process.argv` returns an array containing the command-line arguments passed when the Node.js process was launched. The first element will be the 'node', the second element will be the name of the js file. The next elements will be any additional command line arguments.

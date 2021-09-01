@@ -1,3 +1,4 @@
+// https://frantic.im/react-api-evolution/
 // before ES6 class
 const ReposGrid = React.createClass({
   getInitialState () {

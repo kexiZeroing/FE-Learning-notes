@@ -205,6 +205,8 @@ Promise.allSettled([
 // ]
 ```
 
+`Promise.any()` method (ES2021 feature) runs promises in parallel and resolves to the value of the first successfully resolved promise. Even if some promises get rejected, these rejections are ignored. However, if all promises in the input array are rejected or if the input array is empty, then `Promise.any()` rejects with an aggregate error containing all the rejection reasons of the input promises.
+
 ## async & await
 Async functions can contain zero or more `await expressions`. Await expressions suspend progress through an async function, yielding control and subsequently resuming progress only when an awaited promise-based asynchronous operation is either fulfilled or rejected. **The resolved value of the promise is treated as the return value of the await expression**. 
 
