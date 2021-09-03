@@ -72,14 +72,6 @@ While the syntax of `call()` function is almost identical to that of `apply()`, 
 const numbers = [5, 6, 2, 3, 7];
 Math.max.apply(null, numbers);
 Math.min.apply(null, numbers);
-
-
-// `concat` does have the desired behaviour, but it does 
-// not append to the existing array, instead it returns a new array.
-const array = ['a', 'b'];
-const elements = [0, 1, 2];
-array.push.apply(array, elements);
-console.info(array); // ["a", "b", 0, 1, 2]
 ```
 
 ### Function.prototype.bind()
@@ -92,7 +84,7 @@ The `bind()` method creates a new function that, when called, has its `this` key
 - `[[BoundArguments]]` - a list of values whose elements are used as the first arguments to any call to the wrapped function.
 - `[[Call]]` - executes code associated with `this`. Invoked via a function call expression. 
 
-When a bound function is called, **it calls internal method `[[Call]]` on `[[BoundTargetFunction]]` with `Call(boundThis, ...args)`. Where, boundThis is `[[BoundThis]]`, args is `[[BoundArguments]]` followed by the arguments passed by the new function call.
+**When a bound function is called, it calls internal method `[[Call]]` on `[[BoundTargetFunction]]` with `Call(boundThis, ...args)`**. Where, boundThis is `[[BoundThis]]`, args is `[[BoundArguments]]` followed by the arguments passed by the new function call.
 
 ```javascript
 // polyfill

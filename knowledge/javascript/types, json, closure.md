@@ -141,7 +141,7 @@ JSON.parse('{"1": 1, "2": 2, "3": {"4": 4, "5": {"6": 6}}}', (key, value) => {
 ## Closure
 **Lexical scoping**, which describes how a parser resolves variable names when functions are nested. The word "lexical" refers to the fact that lexical scoping uses **the location where a variable is declared within the source code to determine where that variable is available**. Nested functions have access to variables declared in their outer scope.
 
-**A closure is the combination of a function and the lexical environment within which that function was declared.** This environment consists of any local variables that were in-scope at the time the closure was created. The instance of function maintains a reference to its lexical environment, within which the variable name exists. Closures are useful because they let you associate data (the lexical environment) with a function that operates on that data. This has obvious parallels to object-oriented programming, where objects allow you to associate data (the object's properties) with one or more methods.
+**A closure is the combination of a function and the lexical environment within which that function was declared.** This environment consists of any local variables that were in-scope at the time the closure was created. The instance of function maintains a reference to its lexical environment, within which the variable name exists. Closures are useful because they let you associate data (the lexical environment) with a function that operates on that data.
 
 ```javascript
 function makeAdder(x) {

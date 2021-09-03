@@ -87,6 +87,11 @@ arr1 = [...arr1, ...arr2]; // arr1 is now [0, 1, 2, 3, 4, 5]
 const c = [...arr];
 const newObj = { ...oldObj };
 
+// replace apply() when you want to use an array as arguments to a function
+function myFunction(x, y, z) { }
+var args = [0, 1, 2];
+myFunction(...args);
+
 // rest parameter
 function myFun(a, b, ...manyMoreArgs) {
   console.log(a);  // one
@@ -95,11 +100,6 @@ function myFun(a, b, ...manyMoreArgs) {
 }
 myFun("one", "two", "three", "four", "five", "six");
 myFun("one", "two");  // manyMoreArgs will be []
-
-// replace apply() when you want to use an array as arguments to a function
-function myFunction(x, y, z) { }
-var args = [0, 1, 2];
-myFunction(...args);
 ```
 
 ## Shorthand and Computed property names (Enhanced Object Literals)
@@ -129,7 +129,7 @@ var bar = {
 // prototype and super()
 const o = { y: 'y', test: () => 'zoo' }
 const x = {
-  __proto__: anObject, 
+  __proto__: o, 
   test() { return super.test() + 'x' }
 }  
 x.test(); // zoox

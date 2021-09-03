@@ -23,7 +23,7 @@ badEmptyCheck(new Array());   // false
 ```
 
 ### Object.defineProperty()
-Defines a new property or modifies an existing property on an object, and returns the object. **By default, values added using `Object.defineProperty()` are immutable and not enumerable.**. Property descriptors present in objects come in two main flavors: **data descriptors or accessor descriptors**. A data descriptor is a property that has a value, which may or may not be writable. An accessor descriptor is a property described by a getter-setter pair of functions. **A descriptor must be one of these two flavors; it cannot be both**.
+Defines a new property or modifies an existing property on an object, and returns the object. **By default, values added using `Object.defineProperty()` are immutable and not enumerable**. Property descriptors present in objects come in two main flavors: **data descriptors or accessor descriptors**. A data descriptor is a property that has a value, which may or may not be writable. An accessor descriptor is a property described by a getter-setter pair of functions. **A descriptor must be one of these two flavors; it cannot be both**.
 
 - **configurable**: true if the type of this property descriptor may be changed and if the property may be deleted from the object. (defaults to false)
 - **enumerable**: true if and only if this property shows up during enumeration of the properties on the object. (defaults to false)
@@ -109,7 +109,7 @@ p.b // undefined
 - Object.values() returns an array of a given object's **own enumerable property values**, in the same order as that provided by a `for...in` loop (the difference being that **for-in loop enumerates properties in the prototype chain as well**).
 - Object.entries() returns an array whose elements are arrays corresponding to the enumerable property `[key, value]` pairs found directly upon object.
 
-A `for...in` loop only iterates over enumerable, non-Symbol properties. Objects created from built–in constructors like `Object` and `String` have inherited non–enumerable properties from `Object.prototype` and `String.prototype`, such as String's `indexOf()` method or Object's `toString()` method. The loop will iterate over all enumerable properties of the object itself and those the object inherits from its prototype chain.
+A `for...in` loop only iterates over enumerable, non-Symbol properties. Objects created from built–in constructors like `Object` and `String` have inherited non–enumerable properties from `Object.prototype` and `String.prototype`, such as String's `indexOf()` method or Object's `toString()` method (*not enumerable*). The loop will iterate over all enumerable properties of the object itself and those enumerable properties the object inherits from its prototype chain.
 
 ```javascript
 var arr = ['a', 'b', 'c'];
@@ -147,7 +147,7 @@ var proto = {};
 var obj = Object.create(proto);
 Object.getPrototypeOf(obj) === proto; // true
 
-// isPrototypeOf() allows you to check if  an object exists within another object's prototype chain.
+// isPrototypeOf() allows you to check if an object exists within another object's prototype chain.
 function Foo() {}
 function Bar() {}
 function Baz() {}

@@ -90,7 +90,7 @@ It returns a new string with some or all matches of a pattern replaced by a repl
 
 The replacement string can include the following special replacement patterns:
 - `$&`: the matched substring
-- `$`\`: the portion of the string that precedes the matched substring
+- `$\`\`: the portion of the string that precedes the matched substring
 - `$'`:	the portion of the string that follows the matched substring
 - `$n`: the nth parenthesized submatch string
 
@@ -109,7 +109,7 @@ function replacer(match, p1, p2, p3, offset, string) {
   // p1 is nondigits, p2 digits, and p3 non-alphanumerics
   return [p1, p2, p3].join('-');
 }
-'abc12345#$'.replace(/([^\d]*)(\d*)([^\w]*)/, replacer); // abc-123-#$
+'abc123#$'.replace(/([^\d]*)(\d*)([^\w]*)/, replacer); // abc-123-#$
 ```
 
 ### startsWith/endsWith, includes, padStart/padEnd, repeat

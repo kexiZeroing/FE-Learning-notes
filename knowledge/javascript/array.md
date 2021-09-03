@@ -14,7 +14,7 @@
 
 ### Remove duplicates
 - [...new Set(array)]
-- array.filter((item, index) => a.indexOf(item) === index)
+- array.filter((item, index, arr) => arr.indexOf(item) === index)
 - array.reduce((unique, item) => unique.includes(item) ? unique : [...unique, item], [])
 
 ```javascript
