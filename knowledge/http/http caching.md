@@ -103,7 +103,7 @@ Browsers will not attempt to put a page in bfcache in the following scenarios:
 - Pages with in-progress `fetch()` or XMLHttpRequest
 - Pages with an open WebSocket or WebRTC connection
  
-If your page is using any of these APIs, it's best to always close connections and remove observers during the `pagehide` or `freeze` event. That will allow the browser to safely cache the page without the risk of it affecting other open tabs.Then, if the page is restored from the bfcache, you can re-open or re-connect to those APIs in the `pageshow` or `resume` event.
+If your page is using any of these APIs, it's best to always close connections and remove observers during the `pagehide` or `freeze` event. Then, if the page is restored from the bfcache, you can re-open or re-connect to those APIs in the `pageshow` or `resume` event.
 
 If you track visits to your site with an analytics tool, you will likely notice a decrease in the total number of pageviews reported. Most of the popular analytics libraries do not track bfcache restores as new pageviews. If you don't want your pageview counts to go down due to enabling bfcache, you can **report bfcache restores as pageviews by listening to the `pageshow` event and checking the `persisted` property**.
 

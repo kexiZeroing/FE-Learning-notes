@@ -128,7 +128,7 @@ You can create a new Response object using the `Response()` constructor, but you
 
 The `Body` mixin of the Fetch API represents the body of the response/request, allowing you to declare what its content type is and how it should be handled. Since `Response` implements `Body`, some methods available to it: `Body.json()`, `Body.blob()`, `Body.arrayBuffer()`, `Body.formData()`, `Body.text()`.
 
-> **Mixin** is a generic object-oriented programming term: a class that contains methods for use by other classes without having to be the parent class of those other classes. For instance, we have a class `User` and a class `EventEmitter` that implements event generation, and we’d like to add the functionality of `EventEmitter` to `User`. Mixin can help here. **A mixin provides methods with certain behavior, but we do not use it alone, we use it to add that behavior to other classes**. (JavaScript does not support multiple inheritance, but mixins can be implemented by copying methods into prototype). 
+> **Mixin** is a generic object-oriented programming term: a class that contains methods for use by other classes without having to be the parent class of those other classes. For instance, we have a class `User` and a class `EventEmitter` that implements event generation, and we’d like to add the functionality of `EventEmitter` to `User`. Mixin can help here. A mixin provides methods with certain behavior, but we do not use it alone, we use it to add that behavior to other classes. (JavaScript does not support multiple inheritance, but mixins can be implemented by copying methods into prototype). 
 
 ## Blob object and URL
 Blob stands for "Binary Large Object", which is a **file-like object of immutable, raw data**. Blobs can represent data that isn't necessarily in a JavaScript-native format. The `File` interface is based on Blob.
@@ -172,7 +172,6 @@ for(let i = 0; i < 59; i++) {
 }
 
 // The computer doesn't know what type a specific address in memory is, that knowledge is baked into the instructions of your program.
-// `text` means characters of readable material but not its graphical representation nor other objects like floating-point numbers, images, etc. 
 const url = URL.createObjectURL(new Blob([bytes.buffer], {type: 'text/plain'}));
 
 const link = document.createElement('a');
