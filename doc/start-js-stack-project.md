@@ -1,9 +1,9 @@
 ## Start a modern front-end project
 Create `index.js` and `index.html` files within a folder. Assuming that you have node.js installed, go ahead and install `yarn` and run `yarn init` command on your project’s repository. Alternatively, you can use `npm`. After running `yarn init` or `npm init`, just follow the instructions on the CLI and you should end up with a file called `package.json`.
 
-Then let’s bring a web application bundler. We want `parcel` in our project, so install it as a development dependency by running `yarn add parcel-bundler --dev` or `npm install parcel-bundler -- save-dev`. Once parcel has been added to our project, we can simply run `parcel index.html` and parcel will serve the file on its built-in development server on port 1234. We can add a `start` script to our `package.json` and simply run `yarn start` or `npm start`.
+Then let’s bring a web application bundler. We want `parcel` in our project, so install it as a development dependency by running `yarn add parcel-bundler --dev` or `npm install parcel-bundler --save-dev`. Once parcel has been added to our project, we can simply run `parcel index.html` and parcel will serve the file on its built-in development server on port 1234. We can add a `start` script to our `package.json` and simply run `yarn start` or `npm start`.
 
-Let’s move on and add Sass support to our project. To do so using parcel, we run `yarn add node-sass --dev`. We can create a file called `index.scss`. To make it works, we need to reference it. Go to the `index.js` file and import it using a relative path like `import './index.scss`.
+Let’s move on and add Sass support to our project. To do so using parcel, we run `yarn add node-sass --dev`. We can create a file called `index.scss`. To make it works, we need to reference it. Go to the `index.js` file and import it using a relative path like `import './index.scss'`.
 
 > Sass has two syntaxes. The older syntax is known as SASS (with `.sass` extention). Instead of brackets and semicolons, it uses the indentation of lines to specify blocks. The most commonly used is SCSS (with `.scss` extention). SCSS is a superset of CSS syntax, so every valid CSS is a valid SCSS as well. 
 
@@ -165,11 +165,11 @@ NPM Scripts are a set of built-in and custom scripts defined in the `package.jso
 - One convention that you may have seen is using a prefix and a colon to group scripts, for example `build:dev` and `build:prod`. This can be helpful to create groups of scripts that are easier to identify by their prefixes.
 
 ## Jamstack
-Jamstack is a frontend architecture and stands for **J**avascript, **A**PIs, and **M**arkup stack. In this architecture, the frontend and the backend are completely separate. All interactions with the backend and third parties are done using APIs. Markup that incorporates Javascript, is pre-built into static assets, served to a client from a CDN, and relies on reusable APIs for its functionalities.
+Jamstack is a frontend architecture and stands for **J**avascript, **A**PIs, and **M**arkup stack. In this architecture, the frontend and the backend are completely separate. All interactions with the backend and third parties are done using APIs. Markup that incorporates Javascript, is pre-built into static assets, served to a client from a CDN, and relies on reusable APIs for its functionalities. **(essentially meaning static hosting + services)**
 
 Jamstack sites have better performance, are easier to secure and scale, and cost a lot less than sites built with traditional architectures. Pre-building pages ensure that any errors can be detected early enough. Most importantly, Jamstack allows teams to outsource complex services to vendors who provide, maintain, and secure APIs used on their sites. The APIs can provide specific functionality to static sites like payments, authentication, search, image uploads using Paypal, Auth0, Algolia, Cloudinary.
 
-The most common types of Jamstack site build tools include static site generators (SSG) and headless content management systems (CMS). **Static site generators** are build tools that add content to templates and produce static web pages of a site. These generators can be used for Jamstack sites. Some well-known site generators include Hugo, Gatsby, Jekyll, Next.js, etc.
+The most common types of Jamstack site build tools include static site generators (SSG) and headless content management systems (CMS). **Static site generators** are build tools that add content to templates and produce static web pages of a site. These generators can be used for Jamstack sites. Some well-known site generators include Hugo, Gatsby, Jekyll, Next.js, etc. 
 
 There are two points in time that you can integrate dynamic content into a Jamsack application:
 - **Build time** - A Jamstack application may load data from files, APIs, third-party services or even a database at build time. You can think of it like a content cache that applies to all your site’s users. Parts of the cache may need to be refreshed at specific intervals - that could be once a month, once a day or even multiple times a day dependent on the type of content.
@@ -182,7 +182,7 @@ Your code needs to be hosted on a server. Depending on the size of your code and
 
 **Serverless** takes cloud computing to the next level. You don't have to worry about the servers at all and you can completely focus on your code. Serverless does not mean there aren't any servers. You still need servers to host and run your code. Serverless computing is an execution model where the cloud provider (AWS, Azure, or Google Cloud) is responsible for executing a piece of code by dynamically allocating the resources, and only charging for the amount of resources used to run the code. The code is typically run inside stateless containers that can be triggered by a variety of events including http requests, database events, queuing services, file uploads, etc. The code that is sent to the cloud provider for execution is usually in the form of a function. Hence serverless is sometimes referred to as "Functions as a Service" (FaaS).
 
-## Web Hosting
+## Web Hosting and Domain registration
 Domain registrants (GoDaddy, Hover, Google Domains, Amazon Route 53...) are for registering domain names. If you want `itiscool.com`, you’re going to have to buy it, and domain registrants are companies that help you do that. Just because you own a domain doesn’t mean it will do anything. It’s likely that you will see a “coming soon” page after buying a domain name.
 
 To host a website at your new domain, you’ll need to configure the DNS of your new domain to point at a server connected to the internet. Web hosting services give you that server. You’ll need to know a little bit about the website you intend to host when making that choice. Will it be a WordPress site? Or a Python/Go/Node site? That means your host will need to support those technologies.
@@ -193,8 +193,6 @@ To host a website at your new domain, you’ll need to configure the DNS of your
 - Digital Ocean has their own way of talking about hosting. They call their servers Droplets, which are kind of like virtual machines with extra features.
 - Heroku calls themselves a “Cloud Application Platform.” It is great for hosting apps with a ready-to-use backend for server languages like Node, Ruby, Java, and Python.
 - Amazon Web Services (AWS) is a whole suite of products with specialized hosting focuses. Microsoft Azure and Google Cloud are similar.
-
-> Jamstack (essentially meaning static hosting + services) is available in lots of places now. Cloudflare has **Cloudflare Pages**. **Vercel** has Jamstack hosting, but they’ll run servers for you if you need them. Their popular framework, Next.js, prebuilds pages, but can also deliver server-side rendered pages with a Node backend. **AWS Amplify** is ultimately Jamstack hosting, and the happy path there is using Amplify to stitch together other AWS services. **Google Firebase** has Jamstack-style hosting, and the happy path is leaning into the Firebase framework.
 
 Should you bundle your domain registrar and web host into one if a company offers both? It’s mighty handy. The host will also do things like configuring the DNS for you to be all set up for their hosting and you probably don’t even have to think about it. But say the day comes where you just don’t like that host anymore. You want to move hosts. The problem is that they aren’t just your host, but your domain registrant, too. You’re going to leave both of them.
 

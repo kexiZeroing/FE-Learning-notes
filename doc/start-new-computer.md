@@ -21,9 +21,9 @@
       pom    = push origin master
       puom   = pull origin master
       co     = checkout
-      lg     == log --pretty=format:'%h %ad%x09%an%x09%s' --date=short
+      lg     = log --pretty=format:'%h %ad%x09%an%x09%s' --date=short
     ```
-    (%h = commit hash, %x09 = tab, %an = author name, %ad = author date, %s = subject)   
+    *(%h = commit hash, %x09 = tab, %an = author name, %ad = author date, %s = subject)*   
 6. Some commands for Finder
     ```shell
     # Show Library folder
@@ -57,7 +57,7 @@ Some references:
 ### Moving to zsh
 From macOS Catalina the default shell is `zsh`. `zsh` has a list of configuration files (`.z*` files) that will get executed at shell startup. `zsh` will start with `/etc/zshenv`, then the user’s `.zshenv`. Since changes in the `zshenv` will affect `zsh` behavior in all contexts, you should be very cautious about the changes applied here. Next, when the shell is a login shell, `zsh` will run `/etc/zprofile` and `.zprofile`. For interactive shells `/etc/zshrc` and `.zshrc`. Then, again, for login shells `/etc/zlogin` and `.zlogin`.
 
-macOS Terminal considers every new shell to be a login shell and an interactive shell. So, in Terminal a new `zsh` will potentially run all configuration files. For simplicity’s sake, you should use just one file and the common choice is `.zshrc`. Most tools you download to configure `zsh`, such as `Oh My Zsh`, will override or re-configure your `.zshrc`.
+**macOS Terminal considers every new shell to be a login shell and an interactive shell**. So, in Terminal a new `zsh` will potentially run all configuration files. For simplicity’s sake, you should use just one file and the common choice is `.zshrc`. Most tools you download to configure `zsh`, such as `Oh My Zsh`, will override or re-configure your `.zshrc`.
 
 ## Git for the first time
 The first thing you should do when you install Git is to set your user name and email address. This is important because every Git commit uses this information. Use `git config --list` command to list all the settings.

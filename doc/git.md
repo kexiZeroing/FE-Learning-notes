@@ -16,7 +16,7 @@ The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it de
 
 - `--no-ff`, create a merge commit in all cases, even when the merge could instead be resolved as a fast-forward.
 
-- `--ff-only`, resolve the merge as a fast-forward when possible. When not possible, refuse to merge and exit with a non-zero status. (Unix systems have a convention that an exit status of 0 denotes success, and any non-zero exit status denotes failure)
+- `--ff-only`, resolve the merge as a fast-forward when possible. When not possible, refuse to merge and exit with a non-zero status. **(Unix systems have a convention that an exit status of 0 denotes success, and any non-zero exit status denotes failure)**
 
 ### git pull --rebase vs. --merge
 - If you pull remote changes with the flag `--rebase`, then your local changes are reapplied on top of the remote changes.
