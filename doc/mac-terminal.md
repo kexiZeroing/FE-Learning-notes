@@ -66,12 +66,10 @@ Some terminal commands will open a text editor directly. For example `git` may o
 
 You can also tell bash to color for some commands such as `ls`. To do that you just need to set `export CLICOLOR=1` and use `unset CLICOLOR` to remove that variable.
 
-## Configuring aliases and functions
+## Configuring aliases
 Bash aliases are basically text substitutions. For example a common alias is to define `alias ll="ls -l"`, but this definition will only exist for that particular shell. If you want an alias to exist in all your shells, you need to add them to your `.bash_profile` or `.bashrc`. Whenever you modify the `.bash_profile`, it will not automatically be loaded into the shell that is already open, you either have to close the Terminal and open a new one or run `source ~/.bash_profile`. Note the lack of spaces around the `=` as usual when assigning values in bash. Some users like to alias the potentially dangerous commands such as `rm` or `mv` with the `-i` option, which forces the user to confirm when a file is going to be deleted or overwritten `alias rm="rm -i"`.
 
 You can list all the defined aliases by running `alias` command without any arguments, and you can unset or delete an alias with the `unalias` command like `unalias ll`.
-
-If you need to insert additional arguments somewhere in the replacement, you cannot achieve that with aliases. Functions are more powerful and versatile than aliases. You can use the positional argument variables (if you execute `./script.sh Hello World`, it will make `$0 = ./script.sh`, `$1 = Hello`, `$2 = World`; use `$@` to reference all arguments) within functions.
 
 ## The Shebang
 Every script you want to run from the command line should have a shebang as the first line. A shebang looks like this `#!/bin/bash`. Files are usually identified by certain codes (i.e. magic numbers) in the first few bytes of data. The hex code `23 21` converts to the ascii characters `#!` and tells the system that a file is script. After the shebang comes the command that should interpret the script. Generally, any command that can interpret text files can be used. Since the value of the `PATH` variable is not guaranteed in many contexts that scripts run in, the path needs to be absolute.
