@@ -24,6 +24,6 @@ The random sort `() => 0.5 - Math.random()` is not recommended, because **it is 
 
 A sorting algorithm requires a certain number `c` of comparisons, e.g. `c = n(n-1)/2` for bubble sort. The random comparison function makes the outcome of each comparison equally likely, and there are `2^c` equally probable results. Now, each result has to correspond to one of the `n!` permutations of the array's entries, which makes an even distribution impossible in the general case.
 
-According to the ECMA spec, if `comparefn` is not a consistent comparison function for the elements of this array (e.g. you first claim A < B and B < C, but then C < A), the sort order is implementation-defined. Depending on the exact search algorithm used, it may just do a few exchanges operations and then prematurely stop. Or it could be worse and lead to an infinite loop.
+According to the ECMA spec, if `comparefn` is not a consistent comparison function for the elements of this array (e.g. you first claim A < B and B < C, but then C < A), the sort order is implementation-defined (can do anything or nothing, unpredictably). Depending on the exact algorithm used, it may just do a few exchanges operations and then prematurely stop. Or it could be worse and lead to an infinite loop.
 
 Furthermore, sorting is an `O(N log N)` operation where the Fisher-Yates algorithm is `O(N)`.
