@@ -24,8 +24,6 @@ The Missing Semester of Your CS Education: https://missing.csail.mit.edu
 
 High Performance Browser Networking: https://hpbn.co
 
-JavaScript Learning: https://exploringjs.com/impatient-js/toc.html, https://exploringjs.com/deep-js/toc.html
-
 Modern JavaScript-based web development: https://fullstackopen.com/en
 
 Complete roadmap for web development: https://andreasbm.github.io/web-skills

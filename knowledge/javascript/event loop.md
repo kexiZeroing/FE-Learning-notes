@@ -14,7 +14,7 @@ A JavaScript runtime uses a message queue, which is a list of messages to be pro
 - Event Loop  
 The Event Loop is a constantly running process and it has one simple job — to monitor the Call Stack and the Callback Queue. If the Call Stack is empty, it will take the first event from the queue and will push it to the Call Stack.
 
-<img alt="event loop" src="https://cdn.nlark.com/yuque/0/2019/png/398686/1562831601090-3cc36a70-c081-498f-986b-3333c0dc8dd0.png" width="800">  
+<img alt="event loop" src="https://cdn.nlark.com/yuque/0/2019/png/398686/1562831601090-3cc36a70-c081-498f-986b-3333c0dc8dd0.png" width="700">  
 
 ### Never blocking
 A property of the event loop model is that JavaScript, unlike a lot of other languages, never blocks. Handling I/O is typically performed via events and callbacks, so when the application is waiting for an IndexedDB query to return or an XHR request to return, it can still process other things like user input.
@@ -43,6 +43,8 @@ And what are these **Web APIs**? In essence, they are threads that you can’t a
 
 ### Single thread limitation
 A downside of this model is that if a message takes too long to complete, the web application is unable to process user interactions like click or scroll. The browser mitigates this with the "a script is taking too long to run" dialog.
+
+<img alt="event loop thread" src="https://z3.ax1x.com/2021/09/07/h5vPo9.jpg" width="700">  
 
 ### Microtask and Macrotask
 Deep down the task queue, something else is going on. The tasks are broken down further into microtask and macrotask. **A task queue is a macrotask queue.** 

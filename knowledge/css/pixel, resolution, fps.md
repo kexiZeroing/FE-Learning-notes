@@ -38,7 +38,7 @@ The -webkit-device-pixel-ratio is a non-standard CSS media feature which is an a
 @media (max-resolution: 300dpi) {}
 
 /* 
-`image-set()` method lets the browser pick the most appropriate CSS image from a given set, primarily for high pixel density screens.
+`image-set()` method lets the browser pick the most appropriate CSS image from a given set, primarily based on pixel density of the screen and image type.
 */
 background-image: image-set("cat.png" 1x, "cat-2x.png" 2x);
 ```

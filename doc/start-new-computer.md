@@ -72,6 +72,11 @@ When you `git clone` using HTTPS URLs on the command line, Git will ask for your
    
 SSH URLs provide access to a Git repository via SSH, a secure protocol. To use these URLs, you must generate an SSH keypair on your computer and add the public key to your GitHub account.
 
+1. Enter the directory `cd ~/.ssh`
+2. Generate the personalised SSH key `ssh-keygen`
+3. Copy the key `cat id_rsa.pub | pbcopy`
+4. Go to Github Settings -> select SSH and GPG keys -> New SSH Key. Give the SSH key a description so we can know which device it belongs too (i.e., MacBook Pro 2020).
+
 <img alt="https ssh" src="https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png" width="700">
 
 ### PAT in Azure DevOps
