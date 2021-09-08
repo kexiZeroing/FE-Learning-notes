@@ -14,7 +14,7 @@ One might install a package locally on a certain project using `npm install some
 
 npx comes bundled with npm version 5.2+. It will check whether the command exists in `$PATH` or in the local project binaries and then execute it. So if you wish to execute the locally installed package, all you need to do is type `npx some-package`. 
 
-Have you ever run into a situation where you want to try some CLI tool, but it’s annoying to have to install a global just to run it once? npx is great for that, too. It will automatically install a package with that name from the npm registry and invoke it. When it’s done, the installed package won’t be anywhere in the global, so you won’t have to worry about pollution in the long-term. For example, `npx create-react-app my-app` will generate a react app boilerplate within the path the command had run in, and ensures that you always use the latest version of the package without having to upgrade each time you’re about to use it.
+Have you ever run into a situation where you want to try some CLI tool, but it’s annoying to have to install a global just to run it once? npx is great for that. It will automatically install a package with that name from the npm registry and invoke it. When it’s done, the installed package won’t be anywhere in the global, so you won’t have to worry about pollution in the long-term. For example, `npx create-react-app my-app` will generate a react app boilerplate within the path the command had run in, and ensures that you always use the latest version of the package without having to upgrade each time you’re about to use it.
 
 There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with examples of things that work great with npx.
 
@@ -24,6 +24,9 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 1. If you have a `package.json` and you run `npm i`, we generate a `package-lock.json` from it.
 2. If you run `npm i` against that `package.json` and `package-lock.json`, the latter will never be updated, even if the `package.json` would be happy with newer versions.
 3. If you manually edit your `package.json` to have different ranges and run `npm i` and those ranges aren't compatible with your `package-lock.json`, then the latter will be updated with version that are compatible with your `package.json`.
+
+### package.json and yarn.lock
+`npx create-react-app` executes `create-react-app` binary, and `create-react-app` uses yarn to create the project if yarn is installed, that's why you can see `yarn.lock`. To use npm in `create-react-app`, use `--use-npm` flag (no matter you execute `create-react-app` with npx or yarn or directly, you should set it if you want it to use npm).
 
 ### npm install and npm ci
 - `npm install` reads `package.json` to create a list of dependencies and uses `package-lock.json` to inform which versions of these dependencies to install. If a dependency is not in `package-lock.json` it will be added by `npm install`.
