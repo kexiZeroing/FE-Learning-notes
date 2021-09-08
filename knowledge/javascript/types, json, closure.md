@@ -257,3 +257,5 @@ for(let i = 0; i < 3; i++) {
 ```
 
 **Performance consideration**: It is unwise to unnecessarily create functions within other functions if closures are not needed for a particular task, as it will negatively affect script performance both in terms of processing speed and memory consumption.
+
+> In JavaScript, memory leaks happen when objects are no longer needed, but are still referenced by functions or other objects. These references prevent the unneeded objects from being reclaimed by the garbage collector.

@@ -2,10 +2,7 @@
 
 ### Getting Started
 
-#### Add React to a Website
-Adding React as a plain `<script>` tag on an HTML page optionally with JSX is the easiest way to integrate React into an existing website. Adding JSX to a project doesn’t require complicated tools like a bundler or a development server. (It's worth checking out: https://github.com/kentcdodds/beginners-guide-to-react)
-
-React’s release channels: `Latest` (stable, use this for user-facing applications), `Next` (candidates for the next minor semver release), `Experimental` (additional features that are not ready for wider release). All releases are published to npm, but only `Latest` uses semantic versioning. Prereleases have versions generated from a hash of their contents.
+> know about React new release [discussion](https://github.com/reactwg/react-18/discussions/4) and [plan](https://github.com/reactwg/react-18/discussions/9).
 
 #### Recommended Toolchains
 The React team primarily recommends these solutions:

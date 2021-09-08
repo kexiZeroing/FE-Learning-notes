@@ -27,7 +27,7 @@ While `dns-prefetch` only performs a DNS lookup, `preconnect` establishes a conn
 > The logic behind pairing these hints is because support for `dns-prefetch` is better than support for `preconnect`. Browsers that don’t support `preconnect` will still get some added benefit by falling back to `dns-prefetch`. Because this is an HTML feature, it is very fault-tolerant. If a non-supporting browser encounters a `dns-prefetch` hint—or any other resource hint—your site won’t break.
 
 ### Render blocking JavaScript and CSS
-Before a browser can render any content, it needs to parse HTML markup into a DOM tree. The HTML parser will pause if it encounters any external stylesheets (`<link rel="stylesheet">`) or synchronous JavaScript tags (`<script src="main.js">`). Scripts and stylesheets are both render blocking resources which delay FCP, and consequently LCP. Defer any non-critical JavaScript and CSS to speed up loading of the main content of your web page.
+Before a browser can render any content, it needs to parse HTML markup into a DOM tree. The HTML parser will pause if it encounters any external stylesheets (`<link rel="stylesheet">`) or synchronous JavaScript tags (`<script src="main.js">`). Scripts and stylesheets are both render blocking resources which delay FCP, and consequently LCP. (Additionally, if CSS appears before a script, the script will not be executed until the CSSOM is created because JavaScript can also interact with the CSSOM.) Defer any non-critical JavaScript and CSS to speed up loading of the main content of your web page.
 
 **Minify CSS**, if you use a module bundler or build tool, include an appropriate plugin to minify CSS files on every build. Use the `Coverage` tab in Chrome DevTools (`cmd + shift + p`, then type 'coverage') to **find any unused CSS** on your web page. **Inlining important styles** eliminates the need to make a round-trip request to fetch CSS. If you cannot manually add inline styles to your site, use a library to automate the process.
 
@@ -42,6 +42,8 @@ If you know that a particular resource should be prioritized, use `<link rel="pr
 > Resource hints like `preconnect` and `dns-prefetch` are executed as the browser sees fit. The `preload`, on the other hand, is mandatory for the browser. Modern browsers are already pretty good at prioritizing resources, that's why it's important to use `preload` sparingly and only preload the most critical resources.
 
 For script tags, **`<script async>`** downloads the file during HTML parsing and will pause the HTML parser to execute it when it has finished downloading. Async scripts are executed as soon as the script is loaded, so it doesn't guarantee the order of execution. **`<script defer>`** downloads the file during HTML parsing and will only execute it after the parser has completed. Defer scripts are guaranteed to execute in the order that they appear in the document. Typically you want to use `async` where possible, then `defer` then no attribute. 
+
+Additionally, use [code-splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting), [tree-shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), and/or lazy loading features as needed. 
 
 ### Adaptive serving
 When loading resources that make up the main content of a page, it can be effective to conditionally fetch different assets depending on the user's device or network conditions. This can be done using the **Network Information, Device Memory, and HardwareConcurrency APIs**.
