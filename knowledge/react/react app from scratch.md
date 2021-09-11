@@ -84,6 +84,17 @@ Our first rule is about transforming ES6 and JSX syntax. The `test` and `exclude
 
 The next rule is for processing CSS (we’re not pre-or-post-processing CSS here). `css-loader` requires `style-loader` in order to work. Note that `Rule.loader` is a shortcut to `Rule.use: [{ loader }]`. If we want an array of loaders, we have to use `use`, if it's just one loader, then we use `loader`.
 
+> Sometimes, just being able to load a CSS file is sufficient. We want write in Sass, process in PostCSS, and compile to CSS. 
+>  ```js
+>  rules: [
+>    {
+>      test: /\.(scss|css)$/,
+>      use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+>    }
+>  ]
+>    ```
+> We add the four loaders and they compile from last to first, so the last one in the list is `sass-loader` as the needs to compile, then PostCSS, then CSS, and finally `style-loader`, which will inject the CSS into the DOM.
+
 As of webpack 5, using the built-in Asset Modules we can easily incorporate images and icons in our system **without configuring additional loaders**. Prior to webpack 5 it was common to use `url-loader` to inline a file into the bundle as a data URI or `file-loader` to emit a file into the output directory. Asset Modules replaces these loaders by adding new module types.
 - `asset/resource` emits a separate file and exports the URL. Previously achievable by using file-loader.
 - `asset/inline` exports a data URI of the asset. Previously achievable by using url-loader.
