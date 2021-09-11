@@ -1,16 +1,14 @@
 function partition(arr, lo, hi) {
   const pivot = arr[hi];
-  let i = lo - 1;
+  let i = lo;
   for (let j = lo; j < hi; j++) {
-    if (arr[j] < pivot) {
-      i++;
+    if (arr[j] <= pivot) {
       [arr[i], arr[j]] = [arr[j], arr[i]];
+      i++;
     }
   }
   
-  if (arr[hi] < arr[i + 1]) {
-    [arr[i + 1], arr[hi]] = [arr[hi], arr[i + 1]];
-  }
+  [arr[i], arr[hi]] = [arr[hi], arr[i]];
   return i + 1;
 }
 
