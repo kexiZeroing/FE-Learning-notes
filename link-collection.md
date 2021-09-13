@@ -135,8 +135,6 @@ React component code smells: https://antongunnarsson.com/react-component-code-sm
 
 useHooks Code Examples: https://usehooks.com
 
-Set Up webpack 5 from Scratch: https://www.taniarascia.com/how-to-use-webpack
-
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
 
 I Guess We're Full-stack Developers Now: https://full-stack.netlify.app

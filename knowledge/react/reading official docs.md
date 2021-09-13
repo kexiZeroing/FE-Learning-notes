@@ -140,7 +140,7 @@ Bundling is great, but as your app grows, your bundle will grow too. Code-Splitt
 
 The best way to introduce code-splitting into your app is through the dynamic `import()` syntax. When Webpack comes across this syntax, it automatically starts code-splitting your app. If you’re using Create React App, this is already configured for you and you can start using it immediately.
 
-`React.lazy` takes a function that must call a dynamic `import()`. It resolves to a module with a default export containing a React component. The lazy component should then be rendered inside a `Suspense` component, which allows us to show some fallback content while we’re waiting for the lazy component to load. The bundle containing the lazy component is loaded when this component is first rendered.
+`React.lazy` takes a function that must call a dynamic `import()`. It resolves to a module with a default export containing a React component. The lazy component should then be rendered inside a `Suspense` component, which allows us to show some fallback content while we’re waiting for the lazy component to load (render in the UI). The bundle containing the lazy component is loaded when this component is first rendered.
 
 ```js
 import React, { Suspense } from 'react';
@@ -364,19 +364,24 @@ Using React will lead to a fast user interface without doing much work to specif
 
 `React.PureComponent` is equivalent to implementing `shouldComponentUpdate` with a shallow comparison of current and previous props and state. If you shallow compare a nested object it will just check the reference, not the value inside the object. (Using spread syntax or `Object.assign` to return a new object rather than mutating the old one, otherwise a shallow comparison would miss it). 
 
-Use `React.memo` to implement `shouldComponentUpdate`. You can wrap a function component with `React.memo` to shallowly compare its props. `React.memo` is equivalent to `React.PureComponent`, but it only compares props. You can also add a second argument to specify a custom comparison function. If it returns `true`, the update is skipped and reuse the last rendered result. `React.memo` only exists as a performance optimization.
+Use `React.memo` to implement `shouldComponentUpdate`. You can wrap a function component with `React.memo` to shallowly compare its props. `React.memo` is equivalent to `React.PureComponent`, but it only compares props. `React.memo` only exists as a performance optimization.
 
 ```js
-function Movie(props) {
-  /* render using props */
-}
-function areEqual(prevProps, nextProps) {
-  /*
-    return true if passing `nextProps` to render would return the same result as passing `prevProps` to render, otherwise return false
-  */
-}
-export const MemoizedMovie = React.memo(Movie, areEqual)
+// skips rerendering the child component if the prop hasn’t changed
+const ChildComponent = React.memo(function ChildComponent({ count }) {
+  console.log("child component is rendering");
+  return (
+    <div>
+      <h2>This is a child component.</h2>
+      <h4>Count: {count}</h4>
+    </div>
+  );
+});
 ```
+
+> When we pass down object, array, or function as a prop, the memoized component always rerenders.
+> - To prevent the function from always redefining, we use a `useCallback` Hook that returns a memoized version of the callback between renders.
+> - When the prop we pass down to a child component is an array or object, we can use a `useMemo` Hook to memoize the value between renders.
 
 ---
 
