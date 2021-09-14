@@ -29,7 +29,7 @@ function Person() {
 
 var p = new Person();
 
-function fruit(){
+function fruit() {
   return () => {
     console.log(this.name);
   }
@@ -44,25 +44,6 @@ var banana = {
 var fruitCall = fruit.call(apple);
 fruitCall();  // apple
 fruitCall.call(banana);  // apple
-
-/* 
-1. The returned function is created as an arrow function, 
-   so its `this` is permanently bound to its enclosing function.
-2. When a function is called as a method of an object, 
-   its `this` is set to the object the method is called on.
-*/
-var obj = {
-  bar: function() {
-    var x = (() => this);
-    return x;
-  }
-};
-
-var fn = obj.bar();
-console.log(fn() === obj); // true
-
-var fn2 = obj.bar;
-console.log(fn2()() == window); // true
 ```
 
 ### Function.prototype.call() / apply()
@@ -72,6 +53,14 @@ While the syntax of `call()` function is almost identical to that of `apply()`, 
 const numbers = [5, 6, 2, 3, 7];
 Math.max.apply(null, numbers);
 Math.min.apply(null, numbers);
+
+// `this` is ignored when binding `this` on arrow function
+window.name = 'a'
+const obj = {
+  name: 'b',
+  fn: () => console.log(this.name)
+}
+obj.fn.call({name: 'c'});  // 'a'
 ```
 
 ### Function.prototype.bind()

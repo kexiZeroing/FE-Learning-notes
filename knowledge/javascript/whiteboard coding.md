@@ -65,6 +65,19 @@ implementMapUsingReduce([1, 2, 3, 4], a => a + 1);  // [2,3,4,5]
 implementMapUsingReduce(["a", "b", "c"], a => a + "!");  // ['a!', 'b!', 'c!']
 ```
 
+Implement calling click event listener only once without using `{once: true}`.
+```js
+function clickOnce(el, cb) {
+  const cb2 = () => {
+    cb();
+    el.removeEventListener('click', cb2, false);
+  }
+  el.addEventListener('click', cb2, false);
+}
+
+clickOnce($0, () => console.log('click'));
+```
+
 Get all the HTML tags in a web page and output them by a descending order of their occurrences.
 ```js
 function getAllHTMLTags() {

@@ -25,9 +25,6 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 2. If you run `npm i` against that `package.json` and `package-lock.json`, the latter will never be updated, even if the `package.json` would be happy with newer versions.
 3. If you manually edit your `package.json` to have different ranges and run `npm i` and those ranges aren't compatible with your `package-lock.json`, then the latter will be updated with version that are compatible with your `package.json`.
 
-### package.json and yarn.lock
-`npx create-react-app` executes `create-react-app` binary, and `create-react-app` uses yarn to create the project if yarn is installed, that's why you can see `yarn.lock`. To use npm in `create-react-app`, use `--use-npm` flag (no matter you execute `create-react-app` with npx or yarn or directly, you should set it if you want it to use npm).
-
 ### npm install and npm ci
 - `npm install` reads `package.json` to create a list of dependencies and uses `package-lock.json` to inform which versions of these dependencies to install. If a dependency is not in `package-lock.json` it will be added by `npm install`.
 
@@ -39,6 +36,19 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 **devDependencies** are dependencies you only need during development, like compilers that take your code and compile it into javascript, test frameworks or documentation generators. They are not installed transitively (if A depends on B dev-depends on C, npm install on A will install B only). *Example: grunt, your project uses grunt to build itself*.
 
 **peerDependencies** are dependencies that your project hooks into, or modifies, in the parent project, usually a plugin for some other library. It is just intended to be a check, making sure that the project that will depend on your project has a dependency on the project you hook into. So if you make a plugin C that adds functionality to library B, then someone making a project A will need to have a dependency on B if they have a dependency on C. They are not installed, they are only checked for. *Example: your project adds functionality to grunt and can only be used on projects that use grunt*.
+
+### jsconfig.json
+JavaScript experience is improved when you have a `jsconfig.json` file in your workspace that defines the project context. **`jsconfig.json` is a descendant of `tsconfig.json`**. The presence of `jsconfig.json` file in a directory indicates that the directory is the root of a JavaScript project.
+
+The `exclude` attribute tells the language service what files are not part of your source code (e.g. `node_modules`, `dist`). Alternatively, you can explicitly set the files in your project using the `include` attribute (e.g. `src/**/*`).
+
+Below are `compilerOptions` to configure the JavaScript language support. Do not be confused by `compilerOptions`, since no actual compilation is required for JavaScript. This attribute exists because `jsconfig.json` is a descendant of `tsconfig.json`.
+
+- `target`: This setting changes which JS features are downleveled and which are left intact. Modern browsers support all ES6 features, so `ES6` is a good choice. The values are "es3", "es5", "es6", "es2015", "es2016", "es2017", "es2018", "es2019", "es2020", "esnext".
+- `module`: Specifies the module system when generating module code. The values are "amd", "commonJS", "es2015", "es6", "esnext", "none", "system", "umd".
+- `baseUrl`: Lets you set a base directory to resolve non-absolute module names. With `"baseUrl": "."`, it will look for files starting at the same folder as the `jsconfig.json`.
+- `paths`: A series of entries which re-map imports to lookup locations relative to the `baseUrl`, e.g. `"@models/*": ["app/models/*"]`.
+- `checkJs`: Enable type checking on JavaScript files. This is the equivalent of including `// @ts-check` at the top of all JavaScript files which are included in your project.
 
 ### Live Reload and Hot Reload
 > When a file is edited, the dev server recompiles with the changes, then pushes a notification to the client code in the browser. The app code can then subscribe to "some file changed" notifications, re-import the new version of the code, and swap out the old code for the new code as the app is still running.
