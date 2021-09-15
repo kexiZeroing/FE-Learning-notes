@@ -9,7 +9,7 @@ function partition(arr, lo, hi) {
   }
   
   [arr[i], arr[hi]] = [arr[hi], arr[i]];
-  return i + 1;
+  return i;
 }
 
 function _quickSort(arr, lo, hi) {

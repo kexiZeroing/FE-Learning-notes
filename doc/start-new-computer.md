@@ -60,12 +60,15 @@ From macOS Catalina the default shell is `zsh`. `zsh` has a list of configuratio
 **macOS Terminal considers every new shell to be a login shell and an interactive shell**. So, in Terminal a new `zsh` will potentially run all configuration files. For simplicity’s sake, you should use just one file and the common choice is `.zshrc`. Most tools you download to configure `zsh`, such as `Oh My Zsh`, will override or re-configure your `.zshrc`.
 
 ## Git for the first time
-The first thing you should do when you install Git is to set your user name and email address. This is important because every Git commit uses this information. Use `git config --list` command to list all the settings.
+The first thing you should do when you install Git is to set your user name and email address. This is important because every Git commit uses this information. Use `git config --list` ( `git config --global --list` ) command to list all the settings.
 ```shell
+# settings in a global ~/.gitconfig file located in your home directory
 git config --global user.name "Your name here"
 git config --global user.email "your_email@example.com"
 git config --global color.ui true
 ```
+
+For your personal project with another git account (distinguish from the work-specific repositories), use `git config` to set another user without `--global`.
 
 ### Cloning with HTTPS or SSH
 When you `git clone` using HTTPS URLs on the command line, Git will ask for your GitHub username and password the first time. It is likely that Git will use a credential helper provided by your operating system. If so, your GitHub credentials were cached and this setup applies across repos. Password-based authentication for Git is [deprecated](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations), and we recommend using a **personal access token (PAT)** when prompted for a password instead. Once you have a token, you can enter it instead of your password when performing Git operations over HTTPS. (If you are not prompted for the username and password, your credentials may be cached on your computer. You can update your credentials in the Keychain to replace your old password with the token).
