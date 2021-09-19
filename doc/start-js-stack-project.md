@@ -48,7 +48,7 @@ Below are `compilerOptions` to configure the JavaScript language support. Do not
 - `module`: Specifies the module system when generating module code. The values are "amd", "commonJS", "es2015", "es6", "esnext", "none", "system", "umd".
 - `baseUrl`: Lets you set a base directory to resolve non-absolute module names. With `"baseUrl": "."`, it will look for files starting at the same folder as the `jsconfig.json`.
 - `paths`: A series of entries which re-map imports to lookup locations relative to the `baseUrl`, e.g. `"@models/*": ["app/models/*"]`.
-- `checkJs`: Enable type checking on JavaScript files. This is the equivalent of including `// @ts-check` at the top of all JavaScript files which are included in your project.
+- `checkJs`: Enable type checking on JavaScript files. This is the equivalent of including `// @ts-check` at the top of all JavaScript files which are included in your project. (Set `allowJs: true` in `tsconfig.json` to tell TypeScript to allow a reference to regular JavaScript files.)
 
 ### Live Reload and Hot Reload
 > When a file is edited, the dev server recompiles with the changes, then pushes a notification to the client code in the browser. The app code can then subscribe to "some file changed" notifications, re-import the new version of the code, and swap out the old code for the new code as the app is still running.

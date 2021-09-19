@@ -175,6 +175,23 @@ var productExceptSelf = function(nums) {
 };
 ```
 
+Write a program to find the sum of contiguous subarray within a one-dimensional array of numbers that has the largest sum. 
+
+```js
+var maxSubArraySum = function(nums) {
+  let curSum = 0;
+  let maxSum = nums[0];
+
+  for (let i = 0; i < nums.length; i++) {
+    curSum = (a[i] > curSum + a[i]) ? a[i] : curSum + a[i];
+    if (curSum > maxSum) {
+      maxSum = curSum
+    }
+  }
+  return maxSum;
+}
+```
+
 Given a string, find the length of the longest substring without repeating characters.
 
 ```js
@@ -302,24 +319,6 @@ var findDuplicate = function(nums) {
 };
 ```
 
-Given a collection of intervals, merge all overlapping intervals. i.e. Input: [[1,3],[2,6],[8,10],[15,18]]; Output: [[1,6],[8,10],[15,18]]
-
-```js
-var merge = function(intervals) {
-  intervals.sort((a, b) => a[0] - b[0]);
-  for (let i = 0; i < intervals.length - 1; i++) {
-    const cur = intervals[i];
-    const next = intervals[i + 1];
-
-    if (cur[1] >= next[0]) {
-      intervals[i] = undefined;
-      intervals[i + 1] = [Math.min(cur[0], next[0]), Math.max(cur[1], next[1])];
-    }
-  }
-  return intervals.filter(q => q); // fiter to pass undefined value
-};
-```
-
 Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand. (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]). You are given a target value to search. If found in the array return its index, otherwise return -1. You may assume no duplicate exists in the array.
 
 ```js
@@ -350,6 +349,24 @@ var search = function(nums, target) {
   }
 
   return -1;
+};
+```
+
+Given a collection of intervals, merge all overlapping intervals. i.e. Input: [[1,3],[2,6],[8,10],[15,18]]; Output: [[1,6],[8,10],[15,18]]
+
+```js
+var merge = function(intervals) {
+  intervals.sort((a, b) => a[0] - b[0]);
+  for (let i = 0; i < intervals.length - 1; i++) {
+    const cur = intervals[i];
+    const next = intervals[i + 1];
+
+    if (cur[1] >= next[0]) {
+      intervals[i] = undefined;
+      intervals[i + 1] = [Math.min(cur[0], next[0]), Math.max(cur[1], next[1])];
+    }
+  }
+  return intervals.filter(q => q); // fiter to pass undefined value
 };
 ```
 
