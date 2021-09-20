@@ -12,8 +12,6 @@ How HTTPS works: https://howhttps.works
 
 Inside look at modern web browser (4 parts): https://developers.google.com/web/updates/2018/09/inside-browser-part1
 
-Chrome University 2019: https://www.youtube.com/playlist?list=PLNYkxOF6rcICgS7eFJrGDhMBwWtdTgzpx
-
 Build excellent websites: https://web.dev
 
 CS 61B: Data Structures: https://inst.eecs.berkeley.edu/~cs61b/sp20/index.html
@@ -89,8 +87,6 @@ Code Generator for HTTP Requests: https://www.labnol.org/apps/urlfetch.html
 ---
 
 ## CSS related
-Sorted CSS Colors: https://enes.in/sorted-colors
-
 CSS percentage: https://wattenberger.com/blog/css-percents
 
 Centering in CSS: https://ishadeed.com/article/learn-css-centering
@@ -98,8 +94,6 @@ Centering in CSS: https://ishadeed.com/article/learn-css-centering
 Learn CSS Positioning: https://ishadeed.com/article/learn-css-positioning
 
 Understanding Z-Index: https://ishadeed.com/article/understanding-z-index
-
-Handling short and long content: https://ishadeed.com/article/css-short-long-content
 
 The blueprint HTML and CSS for website headers: https://headers-css.vercel.app
 
@@ -112,6 +106,8 @@ CSS Grid generator: https://cssgrid-generator.netlify.app
 1-Line Layouts: https://1linelayouts.glitch.me
 
 Box-shadow: https://neumorphism.io
+
+Sorted CSS Colors: https://enes.in/sorted-colors
 
 CSS animations on demand: https://animista.net
 
@@ -135,10 +131,8 @@ React component code smells: https://antongunnarsson.com/react-component-code-sm
 
 useHooks Code Examples: https://usehooks.com
 
+TypeScript and React: https://fettblog.eu/typescript-react
+
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
-
-I Guess We're Full-stack Developers Now: https://full-stack.netlify.app
-
-Jamstack Explorers: https://explorers.netlify.com
 
 Start developing websites like it's 2025: https://react2025.com
