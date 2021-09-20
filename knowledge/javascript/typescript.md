@@ -1,7 +1,8 @@
 ## Using TypeScript
 
-1. In terms of programming language, let TypeScript make sure you can write modern JavaScript.
-2. In terms of type system, make sure type safety and our JavaScript makes sense.
+1. In terms of programming language, write modern JavaScript. Let TypeScript make sure you can write modern JavaScript.
+2. In terms of type system, find ways to make sure type safety and our JavaScript makes sense.
+3. Try at https://www.typescriptlang.org/play
 
 ### Setting Up TypeScript
 To start off, the TypeScript compiler will need to be installed in order to convert TypeScript files into JavaScript files. To do this, TypeScript can either be installed globally or only available at the project level.
@@ -33,11 +34,14 @@ let whoKnows: any = 1;
 let myPetFamily: string[] = ['rocket', 'fluffly', 'harry'];
 let myPetFamily: Array<string> = ['rocket', 'fluffly', 'harry'];
 
-// A tuple is an array that contains a fixed number of elements with associated types
+// A tuple is an array that contains a fixed number of elements with associated types.
 let myFavoriteTuple: [string, number, boolean];
 myFavoriteTuple = ['chair', 20, true];
 
-/* 
+// Tuple types can’t be inferred. If we use type inference directly on a tuple, we will get the wider array type
+let tuple = ['Stefan', 38];  // type is (string | number)[]
+
+/*
 An enum is a way to associate names to a constant value. 
 Enums are useful when you want to have a set of distinct values that have a descriptive name associated with it.
 By default, enums are assigned numbers that start at 0 and increase by 1 for each member of the enum.
@@ -109,26 +113,7 @@ dog = {
   weight: 10,
 };
 
-// `typeof` operator takes any object and extracts the shape of it.
-// When you update the defaultOrder object, the type Order gets updated as well.
-const defaultOrder = {
-  x: 1,
-  y: {
-    a: 'apple',
-    b: [1,2]
-  }
-};
-type Order = typeof defaultOrder;
-
-// Generics (type as the parameter)
-// There are situations where the specific type of a variable doesn't matter, but a relationship between the types of different variables should be enforced.
-const fillArray = <T>(len: number, elem: T) => {
-  return new Array<T>(len).fill(elem);
-};
-const newArray = fillArray<string>(3, 'hi');
-newArray.push('bye');
-
-// Union Type (a type can be one of multiple types)
+// Union Type (a type can be one of multiple types, type A = X | Y)
 const sayHappyBirthday = (name: string | null) => {
   if (name === null) {
     console.log('Happy birthday!');
@@ -137,7 +122,7 @@ const sayHappyBirthday = (name: string | null) => {
   }
 };
 
-// Intersection Type (a type is the combination of all listed types)
+// Intersection Type (a type is the combination of all listed types, type A = X & Y)
 type Student = {
   id: string;
   age: number;
@@ -147,17 +132,111 @@ type Employee = {
 };
 let person: Student & Employee;
 
-// The `declare` keyword to make the function available without implementing a function body at the moment.
-declare function search(query: string, tags?: string[]): Promise<Result[]>
+// `typeof` operator takes any object and extracts the shape of it.
+const defaultOrder = {
+  x: 1,
+  y: {
+    a: 'apple',
+    b: [1,2]
+  }
+}
+type Order = typeof defaultOrder
 
-type SearchFn = typeof search;
-// hover over `SearchFn` to see the expanded type definition
-// (query: string, tags?: string[] | undefined) => Promise<Result[]>
+function createUser(name: string, role: 'admin' | 'maintenance') {
+  return {
+    name,
+    role,
+    createdAt: new Date()
+  }
+}
+
+const user = createUser('Stefan', 'admin')
+type User = typeof user
+
+// Built-in Helper Types
+// retrieve the return type from the function signature (without run the function)
+type User = ReturnType<typeof createUser>
+// collect all arguments from a function in a tuple
+type Param = Parameters<typeof createUser>
 ```
 
-TypeScript sets `any` as the default type for any value or parameter that is not explicitly typed or can’t be inferred. You will rarely need to declare something as `any` (**you may need the type `unknown`**). And if you want to enter through the backdoor to JavaScript flexibility, be very intentional through a type cast `(theObject as any).xyz`.
+In TypeScript, every function has a return type. If we don’t explicitly type or infer, the return type is by default `void` and `void` is a keyword in JavaScript returning `undefined`.
 
-In JavaScript, all functions have a return value. If we don’t return one on our own, the return value is by default `undefined`. In TypeScript, every function has a return type. If we don’t explicitly type or infer, the return type is by default `void` and `void` is a keyword in JavaScript returning `undefined`.
+**Declaration merging for interfaces** means we can declare an interface at separate positions with different properties, and TypeScript combines all declarations and merges them into one.
+
+**Type hierarchy**: TypeScript sets `any` as the default type for any value or parameter that is not explicitly typed or can’t be inferred. You will rarely need to declare something as `any` (**you may need the type `unknown`**, `any` and `unknown` are top types). `null` and `undefined` are bottom values. (nullish values are excluded from all types if the option `strictNullChecks` is active in `tsconfig.json`). The very bottom of the type hierarchy is `never`. `never` doesn’t accept a single value at all and is used for situations that should never occur.
+
+**Value Types**: We can narrow down primitive types to values.
+```ts
+// Type is string, because the value can change.
+let conference = 'conference';
+// Type is 'conference', because the value can't change anymore.
+const conf = 'conference';
+
+type TechEvent = {
+  title: string,
+  kind: 'webinar' | 'conference' | 'meetup'
+}
+function getEvent(event: TechEvent) {...}
+
+const abc = {
+  title: 'abc',
+  kind: 'conference'
+}
+// error here: types of `abc` and TechEvent are incompatible
+// the property `kind` in `abc` will not be inferred as 'conference' but as string
+getEvent(abc);
+
+// fix 1 (add type annotation)
+const abc: TechEvent = {
+  title: 'abc',
+  kind: 'conference'
+}
+
+// fix 2 (type cast to the value type)
+const abc = {
+  title: 'abc',
+  kind: 'conference' as 'conference'
+}
+
+// fix 3 (assign a primitive value to a const so fixate its value type) 
+const abc = {
+  title: 'abc',
+  kind: 'conference' as const
+}
+
+// Dynamically update types
+// lookup type
+type EventKind = TechEvent['kind']
+
+// mapped type (keys to be generated automatically and mapped to a TechEvent list)
+type GroupedEvents = {
+  [Kind in EventKind]: TechEvent[]
+}
+
+// keyof (get object keys of the type)
+type GroupProperties = keyof GroupedEvents
+```
+
+**Generic Types**: Instead of working with a specific type, we work with a parameter that is then substituted for a specific type. Type parameters are denoted within angle brackets at function heads or class declarations. 
+```ts
+// Type as the parameter
+const fillArray = <T>(len: number, elem: T) => {
+  return new Array<T>(len).fill(elem);
+};
+const newArray = fillArray<string>(3, 'hi');
+
+// Generic constraints (boundaries)
+type URLObject = {
+  [k: string]: URL
+}
+function loadFile<Formats extends URLObject>(fileFormats: Formats, format: keyof Formats)
+
+// Partial (each key becomes optional) and Readonly (Object.freeze)
+const defaultP: UserPreferences;
+const userP: Partial<UserPreferences>;
+const specialP: Readonly<UserPreferences>;
+```
 
 ### Adding Type Check to JavaScript
 TypeScript provides code analysis for JavaScript and VS Code gives us TypeScript out of the box (TypeScript language server). With the addition of `//@ts-check` as the very first line in our JavaScript file, TypeScript became active and started to add red lines to code pieces that just don’t make sense.
