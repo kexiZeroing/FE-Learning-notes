@@ -1,8 +1,7 @@
 ## Notes from reading offical docs
 
 ### Getting Started
-
-> know about React new release [discussion](https://github.com/reactwg/react-18/discussions/4) and [plan](https://github.com/reactwg/react-18/discussions/9).
+Check this: https://reactjs.org/blog/all.html
 
 #### Recommended Toolchains
 The React team primarily recommends these solutions:
