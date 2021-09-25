@@ -87,18 +87,27 @@ As it is a macrotask, then microtasks are processed. The Promise callback is run
 
 ```javascript
 setTimeout(() => console.log(1), 0)
+async function async1(){
+  console.log(2)
+  await async2()  // syntactic sugar on top of promise, `await` just abstracts away the `.then()` for you
+  console.log(3)
+}
+async function async2(){
+  console.log(4)
+}
+async1()
 new Promise((resolve, reject) => {
-    console.log(2)
-    for (let i = 0; i < 10000; i++) {
-        i === 9999 && resolve()
-    }
-    console.log(3)
+  console.log(5)
+  for (let i = 0; i < 1000; i++) {
+    i === 999 && resolve()
+  }
+  console.log(6)
 }).then(() => {
-    console.log(4)
+  console.log(7)
 })
-console.log(5)
+console.log(8)
 /*
-output：2 3 5 4 1
+output：2 4 5 6 8 3 7 1
 */
 ```
 
