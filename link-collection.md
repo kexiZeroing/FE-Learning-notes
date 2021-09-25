@@ -46,6 +46,8 @@ Code sandbox online IDE: https://codesandbox.io/
 
 Chrome urls: [chrome://chrome-urls](chrome://chrome-urls/)
 
+Web Page Test: https://www.webpagetest.org/
+
 Chrome DevTools tips: https://umaar.com/dev-tips/
 
 HTML DOM with vanilla JavaScript: https://htmldom.dev/

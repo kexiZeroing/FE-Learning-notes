@@ -62,7 +62,7 @@ formData.append('avatar', fileField.files[0]);
 
 fetch('https://example.com/profile/avatar', {
   method: 'PUT',
-  body: formData
+  body: formData  // this automatically sets the "Content-Type" header to `multipart/form-data`
 })
   .then(response => response.json())
   .then(result => {
@@ -71,6 +71,27 @@ fetch('https://example.com/profile/avatar', {
   .catch(error => {
     console.error('Error:', error);
   });
+```
+
+```javascript
+// URLSearchParams as a fetch body
+async function isPositive(value) {
+  const response = await fetch(`http://text-processing.com/api/sentiment/`, {
+    method: 'POST',
+    body: new URLSearchParams({ text: value })  // this automatically sets the "Content-Type" header to `application/x-www-form-urlencoded`
+  });
+  const json = await response.json();
+  return json.label === 'pos';
+}
+
+// new URLSearchParams(`text=${value}`) has injection issue
+const value = 'hello&world';
+
+const badEncoding = new URLSearchParams(`text=${value}`);
+console.log(badEncoding.toString());  // 'text=hello&world='
+
+const correctEncoding = new URLSearchParams({ text: value });
+console.log(correctEncoding.toString());  // 'text=hello%26world'
 ```
 
 ## Headers
@@ -147,6 +168,10 @@ console.log(url.protocol);  // "http:"
 console.log(url.hash);      // "#abc"
 console.log(url.search);    // "?id=1"
 console.log(url.searchParams.get('id'));  // "1"
+
+// `location.searchParams` is undefined. To work around it:
+new URL(location.href).searchParams;
+new URLSearchParams(location.search);
 
 // blob url as the image source
 const input = document.querySelector('input');

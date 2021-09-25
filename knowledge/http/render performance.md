@@ -37,6 +37,15 @@ If you know that a particular resource should be prioritized, use `<link rel="pr
 <link rel="preload" as="script" href="script.js">
 <link rel="preload" as="style" href="style.css">
 <link rel="preload" as="image" href="img.png">
+
+<!-- use `crossorigin` to ensure CORS because font requests are CORS requests -->
+<link
+  rel="preload"
+  href="/path/to/font.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 > Resource hints like `preconnect` and `dns-prefetch` are executed as the browser sees fit. The `preload`, on the other hand, is mandatory for the browser. Modern browsers are already pretty good at prioritizing resources, that's why it's important to use `preload` sparingly and only preload the most critical resources.

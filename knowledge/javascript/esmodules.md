@@ -26,6 +26,28 @@ import { name, draw, reportArea, reportPerimeter } from './modules/square.js';
 import { Square } from './modules/square.js';
 ```
 
+```javascript
+// imports are references, not values
+
+// module.js
+export let thing = 'initial';
+
+setTimeout(() => {
+  thing = 'changed';
+}, 500);
+
+// main.js
+import { thing as importedThing } from './module.js';
+const module = await import('./module.js');
+let { thing } = await import('./module.js');
+
+setTimeout(() => {
+  console.log(importedThing); // "changed"
+  console.log(module.thing); // "changed"
+  console.log(thing); // "initial"
+}, 1000);
+```
+
 ### Default exports and Rename
 The other type of export called the **default export** — this is designed to make it easy to have a default function provided by a module. Note that **the lack of curly braces both in export and import statements**. This is because there is only one default export allowed per module. **A default export can be imported with any name**.
 

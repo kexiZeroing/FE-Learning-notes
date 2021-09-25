@@ -15,7 +15,7 @@ p().then(function(value) {
 });
 
 const promiseA = new Promise((resolutionFunc, rejectionFunc) => {
-    resolutionFunc(777);
+  resolutionFunc(777);
 });
 // At this point, "promiseA" is already settled
 promiseA.then(val => console.log("asynchronous logging has val:", val));

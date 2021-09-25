@@ -136,4 +136,19 @@ The try statement consists of a try block, which contains one or more statements
   }
   console.log("This shouldn't be called eh?")  // does not run because throw in catch
 })()
+
+function finallyTest() {
+  try {
+    console.log('one');
+    return 'three';
+  } catch (err) {
+    console.log('error');
+  } finally {
+    console.log('two');
+  }
+}
+
+console.log(finallyTest());
+console.log('four');
+// The above logs: 'one', 'two', 'three', 'four'
 ```
