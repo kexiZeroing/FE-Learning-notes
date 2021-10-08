@@ -96,9 +96,11 @@ The next rule is for processing CSS (we’re not pre-or-post-processing CSS here
 > We add the four loaders and they compile from last to first, so the last one in the list is `sass-loader` as the needs to compile, then PostCSS, then CSS, and finally `style-loader`, which will inject the CSS into the DOM.
 
 As of webpack 5, using the built-in Asset Modules we can easily incorporate images and icons in our system **without configuring additional loaders**. Prior to webpack 5 it was common to use `url-loader` to inline a file into the bundle as a data URI or `file-loader` to emit a file into the output directory. Asset Modules replaces these loaders by adding new module types.
-- `asset/resource` emits a separate file and exports the URL. Previously achievable by using file-loader.
-- `asset/inline` exports a data URI of the asset. Previously achievable by using url-loader.
-- `asset` automatically chooses between exporting a data URI and emitting a separate file. Previously achievable by using `url-loader` with asset size limit.
+- `asset/resource` emits a separate file and exports the URL. Previously achievable by using `file-loader`.
+- `asset/inline` exports a data URI of the asset. Previously achievable by using `url-loader`.
+- `asset` automatically chooses between exporting a data URI and emitting a separate file. Previously achievable by using `url-loader` with asset size limit option.
+
+> The bundler will copy the image to the output directory with a generated unique name (like `a5c8d3f89cad.jpg`) and behind the scenes, it will replace `<img src={yourName} />` with `<img src="a5c8d3f89cad.jpg" />`. If the image is especially small, webpack might decide to inline it into the JS bundle, as an optimization.
 
 The `resolve` property allows us to specify which extensions webpack will resolve. This allows us to import modules without needing to add their extensions.
 

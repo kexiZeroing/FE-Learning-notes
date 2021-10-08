@@ -82,6 +82,8 @@ In HTTP/1.x, the browser naively queue all HTTP requests on the client, sending 
 
 But another limit is that **browsers have a total limit of concurrent connections regardless of the number of different domains used**. And adding multiple domains can, however, introduce performance losses. Web browsers have to perform a DNS lookup on each additional domain and maintain connections to each domain, resulting in slower initial load times. Unless you have a very specific immediate need, **don't use this deprecated technique; switch to HTTP/2 instead**. In HTTP/2, domain sharding is no longer useful and the HTTP/2 connection is able to handle parallel requests very well.
 
+<img alt="h1 waterfall" src="https://z3.ax1x.com/2021/09/26/4yL7lD.png" width="800">
+
 ### HTTP and socket
 HTTP is an application protocol and used mostly for browsing the internet. HTTP itself can't be used to transport information to/from a remote end point. Instead it relies on an underlying protocol which in HTTP's case is TCP. TCP provides a reliable link between two computers (if packet get lost - it is re-transmitted). TCP itself rides on top of IP, which provides unified addressing to communicate between computers. Basically it means if you are communicating HTTP, you are doing it with TCP/IP underneath.
 
