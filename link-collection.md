@@ -129,12 +129,12 @@ Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJ
 
 Build your own React: https://pomb.us/build-your-own-react
 
-React component code smells: https://antongunnarsson.com/react-component-code-smells
-
 useHooks Code Examples: https://usehooks.com
 
 TypeScript and React: https://fettblog.eu/typescript-react
 
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
+
+Webpack 5 boilerplate: https://github.com/taniarascia/webpack-boilerplate
 
 Start developing websites like it's 2025: https://react2025.com
