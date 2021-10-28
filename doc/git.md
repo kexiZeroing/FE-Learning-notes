@@ -39,6 +39,14 @@ The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it de
 - https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
 - https://fle.github.io/git-tip-keep-your-branch-clean-with-fixup-and-autosquash.html
 
+For example, I want to change the git user (rewrite history) after push the code:
+1. `git config user.name "New User"` and `git config user.email "newuser@gmail.com"` to change the user info.
+2. `git log` shows commit logs and find out **the commit id that ahead of your commit which you want to change**.
+3. `git rebase -i <commit_id>`
+4. Change the word 'pick' to 'edit' (there is a commit list you can change), save and exit; rebase is stopped at the next commit and you can edit it.
+5. `git commit --amend --reset-author --no-edit` and `git rebase --continue` to confirm and continue your rebase. (there is also a `git rebase --abort` command)
+6. `git push --force-with-lease` to overwrite the remote history. (`--force-with-lease` is safer than `--force`: If the remote branch has the same value as the remote branch on your local machine, you will overwrite remote. If it doesn't have the same value, it indicates a change that someone else made to the remote branch while you were working on your code and thus will not overwrite any code.)
+
 ### git restore and git switch
 `git checkout` is one of the many reasons why newcomers find git confusing, and that is because its effect is context-dependent. In version 2.23 of git, two new commands have been introduced to split the old `git checkout` in two.
 
