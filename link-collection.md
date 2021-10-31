@@ -64,13 +64,13 @@ Sketch UI with a hand-drawn look: https://excalidraw.com/
 
 Images of source code: https://carbon.now.sh/
 
+App Icon Generator for any platform: https://icon.kitchen/
+
 Manage node_modules in the system: https://github.com/voidcosmos/npkill
 
 Interactive website with live coding: https://www.strml.net/
 
 HTTP Cats: https://http.cat/
-
-Julia Evans's questions site: https://questions.wizardzines.com/
 
 Github contributions in 3D: https://skyline.github.com/
 

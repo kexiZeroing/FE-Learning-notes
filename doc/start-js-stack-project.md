@@ -38,9 +38,9 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 **peerDependencies** are dependencies that your project hooks into, or modifies, in the parent project, usually a plugin for some other library. It is just intended to be a check, making sure that the project that will depend on your project has a dependency on the project you hook into. So if you make a plugin C that adds functionality to library B, then someone making a project A will need to have a dependency on B if they have a dependency on C. They are not installed, they are only checked for. *Example: your project adds functionality to grunt and can only be used on projects that use grunt*.
 
 ### npm link
-1. Run `npm link` from your `MyModule` directory: this will create a global package `{prefix}/lib/node_modules/<package>` symlinked to the `MyModule` directory.
+1. Run `npm link` from your `MyModule` directory: this will create a global package `{prefix}/node/{version}/lib/node_modules/<package>` symlinked to the `MyModule` directory.
 2. Run `npm link MyModule` from your `MyApp` directory: this will create a `MyModule` folder in `node_modules` symlinked to the globally-installed package and thus to the real location of `MyModule`.
-3. Now any changes to `~/projects/MyModule` will be reflected in `~/projects/MyApp/node_modules/MyModule/`. Use `npm ls -g --depth=0 --link` to list all the globally linked modules.
+3. Now any changes to `MyModule` will be reflected in `MyApp/node_modules/MyModule/`. Use `npm ls -g --depth=0 --link` to list all the globally linked modules.
 
 ### jsconfig.json
 JavaScript experience is improved when you have a `jsconfig.json` file in your workspace that defines the project context. **`jsconfig.json` is a descendant of `tsconfig.json`**. The presence of `jsconfig.json` file in a directory indicates that the directory is the root of a JavaScript project.

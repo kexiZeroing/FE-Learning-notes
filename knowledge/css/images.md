@@ -42,3 +42,42 @@ To check if it's actually working, the best trick is to right-click and "Save as
 WebP is on the verge of replacing JPEG and PNG as the best image to use on the web thanks to Safari 14 finally supporting it. However, an even better image format, AVIF, is already looking to replace it.
 
 AVIF outperformed both JPEG and WebP. Companies like Netflix and Facebook want AVIF to become an image format standard on the web. They provided numerous visual examples that showed how AVIF was a preferred image format compared to JPEG. It’s currently only supported by Chrome. Hopefully AVIF won’t take ten years to get adopted by all major browsers like it did for WebP. Regardless, webmasters can use the AVIF image format now by using the same `srcset` attribute used for WebP.
+
+## Responsive images
+```html
+<!-- Different sizes -->
+<img srcset="elva-fairy-480w.jpg 480w,
+             elva-fairy-800w.jpg 800w"
+     sizes="(max-width: 600px) 480px,
+            800px"
+     src="elva-fairy-800w.jpg"
+     alt="Elva dressed as a fairy">
+
+<!-- Same size, different resolutions -->
+<img srcset="elva-fairy-320w.jpg,
+             elva-fairy-480w.jpg 1.5x,
+             elva-fairy-640w.jpg 2x"
+     src="elva-fairy-640w.jpg"
+     alt="Elva dressed as a fairy">
+
+<!-- Use modern image formats boldly -->
+<picture>
+    <source srcset="photo.avif" type="image/avif">
+    <source srcset="photo.webp" type="image/webp">
+    <img src="photo.jpg" alt="Description" width="360" height="240">
+</picture>
+```
+
+**`srcset`** defines the set of images we will allow the browser to choose between. We write an image filename, a space, and the image's intrinsic width in pixels (`480w`) — note that this uses the `w` unit not `px`.
+
+The browser will look at its device width and work out which media condition in the `sizes` list is the first one to be true (`sizes` is not needed for different resolutions). Then look at the slot size given to that media query, and load the image referenced in the `srcset` list that has the same size as the slot or, if there isn't one, the first image that is bigger than the chosen slot size. The last slot width has no media condition which is the default when none of the media conditions are true.
+
+`<picture>` allows browsers to skip images they do not recognize, you can include images in your order of preference. **The browser selects the first one it supports**. The features — `srcset/sizes/<picture>` — are all supported in modern desktop and mobile browsers (including Microsoft's Edge browser, although not Internet Explorer.)
+
+## CSS object-fit and background-size
+An image will have an aspect ratio, and the browser will fill the containing box with that image. If the image’s aspect ratio is different than the width and height specified for it, then the result will be either a squeezed or stretched image.
+
+**In both `cover` and `contain`, aspect ratio is preserved**. `cover` means cover the entire container with the image. `contain` will show the entire image within the container.
+
+<img alt="css-cover" src="https://tva1.sinaimg.cn/large/008i3skNly1gvyozvc4c5j31jk0im0ug.jpg" width="800" />
+<img alt="css-contain" src="https://tva1.sinaimg.cn/large/008i3skNly1gvyp0jbfsmj31jk0im407.jpg" width="800" />

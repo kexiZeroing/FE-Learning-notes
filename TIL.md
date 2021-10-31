@@ -2,7 +2,10 @@
 
 1. **major.minor.patch** version (also known as **breaking.feature.fix**): `^` instructs npm to install the newest version of the package with the same major version; Use `~` to have both the major and minor version match.
 2. `__dirname` and `__filename`: running `node example.js` from `/Users/mjr`, **__dirname** is `/Users/mjr` and **__filename** is `/Users/mjr/example.js`.
-3. `path.join` and `path.resolve`: **`path.resolve()`** creates absoulte path from right to left until an absolute path is constructed, whereas **`path.join()`** simply concatenates every parameter from left to right whether they have `/` or not. e.g., `path.resolve('/a', '/b', 'c')` will get `\b\c`, `path.join('/a', '/b', 'c')` will get `\a\b\c`.
+3. `path.resolve()` and `path.join()`: **path.resolve** creates absoulte path from right to left until an absolute path is constructed, whereas **path.join** simply concatenates every parameter from left to right whether they have `/` or not. TypeError is thrown if any of the arguments is not a string.
+   - path.resolve('/a', '/b', 'c') returns: '/b/c'
+   - path.join('/a', '/b', 'c') returns: '/a/b/c'
+   - path.join('/foo', 'bar', 'baz/asdf', 'quux', '..') returns: '/foo/bar/baz/asdf'
 4. Quickly browse the history of a file in the repo: Go to a file in GitHub (or GitLab, or Bitbucket), replace `github.com` with `github.githistory.xyz` (i.e. https://github.githistory.xyz/kexiZeroing/FE-Learning-notes/blob/master/README.md)
 5. One second to read GitHub code with VS Code online. Just add 1s after github (`github1s.com`) in browser address bar for any repository you want to read. Another one, open a GitHub repo, press `.`, then VS Code opens up in your browser. You can also change `github.com` to `github.dev` in the URL in order to achieve the same effect.
 6. Type `Cmd + K` to open the GitHub command palette to quickly navigate, search projects and try other commands.
@@ -16,7 +19,7 @@
 14. Ever struggled with some forgotten processes taking over a port you're trying to use? Just run `npx kill-port [port-number]`. In addition, `fkill` is an awesome CLI tool that lets you kill hanging processes `npx fkill`.
 15. Type `env` or `printenv` in the terminal to list all the default environment variables. The `env` command can run other commands with modified environments. If no command is given, `env` prints environment variables. `printenv` can only print environment variables and cannot run commands.
 16. Install [tldr-pages](https://github.com/tldr-pages/tldr) `npm install -g tldr` which simplify the `man pages` with practical examples, e.g. try to run `tldr tar` or `tldr git branch`.
-17. Short link `react.new`, `vue.new`, `ng.new`, `js.new`, `csb.new` to create a new codeSandbox project.
+17. Short link `react.new`, `vue.new`, `ng.new`, `js.new`, `csb.new` to create a new codeSandbox project. [Stackblitz](https://stackblitz.com/) is another similar platform and try `node.new/nodemon`.
 18. Use `if (typeof window === 'undefined')` to execute code only in the server-side. We can’t do it using `if (window === undefined)` because we’d get a “window is not defined” runtime error.
 19. `du` command is used to display disk usage statistics. It calculate and print the disk space used by files or directories. `du -ah` (`-a` means display an entry for each file; `-h` for human-readable output).
 20. You can set the parameters of the function passed to setInterval and setTimeout by specifying extra arguments in the call, e.g. `setTimeout(console.log, 1000, 'hello');`
