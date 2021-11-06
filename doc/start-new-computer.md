@@ -1,13 +1,14 @@
 ## Setting up development environment
-1. Install the Homebrew package manager, and you can install almost any app from the command line. Make sure everything is up to date `brew update`.
-2. Install VS Code, Chrome, iTerm2, Docker through Homebrew
+1. Install the Homebrew package manager, and you can install almost any app from the command line. Make sure everything is up to date `brew update`. (M1 installation at `/opt/homebrew/`, Intel at `/usr/local/Cellar/`)
+2. Install VS Code, Chrome, iTerm2, Docker through Homebrew, then you can use `brew list` and `brew info google-chrome` to check.
     ```shell
+    # refer to https://formulae.brew.sh
     brew install git yarn make
-    brew cask install visual-studio-code google-chrome iterm2 docker
+    brew install --cask visual-studio-code google-chrome iterm2 docker
     ```
-3. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh).
-4. Use `nvm` to install Node.js, and install the latest version of node `nvm install node` (or `nvm install xx.xx` and `nvm use xx.xx`). Run `node -v && npm -v` to check the version.
-5. Set global configuration with Git `touch ~/.gitconfig`
+3. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) anc check the `.zshrc` file.
+4. Use `nvm` to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
+5. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
     ```
     [user]
       name   = Firstname Lastname
@@ -42,7 +43,7 @@
     A curated list of shell commands specific to macOS: https://github.com/herrbischoff/awesome-macos-command-line
 
 7. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
-8. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
+8. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`. Set `Format Document With... (Prettier)` and `Format On Save`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
    - `Emoji Snippets` (typing `:smile`) helps to insert emoji in HTML, JS, CSS, React and more. You can also add `"editor.quickSuggestions": true` in user settings.
    - `Markdown Emoji` (typing `:smile:`) supports to built-in Markdown preview.
 9. Check out dotfiles https://github.com/mathiasbynens/dotfiles
@@ -67,8 +68,6 @@ git config --global user.name "Your name here"
 git config --global user.email "your_email@example.com"
 git config --global color.ui true
 ```
-
-For your personal project with another git account (distinguish from the work-specific repositories), use `git config` to set another user without `--global`.
 
 ### Cloning with HTTPS or SSH
 When you `git clone` using HTTPS URLs on the command line, Git will ask for your GitHub username and password the first time. It is likely that Git will use a credential helper provided by your operating system. If so, your GitHub credentials were cached and this setup applies across repos. Password-based authentication for Git is [deprecated](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations), and we recommend using a **personal access token (PAT)** when prompted for a password instead. Once you have a token, you can enter it instead of your password when performing Git operations over HTTPS. (If you are not prompted for the username and password, your credentials may be cached on your computer. You can update your credentials in the Keychain to replace your old password with the token).
