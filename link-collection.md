@@ -86,6 +86,8 @@ All the Ways to Make a Web Component: https://webcomponents.dev/blog/all-the-way
 
 Code Generator for HTTP Requests: https://www.labnol.org/apps/urlfetch.html
 
+Create README for your open source project: https://readme.so/
+
 ---
 
 ## CSS related

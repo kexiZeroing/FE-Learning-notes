@@ -35,7 +35,7 @@ The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it de
 
 - `git reflog` doesn't traverse HEAD's ancestry. The reflog is an ordered list of the commits that HEAD has pointed to: **it's the undo history for your repo**. The reflog isn't part of the repo itself (it's stored separately to the commits themselves) and isn't included in pushes, fetches or clones; it's purely local. If you accidentally reset to an older commit, or rebase wrongly, or any other operation that visually "removes" commits, you can use the reflog to see where you were before and `git reset --hard` back to that ref to restore your previous state.
 
-### Rewrite History: squash commit, fixup and autosquash
+### rewrite history: squash commit, fixup and autosquash
 - https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
 - https://fle.github.io/git-tip-keep-your-branch-clean-with-fixup-and-autosquash.html
 
@@ -46,6 +46,10 @@ For example, I want to change the git user (rewrite history) after push the code
 4. Change the word 'pick' to 'edit' (there is a commit list you can change), save and exit; rebase is stopped at the next commit and you can edit it.
 5. `git commit --amend --reset-author --no-edit` and `git rebase --continue` to confirm and continue your rebase. (there is also a `git rebase --abort` command)
 6. `git push --force-with-lease` to overwrite the remote history. (`--force-with-lease` is safer than `--force`: If the remote branch has the same value as the remote branch on your local machine, you will overwrite remote. If it doesn't have the same value, it indicates a change that someone else made to the remote branch while you were working on your code and thus will not overwrite any code.)
+
+### rename branch
+- Rename the branch while working in this branch: `git branch -m <new name>`; rename from outside the branch: `git branch -m <old name> <new name>`.
+- Using 'master' as the name for the initial branch. This default branch name is subject to change. To configure the initial branch name to use in all of your new repositories, call `git config --global init.defaultBranch <name>`.
 
 ### git restore and git switch
 `git checkout` is one of the many reasons why newcomers find git confusing, and that is because its effect is context-dependent. In version 2.23 of git, two new commands have been introduced to split the old `git checkout` in two.

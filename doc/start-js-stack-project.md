@@ -78,18 +78,20 @@ In production, however, you can choose between not generating source maps at all
 ```
 
 ## Set up Prettier and ESLint
-1. Install `Prettier` and `ESLint` plugins and enable `format on save` in settings (execute `save without formatting` command to disable). We can edit some default settings for prettier in settings (`cmd + ,`, then input prettier).
-2. Install eslint and prettier npm packages `npm i -D eslint prettier`
-3. Run `eslint --init` to create a `eslintrc.json` (or `.js`, `.yml`) config file after install eslint globally `npm i -g eslint` (otherwise need to run `./node_modules/eslint/bin/eslint.js --init`), pick the following options:
+1. Install `Prettier` and `ESLint` plugins and enable `format on save` in settings (execute `save without formatting` command to disable). If you don't see the code formatted automatically on file save then it might be because you have multiple formatters installed in VS Code. Set `Format Document With...` and choose prettier to get it working.
+2. We can edit some default settings for prettier in settings (`cmd + ,`, then type prettier)
+3. Install eslint and prettier npm packages `npm i -D eslint prettier`.
+4. Run `eslint --init` to create a `eslintrc.json` (or `.js`, `.yml`) config file after install eslint globally `npm i -g eslint` (otherwise need to run `./node_modules/eslint/bin/eslint.js --init`), pick the following options:
     - To check syntax, find problems, and enforce code style
     - JavaScript modules (import/export)
     - None of these
     - TypeScript: No
     - Browser or Node, as you prefer
     - Use a popular style guide Airbnb
-4. Create a config file for Prettier. Note that the VS Code's prettier plugin may inconsistent with prettier npm package in devDependencies that eslint uses, so we use this config file to unify the rules.
+5. Create a config file for Prettier. Note that the VS Code's prettier plugin may inconsistent with prettier npm package in devDependencies that eslint uses, so we use this config file to unify the rules.
     ```js
     // .prettierrc.js
+    // refer to https://prettier.io/docs/en/options.html
     module.exports = {
         trailingComma: "es5",
         tabWidth: 2,
@@ -97,8 +99,8 @@ In production, however, you can choose between not generating source maps at all
         singleQuote: true,
     };
     ```
-5. Install `npm i -D eslint-plugin-prettier eslint-config-prettier`. The first one is used to run prettier as an ESLint rule. The second one is used to to disable ESLint rules that might be conflict with prettier.
-6. Then you have to tell ESLint to use Prettier as a plugin and turn off rules that are unnecessary or might conflict with Prettier:
+6. Install `npm i -D eslint-plugin-prettier eslint-config-prettier`. The first one is used to run prettier as an ESLint rule. The second one is used to to disable ESLint rules that might be conflict with prettier.
+7. Then you have to tell ESLint to use Prettier as a plugin and turn off rules that are unnecessary or might conflict with Prettier:
     ```js
     //.eslintrc.js
     module.exports = {
@@ -118,7 +120,7 @@ In production, however, you can choose between not generating source maps at all
         plugins: ['prettier'],
     };
     ```
-7. Add `eslint src` as a lint script which can be run as `npm run lint`, and it shows eslint errors in the Problems tab. Run `npm run lint -- --fix` to fix errors (if not format on save).
+8. Add `eslint src` as a lint script which can be run as `npm run lint`, and it shows eslint errors in the Problems tab. Run `npm run lint -- --fix` to fix errors (if not format on save).
 
 ### What is Husky
 While working on an enterprise development team, it is important that all code linting and unit tests are passing before committing code, especially if you are using some form of continuous integration. **Husky** is a very popular npm package that allows custom scripts to be ran against your repository to prevent bad `git commit` and `git push`, which makes commits of fixing lint errors doesn't happen.
@@ -196,9 +198,13 @@ There are two points in time that you can integrate dynamic content into a Jamsa
 ## Serverless
 Your code needs to be hosted on a server. Depending on the size of your code and the amount of users you expect to use your product, you might need many servers. Companies used to have their own facilities and warehouses that held their servers and many still do. But for many, this is not ideal. Servers can be difficult to maintain. Maintaining servers and the buildings that house them can become expensive too. That's where AWS and other cloud providers come in.
 
-**Cloud computing** is basically renting out servers and data storage that's owned by someone else. This cuts out the need to buy and maintain physical servers. Through AWS, you gain access to resources like storage services, servers, networking, analytics, AI, and more. There are many other benefits: You pay only for what you use. You can easily spin up and use new servers when needed, allowing you to scale quickly. You can deploy applications globally. With cloud computing, you don't have to worry about server maintenance. But you can decide what type of server to deploy, how much computing power you'll require, how many servers you want, and much more. 
+Cloud is basically renting out servers and data storage that's owned by someone else (Serverless does not mean there aren't any servers; You still need servers to host and run your code.) Through the cloud provider (AWS, Azure, or Google Cloud), you gain access to resources like storage services, servers, networking, analytics, AI, and more. There are many other benefits: You pay only for what you use. You can easily spin up and use new servers when needed, allowing you to scale quickly. You can deploy applications globally. 
 
-**Serverless** takes cloud computing to the next level. You don't have to worry about the servers at all and you can completely focus on your code. Serverless does not mean there aren't any servers. You still need servers to host and run your code. Serverless computing is an execution model where the cloud provider (AWS, Azure, or Google Cloud) is responsible for executing a piece of code by dynamically allocating the resources, and only charging for the amount of resources used to run the code. The code is typically run inside stateless containers that can be triggered by a variety of events including http requests, database events, queuing services, file uploads, etc. The code that is sent to the cloud provider for execution is usually in the form of a function. Hence serverless is sometimes referred to as "Functions as a Service" (FaaS).
+There are different families of cloud services.
+- **Infrastructure as a service (IaaS)** - Amazon EC2, Digital Ocean
+- **Platform as a service (PaaS)** - Heroku, AWS Elastic Beanstalk
+- **Software as a service (SaaS)** - Dropbox, iCloud, Slack
+- **Function as a service (FaaS)** - AWS Lambda
 
 ## Web Hosting and Domain registration
 Domain registrants (GoDaddy, Hover, Google Domains, Amazon Route 53...) are for registering domain names. If you want `itiscool.com`, you’re going to have to buy it, and domain registrants are companies that help you do that. Just because you own a domain doesn’t mean it will do anything. It’s likely that you will see a “coming soon” page after buying a domain name.
