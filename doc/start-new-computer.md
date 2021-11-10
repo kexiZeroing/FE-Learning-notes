@@ -1,14 +1,15 @@
 ## Setting up development environment
 1. Install the Homebrew package manager, and you can install almost any app from the command line. Make sure everything is up to date `brew update`. (M1 installation at `/opt/homebrew/`, Intel at `/usr/local/Cellar/`)
-2. Install VS Code, Chrome, iTerm2, Docker through Homebrew, then you can use `brew list` and `brew info google-chrome` to check.
+2. Check `git --version` and may need to install Command Line Developer Tools.
+3. Install VS Code, Chrome, iTerm2, Docker through Homebrew, then you can use `brew list` and `brew info google-chrome` to check.
     ```shell
     # refer to https://formulae.brew.sh
     brew install git yarn make
     brew install --cask visual-studio-code google-chrome iterm2 docker
     ```
-3. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) anc check the `.zshrc` file.
-4. Use `nvm` to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
-5. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
+4. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) anc check the `.zshrc` file.
+5. Use `nvm` to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
+6. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
     ```
     [user]
       name   = Firstname Lastname
@@ -25,7 +26,7 @@
       lg     = log --pretty=format:'%h %ad%x09%an%x09%s' --date=short
     ```
     *(%h = commit hash, %x09 = tab, %an = author name, %ad = author date, %s = subject)*   
-6. Some commands for Finder
+7. Some commands for Finder
     ```shell
     # Show Library folder
     chflags nohidden ~/Library
@@ -42,11 +43,12 @@
     
     A curated list of shell commands specific to macOS: https://github.com/herrbischoff/awesome-macos-command-line
 
-7. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
-8. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`. Set `Format On Save` and `Format Document With... (Prettier)` if needed. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
+8. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
+9. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
+   - Prettier usage: https://prettier.io/docs/en/install.html
    - `Emoji Snippets` (typing `:smile`) helps to insert emoji in HTML, JS, CSS, React and more. You can also add `"editor.quickSuggestions": true` in user settings.
    - `Markdown Emoji` (typing `:smile:`) supports to built-in Markdown preview.
-9. Check out dotfiles https://github.com/mathiasbynens/dotfiles
+10. Check out dotfiles https://github.com/mathiasbynens/dotfiles
 
 Some references:
 - https://dev.to/swyx/my-new-mac-setup-4ibi
