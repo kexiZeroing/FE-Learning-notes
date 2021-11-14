@@ -1,0 +1,21 @@
+每周搬运新鲜事儿 2021-11-14
+
+从 2019 年我养成了看 Twitter 的习惯，关注了不少做 Web 开发（偏前端、偏性能、偏工具）的人，最主要的收获就是好像参与了很多技术大会或者好像面对面在听一些国外开发者的工作。这里倒不是说可以提升多少硬实力，毕竟还是属于片段性的，主要就是关注社区在做什么，不想与其脱节，看看有什么新的东西开拓一下眼界或者找找共鸣，至少很纯粹很心静。最近觉得我不如再往前多走一步，在浏览之余把我看到的总结和分享出来，一周一次。我在技术上是有明显舒适圈的，超过了一个度我会感觉很不适，就想逃离。但这件事还在我的可控范围之内，不需要多深入或者刻意学习什么，而且写出来的不代表我就很懂，可能我只知道它在做什么和我多少有点关系而已。这个类似于 Weekly Newsletter，但我只是做一下翻译和整理，是个搬运工，所以标题就叫做『每周搬运新鲜事儿』，这是第一篇，希望可以一直坚持下去。
+
+1. Chrome DevTools 之后的的版本（现在在 canary experiment）会有一个 Recorder tab。当开启一次录制，它可以记录你在页面上的所有操作，点击、表单输入、页面滚动、跳转等等，生成一个时间线轴，然后可以回放这些轨迹，而且轨迹的每一步是可以点进去编辑的。更有用的是它可以被导出为一个 js puppeteer 脚本，和做爬虫，做 E2E 测试模拟用户行为的的脚本是类似的。
+
+2. React Router v6 发布，具体看 https://remix.run/blog/react-router-v6
+
+3. Angular 13 发布，使用 TypeScript 4.4 和 RxJS 7.4，对测试 TestBed 的优化，更简单的 API 去动态引入 component，不再支持 IE，在 a11y 方面提升 Angular Material components 等等。
+
+4. Github Universe 2021，这个会议的主题大概就是共同建设更好的社区，探索行业的未来。比如新的 Github command palette，创建 GitHub Discussion，对 GitHub Copilot 的支持，GitHub builds with Codespaces (https://docs.github.com/en/codespaces/getting-started/quickstart)
+
+5. web.dev 有一些新课的发布，比如 Learn PWA, Learn Responsive Design, 具体看 https://web.dev/learn
+
+6. Rust 的受欢迎度越来越高，可以被用作 systems infrastructure, encryption, virtualization, and more low-level programming. 不少人认为它是 JavaScript 工具的未来，目前这些工具都是用 JS 或 TS 写的，性能受限，开始使用 Rust 替代类似于 minification (Terser), transpilation (Babel), formatting (Prettier), bundling (webpack), linting (ESLint) 这些工具。具体看 https://leerob.io/blog/rust
+
+7. Svelte 的作者加入 Vercel，Vercel 是类似于 Netlify 的公司，也是 Next.js 背后的公司 (Next.js original author, Guillermo Rauch, is currently the CEO of Vercel)
+
+8. Chrome 已经快接近 version 100 了，从 Chrome 96 到 99 可以强制设置 User-Agent 使用的是 major version 100，在 chrome://flags 中 enable the #force-major-version-to-100 flag. 这样做的目的是提前测试三位数的最大版本号，提前发现可能的问题。 
+
+9. React Conf 2021 will be hosted online for free December 8th 2021 at 10am PST. https://conf.reactjs.org
