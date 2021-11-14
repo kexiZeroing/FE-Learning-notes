@@ -19,7 +19,7 @@ Have you ever run into a situation where you want to try some CLI tool, but itâ€
 Thereâ€™s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with examples of things that work great with npx.
 
 ### package.json and package-lock.json
-`package-lock.json` is automatically generated for any operations where npm modifies either the `node_modules` tree or `package.json`. This file is intended to be committed into source repositories. The purpose of the `package-lock.json` is to avoid the situation where installing modules from the same `package.json` results in two different installs. `package-lock.json` is a large list of each dependency listed in your `package.json`, the specific version that should be installed, the location (URI) of the module, a hash that verifies the integrity of the module, the list of packages it requires.
+`package-lock.json` (called package locks, or lockfiles) is automatically generated for any operations where npm modifies either the `node_modules` tree or `package.json`. This file is intended to be committed into source repositories. The purpose of the `package-lock.json` is to avoid the situation where installing modules from the same `package.json` results in two different installs. `package-lock.json` is a large list of each dependency listed in your `package.json`, the specific version that should be installed, the location (URI) of the module, a hash that verifies the integrity of the module, the list of packages it requires.
 
 1. If you have a `package.json` and you run `npm i`, we generate a `package-lock.json` from it.
 2. If you run `npm i` against that `package.json` and `package-lock.json`, the latter will never be updated, even if the `package.json` would be happy with newer versions.
