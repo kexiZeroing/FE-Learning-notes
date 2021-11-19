@@ -80,6 +80,7 @@ SSH URLs provide access to a Git repository via SSH, a secure protocol. To use t
 2. Generate the personalised SSH key `ssh-keygen`
 3. Copy the key `cat id_rsa.pub | pbcopy`
 4. Go to Github Settings -> select SSH and GPG keys -> New SSH Key. Give the SSH key a description so we can know which device it belongs too (i.e., MacBook Pro 2020).
+5. Type `ssh-add -K ~/.ssh/id_rsa` to store the passphrase (`-K` for adding in your keychain). Note that the addition of keys to the agent is transient and they last only as long as the agent is running. If you kill it or restart your computer they're lost until you re-add them again.
 
 <img alt="https ssh" src="https://ftp.bmp.ovh/imgs/2020/10/830c711c7263ab75.png" width="700">
 

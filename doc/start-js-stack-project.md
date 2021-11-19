@@ -55,6 +55,33 @@ Below are `compilerOptions` to configure the JavaScript language support. Do not
 - `paths`: A series of entries which re-map imports to lookup locations relative to the `baseUrl`, e.g. `"@models/*": ["app/models/*"]`.
 - `checkJs`: Enable type checking on JavaScript files. This is the equivalent of including `// @ts-check` at the top of all JavaScript files which are included in your project. (Set `allowJs: true` in `tsconfig.json` to tell TypeScript to allow a reference to regular JavaScript files.)
 
+### module and require in Node.js 
+**Node.js treats each JavaScript file as a separate module and encloses the entire code within a function wrapper**: `(function(exports, require, module, __filename, __dirname) {})`. The five parameters — `exports`, `require`, `module`, `__filename`, `__dirname` are available inside each module. Even if you define a global variable in a module using `let` or `const` keywords, the variables are scoped locally to the module rather than being scoped globally.
+
+The `module` parameter refers to the object representing the current module and `exports` is a key of the `module` object which is also an object. `module.exports` is used for defining stuff that can be exported by a module. `exports` parameter and `module.exports` are the same unless you reassign `exports` within your module.
+
+```js
+exports.name = 'Alan';
+exports.test = function () {};
+console.log(module)  // { exports: { name: 'Alan', test: [Function] } }
+
+// exports is a reference, so no longer same as module.exports if change the reference
+exports = {
+  name: 'Bob',
+  add: function () {}
+}
+console.log(exports) // { name: 'Bob', add: [Function] }
+console.log(module)  // { exports: { name: 'Alan', test: [Function] } }
+
+module.exports = {
+  name: 'Bob',
+  add: function () {}
+}
+console.log(module)  // { exports: { name: 'Bob', add: [Function] } }
+```
+
+`require` keyword refers to a function which is used to import all the constructs exported using the `module.exports` from another module. The value returned by the `require` function in module y is equal to the `module.exports` object in the module x. The require function takes in an argument which can be a name or a path. You should provide the name as an argument when you are using the third-party modules or core modules provided by NPM. On the other hand, when you have custom modules defined by you, you should provide the path of the module as the argument.
+
 ### Live Reload and Hot Reload
 > When a file is edited, the dev server recompiles with the changes, then pushes a notification to the client code in the browser. The app code can then subscribe to "some file changed" notifications, re-import the new version of the code, and swap out the old code for the new code as the app is still running.
 
