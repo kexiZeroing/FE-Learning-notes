@@ -3,6 +3,8 @@ Create `index.js` and `index.html` files within a folder. Assuming that you have
 
 Then let’s bring a web application bundler. We want `parcel` in our project, so install it as a development dependency by running `yarn add parcel-bundler --dev` or `npm install parcel-bundler --save-dev`. Once parcel has been added to our project, we can simply run `parcel index.html` and parcel will serve the file on its built-in development server on port 1234. We can add a `start` script to our `package.json` and simply run `yarn start` or `npm start`.
 
+> WebPack, Rollup, and Parcel are all bundlers available in the JavaScript community but not fast enough because they are built with JavaScript. There is a new bundler [esbuild](https://esbuild.github.io/) written in Go that works faster than other bundlers.
+
 Let’s move on and add Sass support to our project. To do so using parcel, we run `yarn add node-sass --dev`. We can create a file called `index.scss`. To make it works, we need to reference it. Go to the `index.js` file and import it using a relative path like `import './index.scss'`.
 
 > Sass has two syntaxes. The older syntax is known as SASS (with `.sass` extention). Instead of brackets and semicolons, it uses the indentation of lines to specify blocks. The most commonly used is SCSS (with `.scss` extention). SCSS is a superset of CSS syntax, so every valid CSS is a valid SCSS as well. 
@@ -65,7 +67,7 @@ exports.name = 'Alan';
 exports.test = function () {};
 console.log(module)  // { exports: { name: 'Alan', test: [Function] } }
 
-// exports is a reference, so no longer same as module.exports if change the reference
+// exports is a reference and it's no longer same as module.exports if you change the reference
 exports = {
   name: 'Bob',
   add: function () {}
