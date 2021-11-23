@@ -19,6 +19,7 @@ Dan Abramov has a blog [Things I Don’t Know as of 2018](https://overreacted.io
 - @vaidehijoshi basecs and baseds(distributed system)
 - @devdevcharlie ML for front-end developers
 - @shadeed9 css articles https://ishadeed.com/articles/
+- @cassidoo https://github.com/readme/stories/cassidy-williams
 
 ### Business and Engineering alignment by Kent C. Dodds
 Your job isn't to turn user stories into code. The company has a mission. Everyone at the company is hired to push that mission forward. You're not a software engineer hired to code. You're a human hired to push their mission forward. It just so happens that you are a human with coding skills and during the hiring process, they recognized that those coding skills could help them in their mission.   

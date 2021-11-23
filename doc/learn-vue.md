@@ -45,6 +45,10 @@ new Vue({
 - `vue-loader` 会解析单文件形式的 Vue 组件。应该将 `vue-loader` 和 `vue-template-compiler` 一起安装，而且 `vue-template-compiler` 的版本要和 vue 保持同步。同时需要添加 `VueLoaderPlugin` 插件，它的职责是将你定义过的其它规则复制并应用到 `.vue` 文件里相应语言的块，比如 `['vue-style-loader', 'css-loader', 'sass-loader']` 处理普通的 `.scss` 文件和 `*.vue` 文件中的 `<style lang="scss">`
 - `vue-loader` 会把 template 中遇到的资源 URL 转换为 webpack 模块请求；处理 scoped style 的样式只作用于当前组件中的元素，如果希望 scoped 样式影响到更深的子组件，可以使用 `::v-deep`
 
+### dev server 监听
+1. In the context of servers, `0.0.0.0` means "all IP addresses on the local machine". If a host has two IP addresses, `192.168.1.1` and `10.1.2.1`, and a server running on the host listens on `0.0.0.0`, it will be reachable at both of those IPs.
+2. Want to access webpack-dev-server from the mobile in local network: run webpack-dev-server with `--host 0.0.0.0`, which lets the server listen for requests from the network, not just localhost.
+3. Chrome won't access `http://0.0.0.0:8089` (tried Safari can open). It's not the IP, it just means it is listening on all the network interfaces, so you can use any IP the host has.
 
 ## 路由相关
 - 使用 `vue-router 3.x`，由于 VueRouter 是 default export 只有一个，所以在引入时可以任意起名字。
@@ -71,6 +75,9 @@ Computed properties are a calculated result of its dependent values (data proper
 Watch properties are just a mechanism to detect changes in properties, allowing you to perform custom logic. It runs when the thing you're watching changes, like a listener. In general, the gist is: Try to use computed properties and if they won’t work, use a watcher.
 
 Filters (pipe in template) are removed from Vue 3.0 and no longer supported. Instead, we recommend replacing them with method calls or computed properties.
+
+> 1. Filters are not bound to the component instance, so `this` inside a filter function is `undefined`.
+> 2. Filters are JavaScript functions, therefore they can take arguments `{{ message | filterA(arg1, arg2) }}`. Here `filterA` takes three arguments: `message, arg1, arg2`. 
 
 ### $nextTick
 The key concept to understand is that the DOM is updated asynchronously. **When you change a value in Vue, the change is not immediately rendered to the DOM**. Instead, Vue queues a DOM update and then, on a timer, updates the DOM. Most of the time we don’t need to care about this, but it can be tricky when you want to do something that depends on the post-update DOM state. In order to wait until Vue has finished updating the DOM after a data change, you can use `Vue.nextTick(callback)` immediately after the data is changed. The callback will be called after the DOM has been updated.
