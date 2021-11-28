@@ -115,6 +115,16 @@ In production, however, you can choose between not generating source maps at all
 }
 ```
 
+### web app manifest
+An installed PWA can escape a user’s browser tab and show up everywhere other apps do: in app switchers, in task bars, in app launchers. They can have their own stand-alone window. To users, they feel just like any other app installed on their system. 
+
+While installation criteria varies slightly browser to browser, in general, they agree that these three items must be included for an PWA to be considered installable:
+- Served over HTTPS
+- Include a Web App Manifest that includes `Name`, `Icons`, `Start URL`, `Display Mode`
+- Registers a Service Worker
+
+The Web App Manifest is the key to describing your PWA to the browser. Read https://web.dev/add-manifest
+
 ## Set up Prettier and ESLint
 1. Install `Prettier` and `ESLint` plugins and enable `format on save` in settings (execute `save without formatting` command to disable). If you don't see the code formatted automatically on file save then it might be because you have multiple formatters installed in VS Code. Set `Format Document With...` and choose prettier to get it working.
 2. We can edit some default settings for prettier in settings (`cmd + ,`, then type prettier)

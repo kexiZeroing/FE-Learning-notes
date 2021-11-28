@@ -14,6 +14,8 @@ Inside look at modern web browser (4 parts): https://developers.google.com/web/u
 
 Build excellent websites: https://web.dev
 
+Google Developers Codelabs: https://codelabs.developers.google.com/?cat=web
+
 CS 61B: Data Structures: https://inst.eecs.berkeley.edu/~cs61b/sp20/index.html
 
 Intro to Computer Systems: http://www.cs.cmu.edu/~213/schedule.html
