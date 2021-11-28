@@ -52,9 +52,9 @@ Web Page Test: https://www.webpagetest.org/
 
 Chrome DevTools tips: https://umaar.com/dev-tips/
 
-HTML DOM with vanilla JavaScript: https://htmldom.dev/
+HTML Tips & Tricks: https://www.htmhell.dev/tips/
 
-JavaScript utilities in single line: https://1loc.dev/
+HTML DOM with vanilla JavaScript: https://htmldom.dev/
 
 Git explorer: https://gitexplorer.com/
 
@@ -140,3 +140,5 @@ How styled-components works: https://medium.com/styled-components/how-styled-com
 Webpack 5 boilerplate: https://github.com/taniarascia/webpack-boilerplate
 
 Start developing websites like it's 2025: https://react2025.com
+
+Introducing Remix: https://www.youtube.com/watch?v=wsJaUjd1rUo

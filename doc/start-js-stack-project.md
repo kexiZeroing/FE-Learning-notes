@@ -222,6 +222,13 @@ NPM Scripts are a set of built-in and custom scripts defined in the `package.jso
 - Passing arguments to other NPM scripts, we can leverage the `--` separator. e.g. `"pass-flags-to-other-script": "npm run my-script -- --watch"` will pass the `--watch` flag to the `my-script` command.
 - One convention that you may have seen is using a prefix and a colon to group scripts, for example `build:dev` and `build:prod`. This can be helpful to create groups of scripts that are easier to identify by their prefixes.
 
+## Debug iOS Safari from your Mac
+1. On your iPhone, go to Settings > Safari > Advanced and toggle on `Web Inspector`.
+2. On your Mac, open Safari and go to Safari > Preferences > Advanced then check `Show Develop menu in menu bar`.
+3. Connect your iPhone to your Mac with the USB cable.
+4. On your iPhone, open the web site that you want to debug.
+5. On your Mac, in Safari, the name of the iOS device will appear as a submenu in the `Develop menu`. This will open a Web Inspector window on your Mac. 
+
 ## Jamstack
 Jamstack is a frontend architecture and stands for **J**avascript, **A**PIs, and **M**arkup stack. In this architecture, the frontend and the backend are completely separate. All interactions with the backend and third parties are done using APIs. Markup that incorporates Javascript, is pre-built into static assets, served to a client from a CDN, and relies on reusable APIs for its functionalities. **(essentially meaning static hosting + services)**
 

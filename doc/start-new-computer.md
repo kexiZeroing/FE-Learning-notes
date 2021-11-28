@@ -8,6 +8,11 @@
     brew install --cask visual-studio-code google-chrome iterm2 docker
     ```
 4. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) anc check the `.zshrc` file.
+   > 'unable to access error': Something is blocking the connection to github. It is likely some kind of firewall, either on your machine or in your network. If it works with a browser on same machine then the browser is probably using a proxy and you need to configure git to use this proxy too.
+   > - check if your git uses proxy: `git config --global http.proxy`
+   > - set proxy address: `git config --global http.proxy 127.0.0.1:7890`
+   > - reset the proxy: `git config --global --unset http.proxy`
+
 5. Use `nvm` to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
 6. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
     ```
@@ -44,7 +49,7 @@
     A curated list of shell commands specific to macOS: https://github.com/herrbischoff/awesome-macos-command-line
 
 8. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
-9. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
+9. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`, `Live Server`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
    - Prettier usage: https://prettier.io/docs/en/install.html
    - `Emoji Snippets` (typing `:smile`) helps to insert emoji in HTML, JS, CSS, React and more. You can also add `"editor.quickSuggestions": true` in user settings.
    - `Markdown Emoji` (typing `:smile:`) supports to built-in Markdown preview.
