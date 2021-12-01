@@ -23,12 +23,28 @@ The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it de
 
 - If you pull remote changes with the flag `--merge`, which is also the default, then your local changes are merged with the remote changes. This results in a merge commit that points to the latest local commit and the latest remote commit.
 
+### git remote
+A remote URL is the place where your code is stored. You can only push to two types of URL addresses: HTTPS URL like `https://github.com/user/repo.git` or SSH URL like `git@github.com:user/repo.git`. Git associates a remote URL with a name, and your default remote is usually called `origin`.
+
+- `git remote [-v | --verbose]` will show remote url after name.
+- use `git remote add` to match a remote URL with a name. It takes two arguments: a remote name, for example, `origin`, and a remote URL, for example, `https://github.com/user/repo.git`
+- use `git remote set-url` to change an existing remote repository URL. It takes two arguments: an existing remote name like `origin` and a new URL for the remote.
+
 ### undo a git merge with conflicts
 - Since your pull was unsuccessful then HEAD is the last "valid" commit on your branch: `git reset --hard HEAD`
 
 - `git reset --merge` attempts to reset the working copy to whatever the state it was before the merge. It means that it should restore any uncommitted changes before the merge.
 
 - Generally you shouldn't merge with uncommitted changes. If you have changes you don't want to commit before starting a merge, just `git stash` them before the merge and `git stash pop` after finishing the merge.
+
+## working on a wrong branch
+- If you did't commit the changes, use `git stash` (**git stash is per-repository, not per-branch**)
+    - git stash
+    - git checkout right_branch
+    - git stash apply
+- If you committed to the wrong branch, `git reset` those commits individually. Once you have done that, switch back to the desired branch and there you can use `git cherry-pick` to pick the specific commits.
+  - git checkout right_branch
+  - git cherry-pick commit_hash
 
 ### git log and git reflog
 - `git log` shows the current HEAD and its ancestry. That is, it prints the commit HEAD points to, then its parent, its parent, and so on. It traverses back through the repo's ancestry by recursively looking up each commit's parent. (often use `git log --pretty=oneline`)

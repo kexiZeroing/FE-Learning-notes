@@ -64,6 +64,26 @@ import { default as myDefault } from './modules/square.js';
 import React, { Component } from 'react'
 ```
 
+```javascript
+// ES6 import and module.exports
+
+// Default import/export:
+module.exports = tiger
+// or
+export default function tiger() {}
+
+import tiger from './tiger'
+
+// Named import/export:
+module.exports = { tiger }
+// or
+module.exports.tiger = tiger
+// or
+export function tiger() => {}
+
+import { tiger } from './tiger'
+```
+
 Inside the `import` and `export` statement's curly braces, you can use the keyword `as` along with a new feature name, to change the identifying name you will use inside the module. It arguably makes more sense to leave your module code alone, and make the changes in the imports. This especially makes sense when you are importing from third party modules that you don't have any control over.
 
 ```javascript

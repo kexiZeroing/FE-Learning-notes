@@ -14,6 +14,9 @@
    > - reset the proxy: `git config --global --unset http.proxy`
 
 5. Use `nvm` to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
+   - set default node version: `nvm alias default x.y.z` (`nvm alias default node` to make the "latest" default)
+   - check npm config: `npm config ls`
+   - `npm config set registry http://xyz` to change the registry, `npm config delete registry` to change back to default (`https://registry.npmjs.org/`), `npm get registry` to see the current set.
 6. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
     ```
     [user]
