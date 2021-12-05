@@ -7,6 +7,9 @@
 - 每一个 page 里的 js 文件会创建该子项目的 Vue 实例，指定对应的 component, router, store
 - 每一个 page 有对应的 `router/`，这是子项目的路由，而且每个路由加载的 component 都是异步获取，在访问该路由时按需加载
 - webpack 打包时（`dist/`）会 emit 出所有 HtmlWebpackPlugin 生成的 html 文件（这也是浏览器访问的入口），相对每个 entry 打包出的 js 文件（filename, `js/[name].[chunkhash].js`），所有异步加载的组件 js（chunkFilename, `js/[id].[chunkhash].js'`） 
+- webpack 设置请求代理 proxy，默认情况下假设前端是 localhost:3000，后端是 localhost:8082，那么后端通过 request.getHeader("Host") 获取的依旧是 localhost:3000。如果设置了 `changeOrigin: true`，那么后端才会看到的是 localhost:8082, 代理服务器会根据请求的 target 地址修改 Host。
+- 老项目（vue 1.x + webpack 1.x）是纯单页应用，单一的入口文件 `index.js`，里面有路由的配置，需要的模块懒加载。这里面也有很多独立的宣传页，结合 `HtmlWebpackPlugin` 生成纯静态页面。
+
 
 ### 关于 Vue 不同的构建版本
 Vue npm 包有不同的 Vue.js 构建版本，可以在 `node_modules/vue/dist` 中看到它们，这里大致包括完整版、编译器（编译template）、运行时（创建 Vue 实例/渲染/处理虚拟 DOM）、UMD 版本（通过 `<script>` 标签直接用在浏览器中）、CommonJS 版本（用于很老的打包工具）、ES Module 版本（有两个，分别用于现代打包工具和浏览器 `<script type="module">` 直接导入）。如果要用完整版，则需要在打包工具里配置一个 resolve.alias 别名 `'vue$': 'vue/dist/vue.esm.js`，这样引入的 Vue 是基于构建工具使用的版本。
@@ -101,3 +104,6 @@ It’s useful for slot content to have access to data only available in the chil
 
 ### keep-alive
 `<keep-alive>` is a wrapper element that surrounds dynamic components. The most common example is a Tab system where the content switches to a different component depending on which tab is open. `keep-alive` stores a cached reference to your component when it’s not active. This means that Vue does not have to create a new instance every single time you switch components (lifecycle `mounted()` gets called only once). Some cases where you might want to cache the state like user input, reading progress, making lots of API calls in your component and you only want to make them once. There are two unique hooks `activated()` and `deactivated()` to help observe when a kept alive component is toggled - as the component remains mounted, but is not in use.
+
+### `.sync`
+The `.sync` modifier for props is just a syntax sugar that automatically expands into an additional `v-on` listener: `<comp :bar.sync="foo">` expands to `<comp :bar="foo" @update:bar="v => foo = v">`. The `.sync` was added after we had added `v-model` for components and found that people often could use that `v-model` logic for more than one prop. So they essentially do the same thing.
