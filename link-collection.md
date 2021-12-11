@@ -95,6 +95,8 @@ The Timeline Of The Web: https://thehistoryoftheweb.com/timeline/
 ---
 
 ## CSS related
+Defensive CSS - writing CSS that is protected: https://ishadeed.com/article/defensive-css
+
 CSS percentage: https://wattenberger.com/blog/css-percents
 
 Centering in CSS: https://ishadeed.com/article/learn-css-centering
