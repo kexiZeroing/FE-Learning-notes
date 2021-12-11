@@ -1,12 +1,16 @@
 ## 项目是怎么跑起来的
 ### 项目属于多页应用，这里面有很多子项目（`pages/`）
-- 在 webpack 配置的 entry 里可以看到这些子项目入口
+- 在 webpack 配置的 entry 里可以看到这些子项目入口，entry 的 base 路径可以由 context 指定
 - 对于每一个 page，都有对应的 `HtmlWebpackPlugin` 指定它的模板，并注入它需要的 chunks （对应每一个 entry 打包出的 js）
     - 指定 `chunks` 是因为项目是多 entry 会生成多个编译后的 js 文件，chunks 决定使用哪些 js 文件，如果没有指定默认会全部引用
-    - `inject` 值为 true，表明 chunks js 会被注入到 html 文件的 body 底部
+    - `inject` 值为 true，表明 chunks js 会被注入到 html 文件的 body 底部（默认会在 head 中以 script defer 标签引入）
+    - 使用 `mini-css-extract-plugin` 产出的 CSS 文件会在 head 中以 link 标签引入
+    - html 模板可以使用 ejs 语法，如果不指定模板，默认的模板可以在 node_modules 中找到这个插件，里面有一个 `default_index.ejs`
 - 每一个 page 里的 js 文件会创建该子项目的 Vue 实例，指定对应的 component, router, store
 - 每一个 page 有对应的 `router/`，这是子项目的路由，而且每个路由加载的 component 都是异步获取，在访问该路由时按需加载
-- webpack 打包时（`dist/`）会 emit 出所有 HtmlWebpackPlugin 生成的 html 文件（这也是浏览器访问的入口），相对每个 entry 打包出的 js 文件（filename, `js/[name].[chunkhash].js`），所有异步加载的组件 js（chunkFilename, `js/[id].[chunkhash].js'`） 
+- webpack 打包时（`dist/`）会 emit 出所有 HtmlWebpackPlugin 生成的 html 文件（这也是浏览器访问的入口），相对每个 entry 打包出的 js 文件（filename, `js/[name].[chunkhash].js`），所有异步加载的组件 js（chunkFilename, `js/[id].[chunkhash].js'`）
+- 图片、音乐、字体等资源的打包处理使用 `url-loader` 结合 `limit` 的设置，生成 `img/[name].[hash:7].[ext]` 这样的文件。
+- `performance` 属性用来设置当打包资源和入口文件超过一定的大小给出的提示，可以分别设置它们的上限和哪些文件被检查。
 - webpack 设置请求代理 proxy，默认情况下假设前端是 localhost:3000，后端是 localhost:8082，那么后端通过 request.getHeader("Host") 获取的依旧是 localhost:3000。如果设置了 `changeOrigin: true`，那么后端才会看到的是 localhost:8082, 代理服务器会根据请求的 target 地址修改 Host。
 - 老项目（vue 1.x + webpack 1.x）是纯单页应用，单一的入口文件 `index.js`，里面有路由的配置，需要的模块懒加载。这里面也有很多独立的宣传页，结合 `HtmlWebpackPlugin` 生成纯静态页面。
 
@@ -40,18 +44,26 @@ new Vue({
 - alias 配置别名，把导入路径映射成一个新的导入路径，比如 `"@": path.join(__dirname, 'src')`
 - modules 数组，tell webpack what directories should be searched when resolving modules, 默认是去 node_modules 目录下寻找。
 
-### ExtractTextPlugin
-- 打包样式，一种是使用 `style-loader` 将生成的 style 标签并且插入到 head 里，另一种是使用  `extract-text-webpack-plugin`，将样式文件单独打包并指定生成的 filename，它需要同时配置 loader 和 plugin 两个地方。
-- Since webpack v4 the `extract-text-webpack-plugin` should not be used for css. Use `mini-css-extract-plugin` instead.
-
-### Vue Loader
-- `vue-loader` 会解析单文件形式的 Vue 组件。应该将 `vue-loader` 和 `vue-template-compiler` 一起安装，而且 `vue-template-compiler` 的版本要和 vue 保持同步。同时需要添加 `VueLoaderPlugin` 插件，它的职责是将你定义过的其它规则复制并应用到 `.vue` 文件里相应语言的块，比如 `['vue-style-loader', 'css-loader', 'sass-loader']` 处理普通的 `.scss` 文件和 `*.vue` 文件中的 `<style lang="scss">`
-- `vue-loader` 会把 template 中遇到的资源 URL 转换为 webpack 模块请求；处理 scoped style 的样式只作用于当前组件中的元素，如果希望 scoped 样式影响到更深的子组件，可以使用 `::v-deep`
+### css-loader
+- `css-loader` 用来解析 `@import`, `url()`, `@media`, 比如 `url()` 会被转为 `require()`
+- 默认情况下，`css-loader` 生成使用 esModule 语法的模块，这样在引入图片时需要用 `url().default`（也可以用 `import xxx from 'xx.jpg'` 相当于是 default import），或者可以给 `css-loader` 设置 `esModule: false` 改为产出 commonJS 模块。
+- 在生产环境下推荐使用 `mini-css-extract-plugin` 将 CSS 从 bundle 中分离出来，CSS 和 JS 可以被并行加载。对于开发（包括 webpack-dev-server），可以使用 `style-loader`，它会用多个标签将 CSS 插入到 DOM 中，响应会更快。但不要同时使用 `style-loader` 和 `mini-css-extract-plugin`。
 
 ### dev server 监听
 1. In the context of servers, `0.0.0.0` means "all IP addresses on the local machine". If a host has two IP addresses, `192.168.1.1` and `10.1.2.1`, and a server running on the host listens on `0.0.0.0`, it will be reachable at both of those IPs.
 2. Want to access webpack-dev-server from the mobile in local network: run webpack-dev-server with `--host 0.0.0.0`, which lets the server listen for requests from the network, not just localhost.
 3. Chrome won't access `http://0.0.0.0:8089` (tried Safari can open). It's not the IP, it just means it is listening on all the network interfaces, so you can use any IP the host has.
+
+### extract-text-webpack-plugin
+- 打包样式，一种是使用 `style-loader` 将生成的 style 标签并且插入到 head 里，另一种是使用  `extract-text-webpack-plugin`，将样式文件单独打包并指定生成的 filename，它需要同时配置 loader 和 plugin 两个地方。
+- Since webpack v4 the `extract-text-webpack-plugin` should not be used for css. Use `mini-css-extract-plugin` instead.
+- 插件 plugin 其实是一个 Class，需要引入类，然后 `new` 使用
+
+### webpack.DefinePlugin
+- The DefinePlugin allows you to create global constants which can be configured at compile time. 比如前端本身是访问不到 `process.env` 的，通过该插件定义全局常量后，在前端的 js 代码中可以利用类似 `process.env.NODE_ENV` 的值区分环境。
+- 这个插件的替换只是对 bundle 代码的处理，并不影响 node 代码，比如 webpack config 文件中依然访问不到这些常量，仍然需要在执行命令时设置环境变量，默认直接 console `process.env` 中是没有 `NODE_ENV` 属性的。
+- 通过它定义的常量，是文本直接替换，因此字符串值需要包含实际的引号，使用 `'"production"'` 或者 `JSON.stringify('production')`
+
 
 ## 路由相关
 - 使用 `vue-router 3.x`，由于 VueRouter 是 default export 只有一个，所以在引入时可以任意起名字。
@@ -62,7 +74,11 @@ new Vue({
 - 关于路由 guard 函数，可以在整个路由对象上定义 `beforeEach` 和 `afterEach`，也可以在组件内定义 `beforeRouteEnter`, `beforeRouteUpdate`, `beforeRouteLeave`，这些函数都有 `to`, `from`, `next` 三个参数，可以帮助判断是从哪个路由进入的或者要离开时给出弹窗提示
 - 定义路由时配置 meta 字段，在所有可以访问到它对应的 `to` 或 `from` 参数中（Route 对象）读取该字段
 - 创建路由时可以提供一个 `scrollBehavior` 方法返回滚动位置，`scrollBehavior (to, from, savedPosition) {}`，其中第三个参数 `savedPosition` 当且仅当通过浏览器的 前进/后退 按钮触发时才可用
+- 组件中监听 `$route(to, from)` 的变化，可以利用 `to.matched` 的数据构造面包屑，它是一个数组，里面有匹配到的每一层嵌套路由
 
+## Vue Loader 相关
+- `vue-loader` 会解析单文件形式的 Vue 组件。应该将 `vue-loader` 和 `vue-template-compiler` 一起安装，而且 `vue-template-compiler` 的版本要和 vue 保持同步。同时需要添加 `VueLoaderPlugin` 插件，它的职责是将你定义过的其它规则复制并应用到 `.vue` 文件里相应语言的块，比如 `['vue-style-loader', 'css-loader', 'sass-loader']` 处理普通的 `.scss` 文件和 `*.vue` 文件中的 `<style lang="scss">`
+- `vue-loader` 会把 template 中遇到的资源 URL 转换为 webpack 模块请求；处理 scoped style 的样式只作用于当前组件中的元素，如果希望 scoped 样式影响到更深的子组件，可以使用 `::v-deep`
 
 ## Vuex 相关
 - Vuex store，主要包括 state，mutations，actions；从 store 中读取状态是在 computed 中返回某个 state，触发变化是在组件的 methods 中 commit mutation。在创建 Vue 实例时，注入一个 store 实例，从而在所有子组件可以访问 `this.$store`
@@ -107,3 +123,6 @@ It’s useful for slot content to have access to data only available in the chil
 
 ### `.sync`
 The `.sync` modifier for props is just a syntax sugar that automatically expands into an additional `v-on` listener: `<comp :bar.sync="foo">` expands to `<comp :bar="foo" @update:bar="v => foo = v">`. The `.sync` was added after we had added `v-model` for components and found that people often could use that `v-model` logic for more than one prop. So they essentially do the same thing.
+
+### watch $route
+When the user navigates from `/user/foo` to `/user/bar`, the same component instance will be reused. Since both routes render the same component, this is more efficient than destroying the old instance and then creating a new one. However, this also means that the lifecycle hooks of the component will not be called. To react to params changes in the same component, you can watch the `$route` object using `watch: { $route(to, from) {...} }`

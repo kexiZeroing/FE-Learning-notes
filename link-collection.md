@@ -129,8 +129,6 @@ The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-t
 
 React getting started tutorial: https://daveceddia.com/react-getting-started-tutorial
 
-State of the React Ecosystem in 2021: https://daveceddia.com/react-ecosystem-overview
-
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
 
 Build your own React: https://pomb.us/build-your-own-react
@@ -146,3 +144,5 @@ Webpack 5 boilerplate: https://github.com/taniarascia/webpack-boilerplate
 Start developing websites like it's 2025: https://react2025.com
 
 Introducing Remix: https://www.youtube.com/watch?v=wsJaUjd1rUo
+
+Let's Learn Remix: https://www.youtube.com/watch?v=pDdmF9ZhhAA

@@ -37,7 +37,7 @@ A remote URL is the place where your code is stored. You can only push to two ty
 
 - Generally you shouldn't merge with uncommitted changes. If you have changes you don't want to commit before starting a merge, just `git stash` them before the merge and `git stash pop` after finishing the merge.
 
-## working on a wrong branch
+### working on a wrong branch
 - If you did't commit the changes, use `git stash` (**git stash is per-repository, not per-branch**)
     - git stash
     - git checkout right_branch
@@ -45,6 +45,9 @@ A remote URL is the place where your code is stored. You can only push to two ty
 - If you committed to the wrong branch, `git reset` those commits individually. Once you have done that, switch back to the desired branch and there you can use `git cherry-pick` to pick the specific commits.
   - git checkout right_branch
   - git cherry-pick commit_hash
+
+### stash untracked files
+To stash your working directory including untracked files, use `git stash --include-untracked` or `git stash -u`.
 
 ### git log and git reflog
 - `git log` shows the current HEAD and its ancestry. That is, it prints the commit HEAD points to, then its parent, its parent, and so on. It traverses back through the repo's ancestry by recursively looking up each commit's parent. (often use `git log --pretty=oneline`)
