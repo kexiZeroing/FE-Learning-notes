@@ -9,7 +9,11 @@ Let’s move on and add Sass support to our project. To do so using parcel, we r
 
 > Sass has two syntaxes. The older syntax is known as SASS (with `.sass` extention). Instead of brackets and semicolons, it uses the indentation of lines to specify blocks. The most commonly used is SCSS (with `.scss` extention). SCSS is a superset of CSS syntax, so every valid CSS is a valid SCSS as well. 
 
-We need modern javascript and babel help us with that. We run `yarn add @babel/core @babel/cli @babel/preset-env --dev` and create a `.babelrc` file on the root of the project referencing the preset we are using. We also need a `parcel build index.js` as a `build` script in `package.json` file which will be used for production, and parcel will create a `dist` directory with all assets minified.
+We need modern javascript and babel help us with that. We run `yarn add @babel/core @babel/cli @babel/preset-env --dev` and create a `.babelrc` file on the root of the project referencing the preset we are using.
+
+> [@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env) takes any target environments you've specified and checks them against [its mappings](https://github.com/babel/babel/blob/main/packages/babel-compat-data/data/plugins.json) to compile a list of plugins. 
+
+At last, we need a `parcel build index.js` as a `build` script in `package.json` file which will be used for production, and parcel will create a `dist` directory with all assets minified.
 
 ### npm and npx
 One might install a package locally on a certain project using `npm install some-package`, then we want to execute that package from the command line. Only globally installed packages can be executed by typing their name only (local installs  at `./node_modules/.bin`; global installs at `/usr/local/bin`). To fix this, you must type the local path `./node_modules/.bin/some-package`.
