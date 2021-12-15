@@ -44,20 +44,30 @@ new Vue({
 - alias 配置别名，把导入路径映射成一个新的导入路径，比如 `"@": path.join(__dirname, 'src')`
 - modules 数组，tell webpack what directories should be searched when resolving modules, 默认是去 node_modules 目录下寻找。
 
-### css-loader
-- `css-loader` 用来解析 `@import`, `url()`, `@media`, 比如 `url()` 会被转为 `require()`
-- 默认情况下，`css-loader` 生成使用 esModule 语法的模块，这样在引入图片时需要用 `url().default`（也可以用 `import xxx from 'xx.jpg'` 相当于是 default import），或者可以给 `css-loader` 设置 `esModule: false` 改为产出 commonJS 模块。
-- 在生产环境下推荐使用 `mini-css-extract-plugin` 将 CSS 从 bundle 中分离出来，CSS 和 JS 可以被并行加载。对于开发（包括 webpack-dev-server），可以使用 `style-loader`，它会用多个标签将 CSS 插入到 DOM 中，响应会更快。但不要同时使用 `style-loader` 和 `mini-css-extract-plugin`。
-
 ### dev server 监听
 1. In the context of servers, `0.0.0.0` means "all IP addresses on the local machine". If a host has two IP addresses, `192.168.1.1` and `10.1.2.1`, and a server running on the host listens on `0.0.0.0`, it will be reachable at both of those IPs.
 2. Want to access webpack-dev-server from the mobile in local network: run webpack-dev-server with `--host 0.0.0.0`, which lets the server listen for requests from the network, not just localhost.
 3. Chrome won't access `http://0.0.0.0:8089` (tried Safari can open). It's not the IP, it just means it is listening on all the network interfaces, so you can use any IP the host has.
 
+### webpack in development
+There are different options available in webpack that help you automatically compile your code whenever it changes: `watch mode`, `webpack-dev-server`, `webpack-dev-middleware`.
+- `webpack --watch` doesn't exit the command line and the files will be recompiled whenever they change (每一次都生成新的 dist), but you have to refresh your browser in order to see the changes.
+- `webpack-dev-server` doesn't write any output files after compiling. Instead, it keeps bundle files in memory and serves them as if they were real files mounted at the server's root path. (Since `webpack-dev-server` v4.0.0, Hot Module Replacement is enabled by default.)
+- `webpack-dev-middleware` is an express-style development middleware that will emit files processed by webpack to a server. This is used in `webpack-dev-server` internally.
+
+### css-loader
+- `css-loader` 用来解析 `@import`, `url()`, `@media`, 比如 `url()` 会被转为 `require()`
+- 默认情况下，`css-loader` 生成使用 esModule 语法的模块，这样在引入图片时需要用 `url().default`（也可以用 `import xxx from 'xx.jpg'` 相当于是 default import），或者可以给 `css-loader` 设置 `esModule: false` 改为产出 commonJS 模块。
+- 在生产环境下推荐使用 `mini-css-extract-plugin` 将 CSS 从 bundle 中分离出来，CSS 和 JS 可以被并行加载。对于开发（包括 webpack-dev-server），可以使用 `style-loader`，它会用多个标签将 CSS 插入到 DOM 中，响应会更快。但不要同时使用 `style-loader` 和 `mini-css-extract-plugin`。
+
 ### extract-text-webpack-plugin
 - 打包样式，一种是使用 `style-loader` 将生成的 style 标签并且插入到 head 里，另一种是使用  `extract-text-webpack-plugin`，将样式文件单独打包并指定生成的 filename，它需要同时配置 loader 和 plugin 两个地方。
 - Since webpack v4 the `extract-text-webpack-plugin` should not be used for css. Use `mini-css-extract-plugin` instead.
-- 插件 plugin 其实是一个 Class，需要引入类，然后 `new` 使用
+- 插件 plugin 其实是一个 Class，需要引入类，然后 `new` 使用。
+
+### copy-webpack-plugin
+- `copy-webpack-plugin` 用来把那些已经在项目目录中的文件（比如 `public/`）拷贝到打包后的产出中（比如 `dist/`），这些文件不需要 build，不需要 webpack 的处理。
+- 拷贝的目标路径有默认值是 webpack 打包产出的 output 路径。另外可以使用 `ignore: ["**/file.*", "**/ignored-directory/**"]` 这样的语法忽略一些文件不进行拷贝。
 
 ### webpack.DefinePlugin
 - The DefinePlugin allows you to create global constants which can be configured at compile time. 比如前端本身是访问不到 `process.env` 的，通过该插件定义全局常量后，在前端的 js 代码中可以利用类似 `process.env.NODE_ENV` 的值区分环境。
@@ -86,6 +96,23 @@ new Vue({
 - 不想在组件内重复的写 `this.$store.state.xx`，`this.$store.commit`，`this.$store.dispatch`，使用 `mapState`, `mapMutations`, `mapActions` 辅助函数把 store 中同名的状态或操作映射到组件内，相当于在组件内直接定义了这些计算属性和方法，比如 `this.incrementBy(amount)` 映射为 `this.$store.dispatch('incrementBy', amount)`
 - 可以把 store 分割成多个 module，每个 module 拥有自己的 state，mutations，actions，创建 Vuex.Store 时传入 modules 配置。可以给每个 module 添加 `namespaced: true` 使其成为带命名空间的模块，此时在组件内需将 module 的名字作为第一个参数传递给 `mapState`, `mapActions`，这样所有的映射都会自动将这个 module 作为上下文（也可以用 `createNamespacedHelpers('some/nested/module')` 函数，它会返回绑定在给定命名空间上的 `mapState`, `mapActions`）
 - 如果 store 文件太大，可以将 mutations，actions 以及每个 module 分割到单独的文件
+
+## HTTP 请求相关
+### 使用 vue-resource
+- [vue-resource](https://github.com/pagekit/vue-resource) 是一个轻量级的用于处理 HTTP 请求的插件，通过 `Vue.use` 使用自定义的插件。
+- 全局对象使用 `Vue.http.get()`，在一个组件内使用 `this.$http.get()`
+- 可以定义 inteceptor 在请求发送前和接收响应前做一些处理，比如设置业务相关的请求头、添加 CSRF token、请求加 loading 状态等。
+  ```js
+  Vue.http.interceptors.push((request, next) => {
+    // 请求发送前的处理逻辑（比如判断传入的 request.no_loading 是否显示 loading）
+    // ...
+    next((response) => {
+      // 请求结果返回给 successCallback 或 errorCallback 之前，根据 `response.ok` 或 `response.status` 加一些处理逻辑 
+      // ...
+      return response
+    })
+  });
+  ```
 
 ## Vue 语法
 ### computed and watch
@@ -126,3 +153,28 @@ The `.sync` modifier for props is just a syntax sugar that automatically expands
 
 ### watch $route
 When the user navigates from `/user/foo` to `/user/bar`, the same component instance will be reused. Since both routes render the same component, this is more efficient than destroying the old instance and then creating a new one. However, this also means that the lifecycle hooks of the component will not be called. To react to params changes in the same component, you can watch the `$route` object using `watch: { $route(to, from) {...} }`
+
+### Vue.extend
+It creates a subclass of the base Vue constructor. The argument should be an object containing component options. You can use `Vue.extend` to create component definition (called "component constructor" in old documentation) and `Vue.component` to register it so it can be used in template to actually create component instance. `Vue.component` calls `Vue.extend` under the hood.
+
+### Plugins and Vue.use 
+Plugins usually add global-level functionality to Vue (e.g., add some component options by global mixin, add some Vue instance methods by attaching them to `Vue.prototype`.) Use plugins by calling `Vue.use()` method and this has to be done before calling `new Vue()`. The plugin can be object or function and if it is an object, it must expose an `install` method. `Vue.use` automatically prevents you from using the same plugin more than once, so calling it multiple times on the same plugin will install the plugin only once.
+
+### el and vm.$el
+`el` provides the Vue instance an existing DOM element to mount on. It can be a CSS selector string or an actual HTMLElement. The provided element merely serves as a mounting point and the mounted element will be replaced with Vue-generated DOM. After the instance is mounted, the resolved element will be accessible as `vm.$el`. If this option is available at instantiation, the instance will immediately enter compilation; otherwise, the user will have to explicitly call `vm.$mount()`. If no argument is provided to `$mount()`, the template will be rendered as an off-document element, and you will have to use native DOM API to insert it into the document.
+
+```js
+var MyComponent = Vue.extend({
+  template: '<div>Hello</div>'
+})
+
+// create and mount to #app (will replace #app)
+new MyComponent().$mount('#app')
+
+// the above is the same as
+new MyComponent({ el: '#app' })
+
+// or, render off-document and append afterwards
+var component = new MyComponent().$mount()
+document.getElementById('app').appendChild(component.$el)
+```
