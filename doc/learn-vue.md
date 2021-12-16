@@ -6,6 +6,7 @@
     - `inject` 值为 true，表明 chunks js 会被注入到 html 文件的 body 底部（默认会在 head 中以 script defer 标签引入）
     - 使用 `mini-css-extract-plugin` 产出的 CSS 文件会在 head 中以 link 标签引入
     - html 模板可以使用 ejs 语法，如果不指定模板，默认的模板可以在 node_modules 中找到这个插件，里面有一个 `default_index.ejs`
+    - production 情况下，`minify` 选项是默认存在的（会使用 html-minifier-terser 插件，去掉空格、注释等），如果想定制化选项，可以自己传 minify 对象，它不会和默认选项合并在一起
 - 每一个 page 里的 js 文件会创建该子项目的 Vue 实例，指定对应的 component, router, store
 - 每一个 page 有对应的 `router/`，这是子项目的路由，而且每个路由加载的 component 都是异步获取，在访问该路由时按需加载
 - webpack 打包时（`dist/`）会 emit 出所有 HtmlWebpackPlugin 生成的 html 文件（这也是浏览器访问的入口），相对每个 entry 打包出的 js 文件（filename, `js/[name].[chunkhash].js`），所有异步加载的组件 js（chunkFilename, `js/[id].[chunkhash].js'`）
@@ -14,6 +15,11 @@
 - webpack 设置请求代理 proxy，默认情况下假设前端是 localhost:3000，后端是 localhost:8082，那么后端通过 request.getHeader("Host") 获取的依旧是 localhost:3000。如果设置了 `changeOrigin: true`，那么后端才会看到的是 localhost:8082, 代理服务器会根据请求的 target 地址修改 Host。
 - 老项目（vue 1.x + webpack 1.x）是纯单页应用，单一的入口文件 `index.js`，里面有路由的配置，需要的模块懒加载。这里面也有很多独立的宣传页，结合 `HtmlWebpackPlugin` 生成纯静态页面。
 
+### 本地 build 脚本
+1. 使用 [ora](https://www.npmjs.com/package/ora) 做 spinner，提示 building for production...
+2. 使用 [rimraf](https://www.npmjs.com/package/rimraf) 删除打包路径下的资源 (`rimraf` command is an alternative to the Linux command `rm -rf`)
+3. 调用 `webpack()` 传入配置 `webpack.prod.conf` 和一个回调函数，**webpack stats 对象** 作为回调函数的参数，可以通过它获取到 webpack 打包过程中的信息，使用 `process.stdout.write(stats.toString(...))` 输出到命令行中 (`console.log` in Node is just `process.stdout.write` with formatted output)
+4. 使用 [chalk](https://www.npmjs.com/package/chalk) 在命令行中显示一些提示信息
 
 ### 关于 Vue 不同的构建版本
 Vue npm 包有不同的 Vue.js 构建版本，可以在 `node_modules/vue/dist` 中看到它们，这里大致包括完整版、编译器（编译template）、运行时（创建 Vue 实例/渲染/处理虚拟 DOM）、UMD 版本（通过 `<script>` 标签直接用在浏览器中）、CommonJS 版本（用于很老的打包工具）、ES Module 版本（有两个，分别用于现代打包工具和浏览器 `<script type="module">` 直接导入）。如果要用完整版，则需要在打包工具里配置一个 resolve.alias 别名 `'vue$': 'vue/dist/vue.esm.js`，这样引入的 Vue 是基于构建工具使用的版本。
@@ -114,6 +120,27 @@ There are different options available in webpack that help you automatically com
   });
   ```
 
+## 静态资源文件上传七牛
+使用 [Qiniu](https://www.npmjs.com/package/qiniu) 作为 webpack 打包过程中的一个插件负责静态文件上传，自定义 QiniuPlugin 的参考：https://github.com/mengsixing/qiniu-upload-plugin/blob/master/lib/qiniuUploadPlugin.js
+
+```js
+// build 脚本使用自定义的 QiniuPlugin
+const publicPath = 'https://x.y.z/';
+const assetsSubDirectory = 'a/b/';
+webpackConfig.output.publicPath = publicPath + assetsSubDirectory;
+
+webpackConfig.plugins.push(
+  new QiniuPlugin({
+    publicPath: publicPath,
+    assetsSubDirectory: assetsSubDirectory,
+    accessKey: '...',
+    secretKey: '...',
+    bucket: 'xxx',
+    zone: 'Zone_z1',
+  })
+)
+```
+
 ## Vue 语法
 ### computed and watch
 Computed properties are a calculated result of its dependent values (data properties, props). They are used whenever you have some data and need to transform it before using it in the template. In this case, creating a computed property is the best thing because **it’s cached**. They should not have any side effects and they have to be synchronous.
@@ -124,6 +151,12 @@ Filters (pipe in template) are removed from Vue 3.0 and no longer supported. Ins
 
 > 1. Filters are not bound to the component instance, so `this` inside a filter function is `undefined`.
 > 2. Filters are JavaScript functions, therefore they can take arguments `{{ message | filterA(arg1, arg2) }}`. Here `filterA` takes three arguments: `message, arg1, arg2`. 
+
+### props
+- HTML attribute names are case-insensitive, so browsers will interpret any uppercase characters as lowercase. That means kebab-cased in DOM templates and camelCase in JavaScript.
+- Passing a Boolean: Including the prop with no value will imply `true` (presence of any value are casted to `true`, absence means `false`).
+- For optional props, `null` will bypass the type check. Because when you specify a prop with a type but without `required: true`, you are essentially saying "this prop may not be present, but if it is present, it should be of type String." And `null` is the value expressing "this type is not present".
+- If the prop is an array or object, mutating the object or array itself inside the child component will affect parent state.
 
 ### $nextTick
 The key concept to understand is that the DOM is updated asynchronously. **When you change a value in Vue, the change is not immediately rendered to the DOM**. Instead, Vue queues a DOM update and then, on a timer, updates the DOM. Most of the time we don’t need to care about this, but it can be tricky when you want to do something that depends on the post-update DOM state. In order to wait until Vue has finished updating the DOM after a data change, you can use `Vue.nextTick(callback)` immediately after the data is changed. The callback will be called after the DOM has been updated.
