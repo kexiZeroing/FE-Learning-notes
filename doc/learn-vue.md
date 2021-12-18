@@ -123,6 +123,8 @@ There are different options available in webpack that help you automatically com
 ## 静态资源文件上传七牛
 使用 [Qiniu](https://www.npmjs.com/package/qiniu) 作为 webpack 打包过程中的一个插件负责静态文件上传，自定义 QiniuPlugin 的参考：https://github.com/mengsixing/qiniu-upload-plugin/blob/master/lib/qiniuUploadPlugin.js
 
+如果是静态上传页面，参考 https://github.com/liujunyang/qiniu-practice, https://www.cnblogs.com/2050/p/3913184.html
+
 ```js
 // build 脚本使用自定义的 QiniuPlugin
 const publicPath = 'https://x.y.z/';
@@ -188,7 +190,17 @@ The `.sync` modifier for props is just a syntax sugar that automatically expands
 When the user navigates from `/user/foo` to `/user/bar`, the same component instance will be reused. Since both routes render the same component, this is more efficient than destroying the old instance and then creating a new one. However, this also means that the lifecycle hooks of the component will not be called. To react to params changes in the same component, you can watch the `$route` object using `watch: { $route(to, from) {...} }`
 
 ### Vue.extend
-It creates a subclass of the base Vue constructor. The argument should be an object containing component options. You can use `Vue.extend` to create component definition (called "component constructor" in old documentation) and `Vue.component` to register it so it can be used in template to actually create component instance. `Vue.component` calls `Vue.extend` under the hood.
+It creates a subclass of the base Vue constructor. The argument should be an object containing component options. You can use `Vue.extend()` to create component definition (called "component constructor" in old documentation). `Vue.component()`, on the other hand, is to associate a given constructor with a name so Vue can pick it up in templates. When directly passing in options to `Vue.component()`, it calls `Vue.extend()` under the hood.
+
+```js
+// define
+var MyComponent = Vue.extend({
+  template: '<div>A custom component</div>'
+})
+
+// register, then use <my-component> in template
+Vue.component('my-component', MyComponent)
+```
 
 ### Plugins and Vue.use 
 Plugins usually add global-level functionality to Vue (e.g., add some component options by global mixin, add some Vue instance methods by attaching them to `Vue.prototype`.) Use plugins by calling `Vue.use()` method and this has to be done before calling `new Vue()`. The plugin can be object or function and if it is an object, it must expose an `install` method. `Vue.use` automatically prevents you from using the same plugin more than once, so calling it multiple times on the same plugin will install the plugin only once.
@@ -200,6 +212,9 @@ Plugins usually add global-level functionality to Vue (e.g., add some component 
 var MyComponent = Vue.extend({
   template: '<div>Hello</div>'
 })
+
+// attach a router to the extended component if needed
+MyComponent.options.router = router
 
 // create and mount to #app (will replace #app)
 new MyComponent().$mount('#app')

@@ -46,3 +46,52 @@ When our app wants to interact with the API, we attach the access token in the H
 
 ### Delegation with Scopes
 How does the API know what level of access it should give to the application that's requesting use of its API? We do this with scopes. **Scopes limit what an application can do on behalf of a user**. For example, HireMe123 wants to access the third party MyCalApp API to create events on user's behalf. Remember when the authorization server asked the HireMe123 user for their consent to allow HireMe123 to use the user's privileges to access MyCalApp (in a consent dialog)? HireMe123 could ask for a variety of different scopes, for example: `write:events`, `read:events`, `read:settings`, `write:settings`. So when HireMe123 requested an access token from MyCalApp's authorization server, this token has an important information `scope: write:events` saying HireMe123 has the permission to write events to the calendar. HireMe123 then sends a request to the MyCalApp API with the access token in its authorization header. When the MyCalApp API receives this request, it can see that the token contains a `write:events` scope.
+
+### Netlify uses Github login example
+- A third-party OAuth application (Netlify Auth) with `user:email` scope was recently authorized to access your account. Check: Github settings -> Applications -> Authorized OAuth Apps
+- Access token is a bearer token used to allow access from a client application **app.netlify.com** to a resource server **api.netlify.com**. (not issued from Github)
+
+```
+// netlify 3rd party login choice html page
+GET https://app.netlify.com/authorize?
+  response_type: code
+  client_id: xxxx
+  redirect_uri: https://your-year-on.netlify.com/.netlify/functions/auth-callback
+  state: csrf=xxxx&provider=netlify
+
+// choose Github login
+GET https://api.netlify.com/auth?
+  provider: github
+  site_id: app.netlify.com
+  tracking_session_id: xxxx
+  login: true
+  redirect: https://app.netlify.com/
+
+// above response will 302 to this location
+GET https://github.com/login/oauth/authorize?
+  client_id: xxxx
+  redirect_uri: https://api.netlify.com/auth/done
+  state: xxxx
+  scope: user:email
+
+// now click authorize netlify button in the page
+POST https://github.com/login/oauth/authorize
+  authorize: 1
+  authenticity_token: xxxx
+  redirect_uri: https://api.netlify.com/auth/done
+  state: xxxx
+  scope: user:email
+
+// redirect to the authorized application after above submitted 
+GET https://api.netlify.com/auth/done?
+  code: xxxx
+  state: xxxx
+
+// above response will 302 to this location with the access token
+GET https://app.netlify.com/auth#access_token=xxxx&new_user=&redirect=/
+
+// now go back to the Netlify app and following requests will have the access token
+GET https://api.netlify.com/api/v1/user
+  authorization: Bearer xxxx
+
+```

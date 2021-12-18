@@ -72,6 +72,8 @@ Manage node_modules in the system: https://github.com/voidcosmos/npkill
 
 Interactive website with live coding: https://www.strml.net/
 
+Annual portfolio refresh (resize your browser): https://lynnandtonic.com/archive/
+
 HTTP Cats: https://http.cat/
 
 Github contributions in 3D: https://skyline.github.com/
