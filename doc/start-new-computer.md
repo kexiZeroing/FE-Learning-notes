@@ -7,7 +7,7 @@
     brew install git yarn make
     brew install --cask visual-studio-code google-chrome iterm2 docker
     ```
-4. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) anc check the `.zshrc` file.
+4. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) anc check the `.zshrc` file. You can use this prompt theme https://github.com/spaceship-prompt/spaceship-prompt (`robbyrussell` is the default one)
    > 'unable to access error': Something is blocking the connection to github. It is likely some kind of firewall, either on your machine or in your network. If it works with a browser on same machine then the browser is probably using a proxy and you need to configure git to use this proxy too.
    > - check if your git uses proxy: `git config --global http.proxy`
    > - set proxy address: `git config --global http.proxy 127.0.0.1:7890`
