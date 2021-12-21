@@ -1,19 +1,24 @@
 ## 项目是怎么跑起来的
 ### 项目属于多页应用，这里面有很多子项目（`pages/`）
-- 在 webpack 配置的 entry 里可以看到这些子项目入口，entry 的 base 路径可以由 context 指定
+- 在 webpack 配置的 entry 里可以看到这些子项目入口（有的是列举出所有的入口 js 文件，有的是通过遍历 `src/pages` 得到所有入口），entry 的 base 路径可以由 context 指定
 - 对于每一个 page，都有对应的 `HtmlWebpackPlugin` 指定它的模板，并注入它需要的 chunks （对应每一个 entry 打包出的 js）
     - 指定 `chunks` 是因为项目是多 entry 会生成多个编译后的 js 文件，chunks 决定使用哪些 js 文件，如果没有指定默认会全部引用
     - `inject` 值为 true，表明 chunks js 会被注入到 html 文件的 body 底部（默认会在 head 中以 script defer 标签引入）
     - 使用 `mini-css-extract-plugin` 产出的 CSS 文件会在 head 中以 link 标签引入
     - html 模板可以使用 ejs 语法，如果不指定模板，默认的模板可以在 node_modules 中找到这个插件，里面有一个 `default_index.ejs`
     - production 情况下，`minify` 选项是默认存在的（会使用 html-minifier-terser 插件，去掉空格、注释等），如果想定制化选项，可以自己传 minify 对象，它不会和默认选项合并在一起
-- 每一个 page 里的 js 文件会创建该子项目的 Vue 实例，指定对应的 component, router, store
+- 每一个 page 里的 js 文件（入口文件）会创建该子项目的 Vue 实例，指定对应的 component, router, store, 同时会把 `jQuery`, `request`, `API`, `i18n` 这些对象挂载在 window 对象上，子组件不需要引用，直接使用。
 - 每一个 page 有对应的 `router/`，这是子项目的路由，而且每个路由加载的 component 都是异步获取，在访问该路由时按需加载
 - webpack 打包时（`dist/`）会 emit 出所有 HtmlWebpackPlugin 生成的 html 文件（这也是浏览器访问的入口），相对每个 entry 打包出的 js 文件（filename, `js/[name].[chunkhash].js`），所有异步加载的组件 js（chunkFilename, `js/[id].[chunkhash].js'`）
 - 图片、音乐、字体等资源的打包处理使用 `url-loader` 结合 `limit` 的设置，生成 `img/[name].[hash:7].[ext]` 这样的文件。
 - `performance` 属性用来设置当打包资源和入口文件超过一定的大小给出的提示，可以分别设置它们的上限和哪些文件被检查。
 - webpack 设置请求代理 proxy，默认情况下假设前端是 localhost:3000，后端是 localhost:8082，那么后端通过 request.getHeader("Host") 获取的依旧是 localhost:3000。如果设置了 `changeOrigin: true`，那么后端才会看到的是 localhost:8082, 代理服务器会根据请求的 target 地址修改 Host。
 - 老项目（vue 1.x + webpack 1.x）是纯单页应用，单一的入口文件 `index.js`，里面有路由的配置，需要的模块懒加载。这里面也有很多独立的宣传页，结合 `HtmlWebpackPlugin` 生成纯静态页面。
+
+### 网页版显示的逻辑
+- 项目 xpc 和 xh5 都部署在同一个域名下，本地运行 xpc 项目，所有的请求都会走代理，所以即便是 xh5 的页面也可以被访问到。
+- 请求 `/web?old=1` (走代理) 后端会返回 html 扫码登录页面，这里面有一个 `/static/vue/login.js?_dt=xxxxx`，里面有登录和加载网页版首页的逻辑，这样就会展示出 xh5 中的页面，其中的 iframe 可以嵌套任意 xpc 或 xh5 中的页面（只要有路由支持），这个 iframe 的链接自然也可以被单独访问。
+- 如果某个接口 404，就是它的路径没有配置代理。
 
 ### 本地 build 脚本
 1. 使用 [ora](https://www.npmjs.com/package/ora) 做 spinner，提示 building for production...
@@ -58,8 +63,14 @@ new Vue({
 ### webpack in development
 There are different options available in webpack that help you automatically compile your code whenever it changes: `watch mode`, `webpack-dev-server`, `webpack-dev-middleware`.
 - `webpack --watch` doesn't exit the command line and the files will be recompiled whenever they change (每一次都生成新的 dist), but you have to refresh your browser in order to see the changes.
-- `webpack-dev-server` doesn't write any output files after compiling. Instead, it keeps bundle files in memory and serves them as if they were real files mounted at the server's root path. (Since `webpack-dev-server` v4.0.0, Hot Module Replacement is enabled by default.)
+- `webpack-dev-server` doesn't write any output files after compiling. Instead, it keeps bundle files in memory and serves them as if they were real files mounted at the server's root path.
 - `webpack-dev-middleware` is an express-style development middleware that will emit files processed by webpack to a server. This is used in `webpack-dev-server` internally.
+
+### output path and devServer path
+- `output.path` 是 build 打包后的产出目录
+- `output.publicPath` 是 index.html 内对资源的引用路径，按照“域名 + publicPath + filename”引用文件
+- `devServer.publicPath` 是本地开启服务的路径（资源存在的路径）The bundled files will be available in the browser under this path.
+- `devServer.contentBase` It's only needed if you want to serve static files (that you don't want to run them through the bundle but they need to be available for the app.) It is recommended to use an absolute path. For example, set `contentBase: path.join(__dirname, 'movies')` and use  `<video src="/movies/foo.mp4">` in the html.
 
 ### css-loader
 - `css-loader` 用来解析 `@import`, `url()`, `@media`, 比如 `url()` 会被转为 `require()`
@@ -107,11 +118,12 @@ There are different options available in webpack that help you automatically com
 ### 使用 vue-resource
 - [vue-resource](https://github.com/pagekit/vue-resource) 是一个轻量级的用于处理 HTTP 请求的插件，通过 `Vue.use` 使用自定义的插件。
 - 全局对象使用 `Vue.http.get()`，在一个组件内使用 `this.$http.get()`
-- 可以定义 inteceptor 在请求发送前和接收响应前做一些处理，比如设置业务相关的请求头、添加 CSRF token、请求加 loading 状态等。
+- 可以定义 inteceptor 在请求发送前和接收响应前做一些处理，比如设置业务相关的请求头、添加 CSRF token、请求加 loading 状态、query 参数加时间戳等。
   ```js
   Vue.http.interceptors.push((request, next) => {
     // 请求发送前的处理逻辑（比如判断传入的 request.no_loading 是否显示 loading）
-    // ...
+    // if (request.method === 'GET') {...}
+    // if (request.method === 'POST') {...}
     next((response) => {
       // 请求结果返回给 successCallback 或 errorCallback 之前，根据 `response.ok` 或 `response.status` 加一些处理逻辑 
       // ...
@@ -119,6 +131,31 @@ There are different options available in webpack that help you automatically com
     })
   });
   ```
+
+### 自己对 axios 封装
+- 通过 `axios.defaults.headers['xyz'] = 'abc'` 这样的方式添加需要的请求头
+- 统一对 query 参数做处理
+- 加 csrf token，加业务 header
+- 根据不同的错误码做页面跳转
+
+```js
+export default {
+  get(url, params) {
+    // 统一加请求头，处理 queryString 等
+    return axios
+      .get(url)
+      .then(function(response) {
+          return response
+      })
+      .then(handleResponse)    // 统一处理 redirect, 赋值 location.href 
+      .catch(errorResponseGet) // 统一处理错误码 4xx, 5xx
+  },
+
+  post(url, params) {
+    // ...
+  }
+}
+```
 
 ## 静态资源文件上传七牛
 使用 [Qiniu](https://www.npmjs.com/package/qiniu) 作为 webpack 打包过程中的一个插件负责静态文件上传，自定义 QiniuPlugin 的参考：https://github.com/mengsixing/qiniu-upload-plugin/blob/master/lib/qiniuUploadPlugin.js
