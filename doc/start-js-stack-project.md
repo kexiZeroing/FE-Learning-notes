@@ -109,12 +109,6 @@ In development all the source files have associated source maps, but we would no
 - Source maps are usually large; they could be several hundreds of KBs even after compression.
 - We may not want to share the original source code of our application with the users.
 
-Webpack has `devtool` option that controls if and how source maps are generated.
-- Omit the `devtool` option - No SourceMap is emitted.
-- `source-map` - A full SourceMap is emitted as a separate file. It adds a reference comment to the bundle so development tools know where to find it.
-- `hidden-source-map` - Same as `source-map`, but doesn't add a reference comment to the bundle. Useful if you only want SourceMaps to map error stack traces from error reports, but don't want to expose your SourceMap for the browser development tools.
-- `eval-source-map` - Each module is executed with `eval()` and a SourceMap is added as a DataUrl to the `eval()`. Initially it is slow, but it provides fast rebuild speed. It is recommended for development builds.
-
 [source-map-explorer](https://github.com/danvk/source-map-explorer) can be used to analyze and debug space usage through source maps. It shows you a treemap visualization to help you debug where all the code is coming from. Note that use your production builds to inspect bundle size with `source-map-explorer` to ensure you’re previewing optimized code.
 
 ```sh

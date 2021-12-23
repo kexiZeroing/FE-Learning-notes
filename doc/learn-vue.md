@@ -12,7 +12,7 @@
 - webpack 打包时（`dist/`）会 emit 出所有 HtmlWebpackPlugin 生成的 html 文件（这也是浏览器访问的入口），相对每个 entry 打包出的 js 文件（filename, `js/[name].[chunkhash].js`），所有异步加载的组件 js（chunkFilename, `js/[id].[chunkhash].js'`）
 - 图片、音乐、字体等资源的打包处理使用 `url-loader` 结合 `limit` 的设置，生成 `img/[name].[hash:7].[ext]` 这样的文件。
 - `performance` 属性用来设置当打包资源和入口文件超过一定的大小给出的提示，可以分别设置它们的上限和哪些文件被检查。
-- webpack 设置请求代理 proxy，默认情况下假设前端是 localhost:3000，后端是 localhost:8082，那么后端通过 request.getHeader("Host") 获取的依旧是 localhost:3000。如果设置了 `changeOrigin: true`，那么后端才会看到的是 localhost:8082, 代理服务器会根据请求的 target 地址修改 Host。
+- webpack 设置请求代理 proxy，默认情况下假设前端是 localhost:3000，后端是 localhost:8082，那么后端通过 request.getHeader("Host") 获取的依旧是 localhost:3000。如果设置了 `changeOrigin: true`，那么后端才会看到的是 localhost:8082, 代理服务器会根据请求的 target 地址修改 Host（这个在浏览器里看请求头是看不到改变的）。
 - 老项目（vue 1.x + webpack 1.x）是纯单页应用，单一的入口文件 `index.js`，里面有路由的配置，需要的模块懒加载。这里面也有很多独立的宣传页，结合 `HtmlWebpackPlugin` 生成纯静态页面。
 
 ### 网页版显示的逻辑
@@ -51,9 +51,10 @@ new Vue({
 - `chunkhash` 根据不同的入口文件构建对应的 chunk，生成对应的哈希值，来源于同一个 chunk，则 hash 值就一样。
 
 ### resolve
-- extensions 数组，在 import 不带文件后缀时，webpack 会自动带上后缀去尝试访问文件是否存在。
+- extensions 数组，在 import 不带文件后缀时，webpack 会自动带上后缀去尝试访问文件是否存在，默认值 `['.js', '.json', '.wasm']`
+- mainFiles 设置解析目录时要使用的文件名，默认值 `['index']`
 - alias 配置别名，把导入路径映射成一个新的导入路径，比如 `"@": path.join(__dirname, 'src')`
-- modules 数组，tell webpack what directories should be searched when resolving modules, 默认是去 node_modules 目录下寻找。
+- modules 数组，tell webpack what directories should be searched when resolving modules, 默认值 `['node_modules']`，即从 node_modules 目录下寻找。
 
 ### dev server 监听
 1. In the context of servers, `0.0.0.0` means "all IP addresses on the local machine". If a host has two IP addresses, `192.168.1.1` and `10.1.2.1`, and a server running on the host listens on `0.0.0.0`, it will be reachable at both of those IPs.
@@ -71,6 +72,17 @@ There are different options available in webpack that help you automatically com
 - `output.publicPath` 是 index.html 内对资源的引用路径，按照“域名 + publicPath + filename”引用文件
 - `devServer.publicPath` 是本地开启服务的路径（资源存在的路径）The bundled files will be available in the browser under this path.
 - `devServer.contentBase` It's only needed if you want to serve static files (that you don't want to run them through the bundle but they need to be available for the app.) It is recommended to use an absolute path. For example, set `contentBase: path.join(__dirname, 'movies')` and use  `<video src="/movies/foo.mp4">` in the html.
+- devServer 的设置既可以通过 webpack config 文件，也可以通过 CLI 给 `webpack serve` 加参数。设置开启热更新 HMR (hot)、指定端口 (port)、serve 的文件开启 gzip 压缩 (compress)、设置代理解决开发中的跨域问题 (proxy) 等。
+
+### devtool 选项配置 source map 
+`devtool` option controls if and how source maps are generated.
+
+- 省略 devtool 选项即不生成 source map
+- `eval` 会把每个 module 封装到 eval 里包裹起来执行，并且会在每个 module 末尾追加注释 `// #sourceURL=webpack://...`
+- `source-map` 会生成一个单独的 sourceMap 文件，在 bundle 最后添加 `// #sourceMappingURL=xxx.js.map` （sourceMap 文件不应该部署到服务器，只用于错误报告工具）
+- `hidden-source-map` 生成 sourceMap 文件，但不会在 bundle 末尾添加引用注释（不想为浏览器开发工具暴露你的 sourceMap）
+- `inline-source-map` 不生成单独的文件，sourceMap 作为 DataUrl 的形式被内嵌进了 bundle 中，使得 bundle 文件会变得很大
+- `cheap-source-map` 和使用 source-map 生成的结果差不多，但它生成的 map 文件内容比 source-map 生成的要少，没有列信息
 
 ### css-loader
 - `css-loader` 用来解析 `@import`, `url()`, `@media`, 比如 `url()` 会被转为 `require()`
@@ -250,14 +262,14 @@ var MyComponent = Vue.extend({
   template: '<div>Hello</div>'
 })
 
-// attach a router to the extended component if needed
-MyComponent.options.router = router
-
 // create and mount to #app (will replace #app)
 new MyComponent().$mount('#app')
 
 // the above is the same as
 new MyComponent({ el: '#app' })
+
+// add plugins to this extended component if needed, similar to the options in `new Vue({..})`
+new MyComponent({i18n, router}).$mount()
 
 // or, render off-document and append afterwards
 var component = new MyComponent().$mount()
