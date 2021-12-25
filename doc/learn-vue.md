@@ -1,6 +1,6 @@
 ## 项目是怎么跑起来的
 ### 项目属于多页应用，这里面有很多子项目（`pages/`）
-- 在 webpack 配置的 entry 里可以看到这些子项目入口（有的是列举出所有的入口 js 文件，有的是通过遍历 `src/pages` 得到所有入口），entry 的 base 路径可以由 context 指定
+- 在 webpack 配置的 entry 里可以看到这些子项目入口（有的是列举出所有的入口 js 文件，有的是通过遍历 `src/pages` 得到所有入口），entry 的 base 路径可以由 context 字段指定
 - 对于每一个 page，都有对应的 `HtmlWebpackPlugin` 指定它的模板，并注入它需要的 chunks （对应每一个 entry 打包出的 js）
     - 指定 `chunks` 是因为项目是多 entry 会生成多个编译后的 js 文件，chunks 决定使用哪些 js 文件，如果没有指定默认会全部引用
     - `inject` 值为 true，表明 chunks js 会被注入到 html 文件的 body 底部（默认会在 head 中以 script defer 标签引入）
@@ -45,6 +45,17 @@ new Vue({
 
 
 ## webpack 配置
+### export a function
+Besides exporting a single configuration object, you can export a function from your webpack config. The function will be invoked with two arguments `env` and `argv` (i.e. webpack --env production)
+```js
+module.exports = function(env, argv) {
+  return {
+    mode: env.production ? 'production' : 'development',
+    // ...
+  };
+};
+```
+
 ### filename 和 chunkFilename
 - `filename` 是对应于 entry 里面的输入文件，经过打包后输出文件的名称。`chunkFilename` 指未被列在 entry 中，却又需要被打包出来的 chunk 文件的名称，一般是要懒加载的代码。
 - `output.filename` 的输出文件名是 `[name].[chunkhash].js`，`[name]` 根据 entry 的配置推断为 index，所以输出为 `index.[chunkhash].js`。`output.chunkFilename` 默认使用 `[id].js`, 会把 `[name]` 替换为 chunk 文件的 id 号。
@@ -89,6 +100,11 @@ There are different options available in webpack that help you automatically com
 - 默认情况下，`css-loader` 生成使用 esModule 语法的模块，这样在引入图片时需要用 `url().default`（也可以用 `import xxx from 'xx.jpg'` 相当于是 default import），或者可以给 `css-loader` 设置 `esModule: false` 改为产出 commonJS 模块。
 - 在生产环境下推荐使用 `mini-css-extract-plugin` 将 CSS 从 bundle 中分离出来，CSS 和 JS 可以被并行加载。对于开发（包括 webpack-dev-server），可以使用 `style-loader`，它会用多个标签将 CSS 插入到 DOM 中，响应会更快。但不要同时使用 `style-loader` 和 `mini-css-extract-plugin`。
 
+### ts-loader and @babel/preset-typescript
+- `ts-loader` converts typescript (es6) to javascript (es6), internally call `tsc` to convert everything to `.js` files. Type-safety at build time but no polyfills.
+- `@babel/preset-typescript` does code transforms, the build step becomes fast as it skips the type-checking step and just strips out the all the TypeScript type-annotations – converting it to vanilla JS. No type-safety at build time.
+- Type check first, then run webpack `"build": "tsc && webpack"`
+
 ### extract-text-webpack-plugin
 - 打包样式，一种是使用 `style-loader` 将生成的 style 标签并且插入到 head 里，另一种是使用  `extract-text-webpack-plugin`，将样式文件单独打包并指定生成的 filename，它需要同时配置 loader 和 plugin 两个地方。
 - Since webpack v4 the `extract-text-webpack-plugin` should not be used for css. Use `mini-css-extract-plugin` instead.
@@ -102,6 +118,9 @@ There are different options available in webpack that help you automatically com
 - The DefinePlugin allows you to create global constants which can be configured at compile time. 比如前端本身是访问不到 `process.env` 的，通过该插件定义全局常量后，在前端的 js 代码中可以利用类似 `process.env.NODE_ENV` 的值区分环境。
 - 这个插件的替换只是对 bundle 代码的处理，并不影响 node 代码，比如 webpack config 文件中依然访问不到这些常量，仍然需要在执行命令时设置环境变量，默认直接 console `process.env` 中是没有 `NODE_ENV` 属性的。
 - 通过它定义的常量，是文本直接替换，因此字符串值需要包含实际的引号，使用 `'"production"'` 或者 `JSON.stringify('production')`
+
+### webpack-merge
+For the start script, which runs `webpack-dev-server`, we will use `webpack.dev.js`, and for the build script, which runs `webpack`, we will use `webpack.prod.js`. While we separate the production and development configurations, we'll still maintain a "common" configuration `webpack.common.js` to keep things DRY. In order to merge these configurations together, we'll use a utility called `webpack-merge`. It provides a merge function that concatenates arrays and merges objects creating a new object.
 
 
 ## 路由相关

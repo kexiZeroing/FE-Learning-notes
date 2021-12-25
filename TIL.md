@@ -1,11 +1,11 @@
 ## Today I Learned
 
 1. **major.minor.patch** version (also known as **breaking.feature.fix**): `^` instructs npm to install the newest version of the package with the same major version; Use `~` to have both the major and minor version match.
-2. `__dirname` and `__filename`: running `node example.js` from `/Users/mjr`, **__dirname** is `/Users/mjr` and **__filename** is `/Users/mjr/example.js`.
+2. `__dirname` and `__filename`: running `node example.js` from `/Users/mjr`, **__dirname** is `/Users/mjr` and **__filename** is `/Users/mjr/example.js`. **`__dirname`** returns the directory name of the directory containing the JavaScript source code file, while **`process.cwd()`** returns the current working directory in which you invoked the `node` command.
 3. `path.resolve()` and `path.join()`: **path.resolve** creates absoulte path from right to left until an absolute path is constructed, whereas **path.join** simply concatenates every parameter from left to right whether they have `/` or not. TypeError is thrown if any of the arguments is not a string.
-   - path.resolve('/a', '/b', 'c') returns: '/b/c'
-   - path.join('/a', '/b', 'c') returns: '/a/b/c'
-   - path.join('/foo', 'bar', 'baz/asdf', 'quux', '..') returns: '/foo/bar/baz/asdf'
+   - `path.resolve('/a', '/b', 'c')` returns: `/b/c`
+   - `path.join('/a', '/b', 'c')` returns: `/a/b/c`
+   - `path.join('/foo', 'bar', 'baz/asdf', 'quux', '..')` returns: `/foo/bar/baz/asdf`
 4. Quickly browse the history of a file in the repo: Go to a file in GitHub (or GitLab, or Bitbucket), replace `github.com` with `github.githistory.xyz` (i.e. https://github.githistory.xyz/kexiZeroing/FE-Learning-notes/blob/master/README.md)
 5. One second to read GitHub code with VS Code online. Just add 1s after github (`github1s.com`) in browser address bar for any repository you want to read. Another one, open a GitHub repo, press `.`, then VS Code opens up in your browser. You can also change `github.com` to `github.dev` in the URL in order to achieve the same effect.
 6. Type `Cmd + K` to open the GitHub command palette to quickly navigate, search projects and try other commands.
@@ -58,3 +58,4 @@
 53. `dig` command (Domain Information Groper) is used to gather DNS information. Type `dig xxx.com` to perform a DNS lookup. The most important section is the ANSWER section which displays the IP address associated with the domain name. By default `dig` requests the A record and uses the local configuration listed in `/etc/resolv.conf` to decide which name server to query. To specify a name server against which the query will be executed, use `dig xxx.com @8.8.8.8`. To find the alias domain name, use the `cname` option `dig xxx.com cname`.
 54. Type `ssh foo@example.com` to connect a remote server and we can add public/private keys for password-less login. A more elegant way is to create a ssh config file `~/.ssh/config` with a `Host xyz` section (also set `HostName`, `Port`, `User`, `IdentityFile` under this section), then simply type `ssh xyz` to connect and the options will be read from the ssh config file.
 55. A **landing page** (people arrive at after clicking on a link in an email or an ad from a search engine) is a standalone web page designed to increase the conversion rates of marketing campaigns, so the primary goal is to keep users there until they convert. A **splash page** (appear while a game or program is launching) covers up the site before entering and have more animations, videos, and eye-catching elements. It has an exit link that redirects visitors to the main/home page.
+56. [fuite](https://github.com/nolanlawson/fuite) is a CLI tool for finding memory leaks in client-rendered web apps. Run `npx fuite https://example.com`, it launches Chrome using Puppeteer and will search for internal links on the given page. Then for each link, it will click the link, then press the browser back button, and repeat to see if there is leaking.

@@ -61,3 +61,7 @@ webpackStart({
   modules,
   entry: 'app.js'
 });
+
+// import duplicates?
+// When you import a module, the code in the file is executed once, then the resulting exports are cached.
+// Webpack is smart enough to not execute module's full source code every time you import it.

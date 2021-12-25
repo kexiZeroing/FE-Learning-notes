@@ -38,6 +38,8 @@ Docker Guide: https://www.robertcooper.me/docker-guide
 
 Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
 
+Modern Web App Design Patterns: https://www.patterns.dev
+
 ---
 
 ## Tools and Cool websites
