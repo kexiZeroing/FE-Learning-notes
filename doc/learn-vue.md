@@ -122,6 +122,19 @@ There are different options available in webpack that help you automatically com
 ### webpack-merge
 For the start script, which runs `webpack-dev-server`, we will use `webpack.dev.js`, and for the build script, which runs `webpack`, we will use `webpack.prod.js`. While we separate the production and development configurations, we'll still maintain a "common" configuration `webpack.common.js` to keep things DRY. In order to merge these configurations together, we'll use a utility called `webpack-merge`. It provides a merge function that concatenates arrays and merges objects creating a new object.
 
+### webpack-bundle-analyzer
+It will create an interactive treemap visualization of the contents of all your bundles.
+```js
+// https://www.npmjs.com/package/webpack-bundle-analyzer
+// npm install --save-dev webpack-bundle-analyzer
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ]
+}
+```
 
 ## 路由相关
 - 使用 `vue-router 3.x`，由于 VueRouter 是 default export 只有一个，所以在引入时可以任意起名字。
@@ -294,3 +307,13 @@ new MyComponent({i18n, router}).$mount()
 var component = new MyComponent().$mount()
 document.getElementById('app').appendChild(component.$el)
 ```
+
+## Electron 桌面端项目
+
+https://www.youtube.com/watch?v=kN1Czs0m1SU
+https://github.com/cassidoo/todometer
+https://github.com/felixrieseberg/windows95
+https://github.com/feross/electron-workshop
+
+https://github.blog/2016-05-11-electron-1-0-is-here/
+https://github.com/electron-userland/electron-builder

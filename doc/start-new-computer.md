@@ -1,12 +1,15 @@
 ## Setting up development environment
 1. Install the Homebrew package manager, and you can install almost any app from the command line. Make sure everything is up to date `brew update`. (M1 installation at `/opt/homebrew/`, Intel at `/usr/local/Cellar/`)
+
 2. Check `git --version` and may need to install Command Line Developer Tools.
+
 3. Install VS Code, Chrome, iTerm2, Docker through Homebrew, then you can use `brew list` and `brew info google-chrome` to check.
-    ```shell
-    # refer to https://formulae.brew.sh
-    brew install git yarn make
-    brew install --cask visual-studio-code google-chrome iterm2 docker
-    ```
+  ```shell
+  # refer to https://formulae.brew.sh
+  brew install git yarn make
+  brew install --cask visual-studio-code google-chrome iterm2 docker
+  ```
+
 4. Catalina comes with `zsh` as the default shell. Install [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) anc check the `.zshrc` file. You can use this prompt theme https://github.com/spaceship-prompt/spaceship-prompt (`robbyrussell` is the default one)
    > 'unable to access error': Something is blocking the connection to github. It is likely some kind of firewall, either on your machine or in your network. If it works with a browser on same machine then the browser is probably using a proxy and you need to configure git to use this proxy too.
    > - check if your git uses proxy: `git config --global http.proxy`
@@ -17,6 +20,7 @@
    - set default node version: `nvm alias default x.y.z` (`nvm alias default node` to make the "latest" default)
    - check npm config: `npm config ls`
    - `npm config set registry http://xyz` to change the registry, `npm config delete registry` to change back to default (`https://registry.npmjs.org/`), `npm get registry` to see the current set.
+
 6. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
     ```
     [user]
@@ -34,6 +38,7 @@
       lg     = log --pretty=format:'%h %ad%x09%an%x09%s' --date=short
     ```
     *(%h = commit hash, %x09 = tab, %an = author name, %ad = author date, %s = subject)*   
+
 7. Some commands for Finder
     ```shell
     # Show Library folder
@@ -52,10 +57,15 @@
     A curated list of shell commands specific to macOS: https://github.com/herrbischoff/awesome-macos-command-line
 
 8. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
-9. Add VS code extentions. Install `Prettier`, `GitLens`, `New Moon Theme`, `Live Server`. Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
+
+9. Add VS code extentions: `Prettier`, `GitLens`, `New Moon Theme`, `Live Server`, `Import Cost`. 
    - Prettier usage: https://prettier.io/docs/en/install.html
+   - `Import Cost` will display inline in the editor the size of the imported packages (imports and requires). 
+  
+  Add `Emoji Snippets`, `Markdown Emoji` for emoji support :tada: and check https://github.com/ikatyang/emoji-cheat-sheet for emoji shortcode to use.
    - `Emoji Snippets` (typing `:smile`) helps to insert emoji in HTML, JS, CSS, React and more. You can also add `"editor.quickSuggestions": true` in user settings.
    - `Markdown Emoji` (typing `:smile:`) supports to built-in Markdown preview.
+
 10. Check out dotfiles https://github.com/mathiasbynens/dotfiles
 
 Some references:
