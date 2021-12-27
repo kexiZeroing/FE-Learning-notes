@@ -309,11 +309,17 @@ document.getElementById('app').appendChild(component.$el)
 ```
 
 ## Electron 桌面端项目
+### Learn Node
+https://nodejs.dev/learn
 
-https://www.youtube.com/watch?v=kN1Czs0m1SU
-https://github.com/cassidoo/todometer
-https://github.com/felixrieseberg/windows95
-https://github.com/feross/electron-workshop
+### Knowledge
+Electron inherits its multi-process architecture from Chromium.
+- Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the window's `webContents` object.
+- Each Electron app spawns a separate **renderer process** for each open `BrowserWindow`. The renderer has no direct access to require or other Node.js APIs. In order to directly use them, you must use the bundler toolchains like webpack.
+- **Preload scripts** contain code that executes in a renderer process before its web content begins loading. These scripts run within the renderer context, but are granted more privileges by having access to Node.js APIs.
+- IPC stands for inter-process communication. Electron uses IPC to send serialized JSON messages between the main and renderer processes.
 
-https://github.blog/2016-05-11-electron-1-0-is-here/
-https://github.com/electron-userland/electron-builder
+`process.platform` returns a string identifying the operating system platform on which the Node.js process is running: `darwin`, `linux`, `win32`.
+> Darwin is the part of OS X that is the actual operating system, which forms the core set of components upon which Mac OS X and iOS are based. To give an analogy, Darwin would be the equivalent of Linux (and the GNU utilities) while Mac OS X would be the equivalent of Ubuntu or another distribution (a kernel, the basic userspace utilities, a GUI layer and a bunch of "built-in" applications).
+
+`ASAR` stands for Atom Shell Archive Format. An asar archive is a simple `tar`-like format that concatenates files into a single file. The ASAR format was created primarily to improve performance on Windows when reading large quantities of small files (e.g. when loading your app's JavaScript dependency tree from `node_modules`).
