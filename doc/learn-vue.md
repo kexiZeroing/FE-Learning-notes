@@ -1,12 +1,12 @@
 ## 项目是怎么跑起来的
 ### 项目属于多页应用，这里面有很多子项目（`pages/`）
 - 在 webpack 配置的 entry 里可以看到这些子项目入口（有的是列举出所有的入口 js 文件，有的是通过遍历 `src/pages` 得到所有入口），entry 的 base 路径可以由 context 字段指定
-- 对于每一个 page，都有对应的 `HtmlWebpackPlugin` 指定它的模板，并注入它需要的 chunks （对应每一个 entry 打包出的 js）
-    - 指定 `chunks` 是因为项目是多 entry 会生成多个编译后的 js 文件，chunks 决定使用哪些 js 文件，如果没有指定默认会全部引用
-    - `inject` 值为 true，表明 chunks js 会被注入到 html 文件的 body 底部（默认会在 head 中以 script defer 标签引入）
-    - 使用 `mini-css-extract-plugin` 产出的 CSS 文件会在 head 中以 link 标签引入
-    - html 模板可以使用 ejs 语法，如果不指定模板，默认的模板可以在 node_modules 中找到这个插件，里面有一个 `default_index.ejs`
-    - production 情况下，`minify` 选项是默认存在的（会使用 html-minifier-terser 插件，去掉空格、注释等），如果想定制化选项，可以自己传 minify 对象，它不会和默认选项合并在一起
+- 对于每一个 page，都有对应的 `HtmlWebpackPlugin` 指定它的模板，并注入它需要的 chunks （对应每一个 entry 打包出的 js），本地直接通过 `localhost/xx.html` 访问，线上通过配置 nginx 路由映射访问 `try_files $uri /static/xx.html`
+  - 指定 `chunks` 是因为项目是多 entry 会生成多个编译后的 js 文件，chunks 决定使用哪些 js 文件，如果没有指定默认会全部引用
+  - `inject` 值为 true，表明 chunks js 会被注入到 html 文件的 body 底部（默认会在 head 中以 script defer 标签引入）
+  - 使用 `mini-css-extract-plugin` 产出的 CSS 文件会在 head 中以 link 标签引入
+  - html 模板可以使用 ejs 语法，如果不指定模板，默认的模板可以在 node_modules 中找到这个插件，里面有一个 `default_index.ejs`
+  - production 情况下，`minify` 选项是默认存在的（会使用 html-minifier-terser 插件，去掉空格、注释等），如果想定制化选项，可以自己传 minify 对象，它不会和默认选项合并在一起
 - 每一个 page 里的 js 文件（入口文件）会创建该子项目的 Vue 实例，指定对应的 component, router, store, 同时会把 `jQuery`, `request`, `API`, `i18n` 这些对象挂载在 window 对象上，子组件不需要引用，直接使用。
 - 每一个 page 有对应的 `router/`，这是子项目的路由，而且每个路由加载的 component 都是异步获取，在访问该路由时按需加载
 - webpack 打包时（`dist/`）会 emit 出所有 HtmlWebpackPlugin 生成的 html 文件（这也是浏览器访问的入口），相对每个 entry 打包出的 js 文件（filename, `js/[name].[chunkhash].js`），所有异步加载的组件 js（chunkFilename, `js/[id].[chunkhash].js'`）
@@ -18,6 +18,8 @@
 ### 网页版显示的逻辑
 - 项目 xpc 和 xh5 都部署在同一个域名下，本地运行 xpc 项目，所有的请求都会走代理，所以即便是 xh5 的页面也可以被访问到。
 - 请求 `/web?old=1` (走代理) 后端会返回 html 扫码登录页面，这里面有一个 `/static/vue/login.js?_dt=xxxxx`，里面有登录和加载网页版首页的逻辑，这样就会展示出 xh5 中的页面，其中的 iframe 可以嵌套任意 xpc 或 xh5 中的页面（只要有路由支持），这个 iframe 的链接自然也可以被单独访问。
+- xh5 发起的第一次页面请求是走服务器，后端返回一个模板 html，这里面有一个 app 元素是 Vue 挂载的地方，前端通过一个老的 vue router API `router.start(App, 'app')` 创建 vue 实例并进行挂载（https://github.com/vuejs/vue-router/blob/1.0/docs/en/api/start.md），这之后才会被前端路由接管。而且这个 html 里面有只能在手机端访问 xh5 项目（根据 ua），否则会跳到 web 端的逻辑。
+- xh5 项目的路由在 production 环境下设置 `/v/index` 作为 root。
 - 如果某个接口 404，就是它的路径没有配置代理。
 
 ### 本地 build 脚本

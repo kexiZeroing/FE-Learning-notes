@@ -2,7 +2,7 @@
 
 - Vertical padding and margin doesn’t work for inline elements. You would have to change the element’s `display` property to `inline-block` or `block`.
 
-- `input`, `video`, `img`, `iframe`, `embed` are replaced elements whose width and height are predefined, without CSS.
+- `input`, `video`, `img`, `iframe`, `embed` are replaced elements whose width and height are predefined, without CSS. `iframe` has the default width `300px` and height `150px`.
 
 - When an element has a `position` value of `absolute`, it becomes a block-level element by default. This means that adding `inline-block` or `block` as the display type won’t affect it at all.
 
