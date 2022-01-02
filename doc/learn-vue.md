@@ -28,6 +28,9 @@
 3. 调用 `webpack()` 传入配置 `webpack.prod.conf` 和一个回调函数，**webpack stats 对象** 作为回调函数的参数，可以通过它获取到 webpack 打包过程中的信息，使用 `process.stdout.write(stats.toString(...))` 输出到命令行中 (`console.log` in Node is just `process.stdout.write` with formatted output)
 4. 使用 [chalk](https://www.npmjs.com/package/chalk) 在命令行中显示一些提示信息
 
+### 微信 JS-SDK
+https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html
+
 ### 关于 Vue 不同的构建版本
 Vue npm 包有不同的 Vue.js 构建版本，可以在 `node_modules/vue/dist` 中看到它们，这里大致包括完整版、编译器（编译template）、运行时（创建 Vue 实例/渲染/处理虚拟 DOM）、UMD 版本（通过 `<script>` 标签直接用在浏览器中）、CommonJS 版本（用于很老的打包工具）、ES Module 版本（有两个，分别用于现代打包工具和浏览器 `<script type="module">` 直接导入）。如果要用完整版，则需要在打包工具里配置一个 resolve.alias 别名 `'vue$': 'vue/dist/vue.esm.js`，这样引入的 Vue 是基于构建工具使用的版本。
 
@@ -225,6 +228,9 @@ webpackConfig.plugins.push(
   })
 )
 ```
+
+### 域名接入
+享受七牛云 CDN 提供的加速服务时，需要先进行域名接入。选择一个自己已备案的域名，绑定到七牛的云存储空间。域名接入 CDN 后，系统会为您自动分配一个 CNAME 域名，需要将加速域名指向分配的 CNAME 地址，配置生效后，即可享受 CDN 加速服务。通过 `dig` 命令查看是否解析到您配置的 CNAME 值，比如 `abc-fe.xyz.cn ->	abc-fe-xyz-cn-idvf6sc.qiniudns.com -> tinyglobal001.qiniudns.com -> tinyglobalcdnweb.qiniu.com.w.kunlunar.com`
 
 ## Vue 语法
 ### computed and watch
