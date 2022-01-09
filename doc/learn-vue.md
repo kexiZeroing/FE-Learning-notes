@@ -317,14 +317,15 @@ document.getElementById('app').appendChild(component.$el)
 ```
 
 ## Electron 桌面端项目
+> Native (C++, C#); 基于 C++ 的 QT; Flutter; [NW.js](https://nwjs.io/) (previously known as node-webkit); WPF (build Windows client applications)
 ### Learn Node
 https://nodejs.dev/learn
 
 ### Knowledge
 Electron inherits its multi-process architecture from Chromium.
 - Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the window's `webContents` object.
-- Each Electron app spawns a separate **renderer process** for each open `BrowserWindow`. The renderer has no direct access to require or other Node.js APIs. In order to directly use them, you must use the bundler toolchains like webpack.
-- **Preload scripts** contain code that executes in a renderer process before its web content begins loading. These scripts run within the renderer context, but are granted more privileges by having access to Node.js APIs.
+- Each Electron app spawns a separate **renderer process** for each open `BrowserWindow`. The renderer has no direct access to require or other Node.js APIs. (enable `nodeIntegration` and disable `contextIsolation` to use Node)
+- **Preload scripts** contain code that executes in a renderer process before its web content begins loading. These scripts run within the renderer context, but are granted more privileges by having access to Node.js APIs (no matter whether `nodeIntegration` is turned on or off.)
 - IPC stands for inter-process communication. Electron uses IPC to send serialized JSON messages between the main and renderer processes.
 
 `process.platform` returns a string identifying the operating system platform on which the Node.js process is running: `darwin`, `linux`, `win32`.

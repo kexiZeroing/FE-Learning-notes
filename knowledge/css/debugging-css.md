@@ -36,3 +36,28 @@
 - Flexbox doesn’t wrap by default, thus may cause horizontal scrolling. Always make sure to add `flex-wrap: wrap`. By default, flexbox stretch its child items to make them equal in height if the direction is set to `row`, and it makes them equal in width if the direction is set to `column`.
 
 - Each flex item has a `flex-basis` property, which acts as the sizing property for that item. When the value is `flex-basis: auto`, the basis is the content’s size. With `.item { flex-grow: 1; flex-basis: 0%; }`, each child item will take up the same space as its siblings.
+
+- How we compare a design against implementation? We can take the original design as an image and place it above the page in the browser. Thanks to CSS backgrounds and pseudo-elements, this is possible. Please make sure that the browser width is equal to the design width and no other element in the same stacking context has a higher `z-index` than the pseudo-element. Also, you will notice that nothing is hoverable or clickable, that’s because the pseudo-element is covering the page. We can allow interactivity by setting `pointer-events: none` (the specified HTML element is never the target of pointer events).
+
+> The prime use case for `pointer-events` is to allow click or tap behavior to “pass through” an element to another element below it on the Z axis. For example, this would be useful for graphic overlays, or hiding elements with opacity and still allowing text-selection on the content below it.
+
+```css
+body {
+    position: relative;
+}
+
+body:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-image: url('example.png');
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    pointer-events: none;
+}
+```

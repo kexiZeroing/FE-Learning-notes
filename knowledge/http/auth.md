@@ -25,7 +25,7 @@ The thing that happened after was that apps also wanted to log users in with oth
 
 OIDC (OpenID Connect) is a spec on top of OAuth 2.0 that says how to authenticate users with an authorization server. Remember that an authorization server issues tokens. In the case of authentication, the authorization server issues **ID tokens**. ID tokens are intended for the client, and the client can parse and validate to extract identity information from the token. OIDC declares a fixed format for ID tokens, which is **JSON Web Token**. JWT is composed of three URL encoding string segments concatenated with periods `.`:
 
-- **Header Segment** is a JSON object containing a signing algorithm and token type. It is `base64Url` encoded.
+- **Header Segment** is a JSON object containing a signing algorithm and token type (metadata). It is `base64Url` encoded.
 - **Payload Segment** is a JSON object containing data claims, which are statements about the end user (**Identity Claims**) and the authentication event (**Authentication Claims**). This is also `base64Url` encoded. Some of the authentication and identity claims include:
   - iss (issuer): the issuer of the JWT, e.g., the authorization server
   - aud (audience): the intended recipient of the JWT; for ID tokens, this must be the client ID of the application receiving the token
