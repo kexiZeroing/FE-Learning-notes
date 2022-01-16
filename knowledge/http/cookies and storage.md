@@ -65,7 +65,7 @@ These attacks are possible because web browsers send authentication tokens autom
 ## sessionStorage and localStorage
 Cookies were once used for client-side storage, but it is now recommended to use modern storage APIs. Invoking Web Storage API will create an instance of the `Storage` object, through which data items can be set, retrieved, and removed. A different `Storage` object is used for the `sessionStorage` and `localStorage` for each origin.
 
-- A page session lasts as long as the browser is open, and **survives over page reloads and restores**.
+- A page session lasts as long as the browser is open, and **survives over page reloads and restores**. (same page/tab && same origin)
 - Opening multiple tabs/windows with the same URL creates `sessionStorage` for each tab/window.
 - Closing a tab/window ends the session and clears objects in `sessionStorage`.
 - Data stored in `localStorage` has no expiration time.
