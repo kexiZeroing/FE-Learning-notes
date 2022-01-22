@@ -12,9 +12,9 @@ How HTTPS works: https://howhttps.works
 
 Inside look at modern web browser (4 parts): https://developers.google.com/web/updates/2018/09/inside-browser-part1
 
-Build excellent websites: https://web.dev
+Chrome DevTools Documentation: https://developer.chrome.com/docs/devtools
 
-Google Developers Codelabs: https://codelabs.developers.google.com/?cat=web
+Build excellent websites: https://web.dev
 
 CS 61B: Data Structures: https://inst.eecs.berkeley.edu/~cs61b/sp20/index.html
 
@@ -45,6 +45,8 @@ Modern Web App Design Patterns: https://www.patterns.dev
 ## Tools and Cool websites
 
 Chrome urls: [chrome://chrome-urls](chrome://chrome-urls/)
+
+All Online Tools in One Box: https://10015.io/
 
 Frontend build config generator: https://createapp.dev/
 
@@ -96,6 +98,8 @@ Create README for your open source project: https://readme.so/
 
 The Timeline Of The Web: https://thehistoryoftheweb.com/timeline/
 
+Guide users through a tour of your app: https://shepherdjs.dev/
+
 ---
 
 ## CSS related
@@ -121,13 +125,15 @@ CSS Grid generator: https://cssgrid-generator.netlify.app
 
 Box-shadow: https://neumorphism.io
 
-Sorted CSS Colors: https://enes.in/sorted-colors
+Snippets for modern CSS layouts and components: https://smolcss.dev
 
 CSS animations on demand: https://animista.net
 
 Build faithful recreations of old UIs: https://jdan.github.io/98.css, https://botoxparty.github.io/XP.css, https://khang-nd.github.io/7.css
 
-SVG generators and tools: https://fffuel.co
+Buttons Generator: https://markodenic.com/tools/buttons-generator
+
+Minimal CSS Framework for semantic HTML: https://picocss.com
 
 ---
 
