@@ -345,13 +345,12 @@ https://github.com/originjs/webpack-to-vite
 https://nodejs.dev/learn
 
 ### Knowledge
-Electron inherits its multi-process architecture from Chromium.
-- Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the window's `webContents` object.
-- Each Electron app spawns a separate **renderer process** for each open `BrowserWindow`. The renderer has no direct access to require or other Node.js APIs. (enable `nodeIntegration` and disable `contextIsolation` to use Node)
-- **Preload scripts** contain code that executes in a renderer process before its web content begins loading. These scripts run within the renderer context, but are granted more privileges by having access to Node.js APIs (no matter whether `nodeIntegration` is turned on or off.)
-- IPC stands for inter-process communication. Electron uses IPC to send serialized JSON messages between the main and renderer processes.
+Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the window's `webContents` object.
 
-`process.platform` returns a string identifying the operating system platform on which the Node.js process is running: `darwin`, `linux`, `win32`.
-> Darwin is the part of OS X that is the actual operating system, which forms the core set of components upon which Mac OS X and iOS are based. To give an analogy, Darwin would be the equivalent of Linux (and the GNU utilities) while Mac OS X would be the equivalent of Ubuntu or another distribution (a kernel, the basic userspace utilities, a GUI layer and a bunch of "built-in" applications).
+Each Electron app spawns a separate **renderer process** for each open `BrowserWindow`. The renderer has no direct access to require or other Node.js APIs. (enable `nodeIntegration` and disable `contextIsolation` to use Node)
 
-`ASAR` stands for Atom Shell Archive Format. An asar archive is a simple `tar`-like format that concatenates files into a single file. The ASAR format was created primarily to improve performance on Windows when reading large quantities of small files (e.g. when loading your app's JavaScript dependency tree from `node_modules`).
+**Preload scripts** contain code that executes in a renderer process before its web content begins loading. These scripts run within the renderer context, but are granted more privileges by having access to Node.js APIs (no matter whether `nodeIntegration` is turned on or off.)
+
+IPC stands for inter-process communication. Electron uses IPC to send serialized JSON messages between the main and renderer processes.
+
+Asar (Atom Shell Archive Format) is a simple extensive archive format, it works like tar that concatenates all files together without compression, while having random access support. The ASAR format was created primarily to improve performance when reading large quantities of small files.

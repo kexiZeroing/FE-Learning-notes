@@ -40,6 +40,8 @@ Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
 
 Modern Web App Design Patterns: https://www.patterns.dev
 
+VIM alphabet: https://www.youtube.com/playlist?list=PLnc_NxpmOxaNqdGvUg8RBi8ZTaZGPdqBD
+
 ---
 
 ## Tools and Cool websites
