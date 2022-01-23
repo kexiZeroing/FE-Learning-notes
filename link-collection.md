@@ -159,4 +159,4 @@ Start developing websites like it's 2025: https://react2025.com
 
 Introducing Remix: https://www.youtube.com/watch?v=wsJaUjd1rUo
 
-Let's Learn Remix: https://www.youtube.com/watch?v=pDdmF9ZhhAA
+Remix Examples: https://github.com/remix-run/remix/tree/main/examples
