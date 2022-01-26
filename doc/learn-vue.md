@@ -22,6 +22,9 @@
 - xh5 项目的路由在 production 环境下设置 `/v/index` 作为 root。
 - 如果某个接口 404，就是它的路径没有配置代理。
 
+### 后端模板
+有些 url 请求是后端直出页面返回 html，通过类似 `render_to_response(template, data)` 的方法，将数据打到模板 html 中，模板里会引用 `course_meta/static/js` 路径下的 js 文件，这些 js 使用 require 框架，导入需要的其他 js 文件或 tpl 模板，再结合业务逻辑使用 underscore 的 template 方法（`_.template(xx)`）可以将 tpl 渲染为 html，然后被 jquery `.html()` 方法插入到 DOM 中。
+
 ### 本地 build 脚本
 1. 使用 [ora](https://www.npmjs.com/package/ora) 做 spinner，提示 building for production...
 2. 使用 [rimraf](https://www.npmjs.com/package/rimraf) 删除打包路径下的资源 (`rimraf` command is an alternative to the Linux command `rm -rf`)
