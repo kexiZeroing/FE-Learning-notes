@@ -26,6 +26,8 @@ In the Finder, deleted files are moved to the Trash, which is actually the invis
 ## The Clipboard
 There are two commands specific to macOS that connect the clipboard closer to the shell commands. `pbcopy` will take the contents of `stdin` and put them in the clipboard. So anything you pipe into `pbcopy` will end up in the clipboard, so you can paste it into a different place. For example, `cat test.txt | pbcopy` is easier than open, select all, and copy. `pbpaste` is the counterpart to `pbcopy`. You can easily make the clipboard contents visible by typing `pbpaste` as the next command.
 
+> `>` sends stream to a file (overwrite) and `>>` appends stream to a file, e.g., ls > a.txt
+
 ## The '[' Marks
 Using Terminal you may notice that there is a small gray square brackets before the prompt. They are called 'Marks' and every command that is executed automatically gets marked. You can quickly scroll the Terminal output to previous marks with `Cmd + Up Arrow` and to the next mark with `Cmd + Down Arrow`. You can hide them with 'Hide Marks' from the 'View' menu.
 
@@ -39,6 +41,19 @@ The configuration for the prompt is stored in the `PS1` environment variable. Yo
 ## Escaping Characters
 The escape character in bash is the backslash `\`. A character that follows a backslash will be treated with no special meaning. For a directory named `Project (Old & New)`, you would type `cd Project\ \(Old\ \&\ New\)`. Since escaping characters can make the path quite unreadable, you can also place the name in single quotes `cd 'Project (Old & New)'`. Any character in single quotes is used as is, with no special function. (you cannot use single quotes when the filename contains a single quote). Tab-completion will escape spaces and other nasty characters automatically.
 
+## Quoting
+- **Quoting is used to remove special meanings from characters or words**.
+- single quotes - when the single quotes are used, every character within the quotes is preserved and is not evaluated.
+- double quotes - when the double qoutes are used, the dollar sign, back quotes and blackslashes are evaluated and interpreted.
+- escape character - `\` is used to preserve the literal value of the following character.
+
+```sh
+echo $HOME    /home/user1/
+echo \$HOME   $HOME
+echo '$HOME'  $HOME
+echo "$HOME"  /home/user1/
+```
+
 ## Making tab-completion case-insensitive
 The problem is that the file system of macOS is "case preserving, but case-insensitive". That means the file system will remember wether you named a file `README.TXT`, `ReadMe.txt` or `readme.TXT` and preserve that case, but using either of these will point to the same file. This may be confusing in Terminal. Since most other Unix file system are case-sensitive (i.e. `README.TXT` and `readme.txt` are different files) and most shells are case-sensitive too.
 
@@ -47,7 +62,31 @@ One thing you can change is wether tab-completion is case-sensitive or not. Sinc
 ## Viewing `man` Pages
 `open x-man-page://ls` will open the `man` page in a new yellow Terminal window, so you can still see what you are actually doing while reading the man page. Since this window shows the entire man page, you can scroll and use Command-F in this window. This behavior can also be achieved by right clicking on a word in a Terminal window and choose 'Open man Page' from the context menu.
 
-For the normal `man` page, this special display mode is actually controlled by the command `less`. You can use `/word<return>` to search in document, `n` to find next occurrence of search term, `N` to find previous occurrence of search term.
+For the normal `man` page, this special display mode is actually controlled by the command `less`. You can use `/word<return>` to search in document, `n` to find next occurrence of search term, `N` to find previous occurrence of search term. (`man ascii` quick access to ascii table)
+
+> - `cat` show the contents of file. use for relatively small files
+> - `head` show the first part of the file
+> - `tail` show the last part of the file
+> - `tail -f` show the text appended to the file as the file grows
+> - `less` show contents of file one screen at a time
+
+## grep
+Searches for pattern in files and prints each line that matches the input pattern `grep -<options> <pattern> <filenames>`
+```sh 
+# options
+-i  ignore case
+-n  display line numbers along with lines
+-c  count the number of matching lines
+
+# regular expression 
+[abc]   matches any one of the characters in the square brackets
+[0-9]   matches any one of the characters in the range specified in the square brackets
+^start  matches the pattern only if the pattern is at the start of the line
+end$    matches the pattern only if the pattern is at the end of the line
+[^abc]  matches any one character that is NOT present in the square brackets
+.       matches any one character
+.*      matches zero or more of any character
+```
 
 ## bash_profile and bashrc
 There are two user level files which `bash` may run when a bash shell starts. `~/.bash_profile` and `~/.bashrc`. The usual convention is that `.bash_profile` will be executed at login shells, i.e. when you ssh into a remote host, it will ask you for user name and password to log in, so it is a login shell. But when you open a terminal, it does not ask for login and you will just get a command prompt. In other versions of Unix or Linux, this will not run the `.bash_profile` but `.bashrc`. The underlying idea is that the `.bash_profile` should be run only when you login, and the `.bashrc` for every new interactive shell. However, Terminal on macOS does not follow this convention. When Terminal opens a new window, it will run `.bash_profile`. (Other third-party terminal applications on macOS may follow the precedent set by the Terminal or not.)

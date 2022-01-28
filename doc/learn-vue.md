@@ -22,6 +22,11 @@
 - xh5 项目的路由在 production 环境下设置 `/v/index` 作为 root。
 - 如果某个接口 404，就是它的路径没有配置代理。
 
+### 登录逻辑
+- 二维码登录使用 websocket 连接，message 中定义不同的 `op` 代表不同的操作，比如 requestlogin 会返回微信生成的二维码(ticket), 扫码成功返回类型是 loginsuccess，并附带 OpenID, UnionID, Name, UserID, Auth 等信息，前端拿到这些信息可以请求后端登录接口，拿到 sessionid，并被种在 cookie 里。
+- 账密登录，前端使用 [JSEncrypt](http://travistidwell.com/jsencrypt/) 给密码加密并请求后端登录接口，成功的话后端会把 sessionid 种在 cookie 里。
+- 申请公众号/小程序的时候，都有一个 APPID 作为当前账号的标识，**OpenID** 就是用户在某一公众平台下的标识（用户微信号和公众平台的 APPID 两个数据加密得到的字符串）。如果开发者拥有多个应用，可以通过获取用户基本信息中的 **UnionID** 来区分用户的唯一性，因为同一用户，在同一微信开放平台下的不同应用，UnionID 应是相同的，代表同一个人，当然前提是各个公众平台需要先绑定到同一个开放平台。OpenID 同一用户同一应用唯一，UnionID 同一用户不同应用唯一，获取用户的 OpenID 是无需用户同意的，获取用户的基本信息则需要用户同意。
+
 ### 后端模板
 有些 url 请求是后端直出页面返回 html，通过类似 `render_to_response(template, data)` 的方法，将数据打到模板 html 中，模板里会引用 `course_meta/static/js` 路径下的 js 文件，这些 js 使用 require 框架，导入需要的其他 js 文件或 tpl 模板，再结合业务逻辑使用 underscore 的 template 方法（`_.template(xx)`）可以将 tpl 渲染为 html，然后被 jquery `.html()` 方法插入到 DOM 中。
 
