@@ -27,6 +27,13 @@
 - 账密登录，前端使用 [JSEncrypt](http://travistidwell.com/jsencrypt/) 给密码加密并请求后端登录接口，成功的话后端会把 sessionid 种在 cookie 里。
 - 申请公众号/小程序的时候，都有一个 APPID 作为当前账号的标识，**OpenID** 就是用户在某一公众平台下的标识（用户微信号和公众平台的 APPID 两个数据加密得到的字符串）。如果开发者拥有多个应用，可以通过获取用户基本信息中的 **UnionID** 来区分用户的唯一性，因为同一用户，在同一微信开放平台下的不同应用，UnionID 应是相同的，代表同一个人，当然前提是各个公众平台需要先绑定到同一个开放平台。OpenID 同一用户同一应用唯一，UnionID 同一用户不同应用唯一，获取用户的 OpenID 是无需用户同意的，获取用户的基本信息则需要用户同意。
 
+### Github 脚本
+https://github.com/heyblackC/yuketangHelper
+https://github.com/ArchFireCoo/AutoAttendYuKeTang
+https://github.com/Fly-Playgroud/RainClassroom-Assistant
+https://github.com/PillarsZhang/Rain-Classroom-PDF-Direct-Download
+https://github.com/RainEggplant/rain-classroom-helper
+
 ### 后端模板
 有些 url 请求是后端直出页面返回 html，通过类似 `render_to_response(template, data)` 的方法，将数据打到模板 html 中，模板里会引用 `course_meta/static/js` 路径下的 js 文件，这些 js 使用 require 框架，导入需要的其他 js 文件或 tpl 模板，再结合业务逻辑使用 underscore 的 template 方法（`_.template(xx)`）可以将 tpl 渲染为 html，然后被 jquery `.html()` 方法插入到 DOM 中。
 
@@ -35,9 +42,6 @@
 2. 使用 [rimraf](https://www.npmjs.com/package/rimraf) 删除打包路径下的资源 (`rimraf` command is an alternative to the Linux command `rm -rf`)
 3. 调用 `webpack()` 传入配置 `webpack.prod.conf` 和一个回调函数，**webpack stats 对象** 作为回调函数的参数，可以通过它获取到 webpack 打包过程中的信息，使用 `process.stdout.write(stats.toString(...))` 输出到命令行中 (`console.log` in Node is just `process.stdout.write` with formatted output)
 4. 使用 [chalk](https://www.npmjs.com/package/chalk) 在命令行中显示一些提示信息
-
-### 微信 JS-SDK
-https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html
 
 ### 关于 Vue 不同的构建版本
 Vue npm 包有不同的 Vue.js 构建版本，可以在 `node_modules/vue/dist` 中看到它们，这里大致包括完整版、编译器（编译template）、运行时（创建 Vue 实例/渲染/处理虚拟 DOM）、UMD 版本（通过 `<script>` 标签直接用在浏览器中）、CommonJS 版本（用于很老的打包工具）、ES Module 版本（有两个，分别用于现代打包工具和浏览器 `<script type="module">` 直接导入）。如果要用完整版，则需要在打包工具里配置一个 resolve.alias 别名 `'vue$': 'vue/dist/vue.esm.js`，这样引入的 Vue 是基于构建工具使用的版本。
@@ -219,6 +223,8 @@ export default {
 
 如果是静态上传页面，参考 https://github.com/liujunyang/qiniu-practice, https://www.cnblogs.com/2050/p/3913184.html
 
+域名接入：选择一个自己已备案的域名，绑定到七牛的云存储空间。域名接入 CDN 后，系统会自动分配一个 CNAME 域名，需要将加速域名指向分配的 CNAME 地址，配置生效后，即可享受 CDN 加速服务。
+
 ```js
 // build 脚本使用自定义的 QiniuPlugin
 const publicPath = 'https://x.y.z/';
@@ -236,9 +242,6 @@ webpackConfig.plugins.push(
   })
 )
 ```
-
-### 域名接入
-享受七牛云 CDN 提供的加速服务时，需要先进行域名接入。选择一个自己已备案的域名，绑定到七牛的云存储空间。域名接入 CDN 后，系统会为您自动分配一个 CNAME 域名，需要将加速域名指向分配的 CNAME 地址，配置生效后，即可享受 CDN 加速服务。通过 `dig` 命令查看是否解析到您配置的 CNAME 值，比如 `abc-fe.xyz.cn ->	abc-fe-xyz-cn-idvf6sc.qiniudns.com -> tinyglobal001.qiniudns.com -> tinyglobalcdnweb.qiniu.com.w.kunlunar.com`
 
 ## Vue 语法
 ### computed and watch
