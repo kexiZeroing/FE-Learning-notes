@@ -8,7 +8,7 @@ I should remember what I have and lower the expectations. Take a relief, I'm ju
 Dan Abramov has a blog [Things I Don’t Know as of 2018](https://overreacted.io/things-i-dont-know-as-of-2018)
 
 ## Inspiring
-- @kentcdodds @dan_abramov @dceddia about React
+- @kentcdodds @dan_abramov about React
 - @umaar @stefanjudis @sulco recommended dev reources and TIL
 - @mgechev Angular and programming podcast https://podcast.mgechev.com/
 - @flavio short courses https://flaviocopes.com/

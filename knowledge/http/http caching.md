@@ -33,6 +33,8 @@ The response may not be stored in any cache. Although other directives may be se
 - public / private  
 For example, your ISP could have an invisible proxy between you and the Internet, that is caching web pages to reduce the amount of bandwidth needed and lower costs. By using `cache-control: private`, you are specifying that it shouldn't cache the page but only allowing the final user to do so. If you use `cache-control: public`, you are saying that it's okay for everyone to cache the page, and so the proxy would keep a copy.
 
+> The `public` attribute should not be set in almost all cases, as it can lead to an issue with authorized requests. Setting the `public` attribute in a `Cache-Control` header for an authorized request (i.e. one which is made with an `Authorization` header) will explicitly allow intermediary servers to store and serve the response to other visitors. In most cases this is not the expected behaviour and could lead to data leakage.
+
 - max-age  
 The maximum amount of time a resource is considered fresh. One day cache would be `Cache-Control: max-age=86400`.
 
@@ -52,16 +54,7 @@ Indicates the client will accept a stale response, while asynchronously checking
 
 > A `Cache-Control` response header that contains `stale-while-revalidate` should also contain `max-age` which determines staleness. If the locally cached response is still fresh, then it can be used to fulfill a browser's request. But if the cached response is stale, then another age-based check is performed: is the age of the cached response within the window of time covered by the `stale-while-revalidate` setting? If the age of a stale response falls into this window, then it will be used to fulfill the browser's request. **At the same time, a "revalidation" request will be made against the network in a way that doesn't delay the use of the cached response**. Then the network response is stored locally, replacing whatever was previously cache, and resetting the "freshness" timer. If the stale cached response is old enough that it falls outside the `stale-while-revalidate` window of time, then it will not fulfill the browser's request. The browser will instead retrieve a response from the network, and use that for both fulfilling the request and also populating the local cache with a fresh response.
 
-### Caching strategies used in service worker
-- **stale-while-revalidate** strategy has requests attempt to respond with a cached resource if one is available, falling back to a network request if it hasn’t been cached. A network request is used to update a cached resource after the cached resources has been served.
-
-- **network first** strategy will try and fetch the latest version of a resource from the network. If the request is successful, it’ll serve that to the user and store it in the cache. If not, it will respond with the cached resource.
-
-- **cache first** strategy will check to see if resources are in the cache before trying to go to the network. If they are, they’re served, if not, they’re retrieved from the network and a version is stored in the cache. This strategy doesn’t have a built-in mechanism for updating cached items, so be sure to use it in conjunction with another way to update what’s cached, like expire headers or resource hashing.
-
-- **cache only** strategy is similar to the cache first strategy, except that resources can only be retrieved from the cache; you’ll need to get the items into the cache without relying on a network fallback if the resource isn’t there. It’s good for resources that should be updated when your Service Worker updates, like an offline fallback page, as that’s the most common time these resources will be updated.
-
-- **network only** strategy can be thought of as being similar to how browsers behave without the use of a service worker or the Cache Storage API. Requests will only be able to respond with a resource if it can be fetched from the network.
+Response headers can be set at multiple stages depending on your application architecture - for example **the web server, load balancer and CDN can all set and modify response headers**. Generally we should expect response headers to be forwarded transparently through proxies such as load balancers and CDNs unless explicit changes have been made, so the web server is the best place to start. You should be able to find what you need with a search like `Apache set response headers` or `Nginx set caching headers` on Google.
 
 ### Freshness
 Before this expiration time, the resource is **fresh**; after the expiration time, the resource is **stale**. Note that a stale resource is not evicted or ignored; when the cache receives a request for a stale resource, it forwards this request with a `If-None-Match` to check if it is in fact still fresh. If so, the server **returns a `304 (Not Modified)` header without sending the body of the requested resource**, saving some bandwidth.
@@ -131,3 +124,14 @@ window.addEventListener('pageshow', function(event) {
   }
 });
 ```
+
+### Caching strategies used in service worker
+- **stale-while-revalidate** strategy has requests attempt to respond with a cached resource if one is available, falling back to a network request if it hasn’t been cached. A network request is used to update a cached resource after the cached resources has been served.
+
+- **network first** strategy will try and fetch the latest version of a resource from the network. If the request is successful, it’ll serve that to the user and store it in the cache. If not, it will respond with the cached resource.
+
+- **cache first** strategy will check to see if resources are in the cache before trying to go to the network. If they are, they’re served, if not, they’re retrieved from the network and a version is stored in the cache. This strategy doesn’t have a built-in mechanism for updating cached items, so be sure to use it in conjunction with another way to update what’s cached, like expire headers or resource hashing.
+
+- **cache only** strategy is similar to the cache first strategy, except that resources can only be retrieved from the cache; you’ll need to get the items into the cache without relying on a network fallback if the resource isn’t there. It’s good for resources that should be updated when your Service Worker updates, like an offline fallback page, as that’s the most common time these resources will be updated.
+
+- **network only** strategy can be thought of as being similar to how browsers behave without the use of a service worker or the Cache Storage API. Requests will only be able to respond with a resource if it can be fetched from the network.

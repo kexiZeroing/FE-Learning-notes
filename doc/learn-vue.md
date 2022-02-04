@@ -346,22 +346,83 @@ Vite doesn't set out to be a new bundler. Rather, it's a pre-configured build en
 
 Vite only support ES Modules, and parsing the native ES Modules means it will read the `export` and `import` lines from your code. It will convert those lines into HTTP requests back to the server, where it will again read the `export` and `import` lines and make new requests. Vite also leverages HTTP headers to speed up full page reloads: source code module requests are made conditional via `304 Not Modified`, and dependency module requests are strongly cached via `Cache-Control` header.
 
-https://vitejs.dev/guide/why.html
-https://github.com/originjs/webpack-to-vite
-https://github.com/kexiZeroing/vite-demo
+https://vitejs.dev/guide/why.html  
+https://github.com/originjs/webpack-to-vite  
+https://github.com/kexiZeroing/vite-demo  
 
 ## Electron 桌面端项目
-> Native (C++, C#); 基于 C++ 的 QT; Flutter; [NW.js](https://nwjs.io/) (previously known as node-webkit); WPF (build Windows client applications)
-### Learn Node
-https://nodejs.dev/learn
+https://github.com/dengyaolong/geektime-electron  
+https://nodejs.dev/learn  
+
+1. Node.js API，Electron Native API，释放前端想象力，大胆使用 Chrome 支持的 API
+2. 当渲染进程 `nodeIntegration` 为 ture 时可以直接在窗口的 devTools 中使用 Node API，比如 `require(xx)`, `process.versions.electron`, `process.versions.node` 等
+3. 窗口对象要挂载在一个全局变量上，否则会被垃圾回收掉，窗口就消失了
+4. IPC 进程间通信（`ipcMain`, `ipcRenderer` 都是 `EventEmitter` 对象）
+    ```js
+    // 从渲染进程到主进程
+    // callback 写法
+    ipcRenderer.send
+    ipcMain.on
+
+    // promise 写法
+    ipcRenderer.invoke
+    ipcMain.handle
+
+    // 从主进程到渲染进程
+    webContents.send
+    ipcRenderer.on
+
+    // 渲染进程与渲染进程之间，需要 webContents.id
+    ipcRenderer.sendTo
+    localStorage, sessionStorage, indexedDB
+    ```
+5. 窗口加载区分线上环境还是开发环境，使用 [electron-is-dev](https://www.npmjs.com/package/electron-is-dev)
+    ```js
+    if (isDev) {
+      win.loadURL('http://localhost:3000')
+    } else {
+      win.loadFile(path.resolve(__dirname, '../renderer/pages/main/index.html'))
+    }
+   ```
+6. 桌面应用的关于窗口 [about-window](https://www.npmjs.com/package/about-window)
+7. 用户点击窗口关闭按钮时，应用只是隐藏，只有点击「退出应用」时才真正关闭窗口
+    ```js
+    let willQuitApp = false
+    win.on('close', (e) => {
+      if(willQuitApp) {
+        win = null
+      } else {
+        e.preventDefault()
+        win.hide()
+      }
+    })
+
+    function closeMainWindow() {
+      willQuitApp = true
+      win.close()
+    }
+
+    function showMainWindow() {
+      win.show()
+    }
+
+    app.on('before-quit', () => {
+      closeMainWindow()
+    })
+    app.on('activate', () => {
+      showMainWindow()
+    })
+    ```
+8. 主进程管理菜单和托盘 (Menu and Tray)，如果需要在渲染进程中响应 contextMenu 事件，需要借助 remote 模块引入 Menu 来展示右键菜单
+9.  Mac 软件图标 icns 格式 (1024 * 1024 PNG 图片 -> `sips` 命令生成不同尺寸的图片 -> `iconutil` 命令转为 icns 格式)，Windows 使用 ico 格式图标
 
 ### Knowledge
-Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the window's `webContents` object.
+Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the browserWindow's `webContents` object.
 
-Each Electron app spawns a separate **renderer process** for each open `BrowserWindow`. The renderer has no direct access to require or other Node.js APIs. (enable `nodeIntegration` and disable `contextIsolation` to use Node)
+Each Electron app spawns a separate **renderer process** for each open `BrowserWindow`. The renderer has no direct access to require or other Node.js APIs. (enable `nodeIntegration` and disable `contextIsolation` in `webPreferences` to use Node)
 
 **Preload scripts** contain code that executes in a renderer process before its web content begins loading. These scripts run within the renderer context, but are granted more privileges by having access to Node.js APIs (no matter whether `nodeIntegration` is turned on or off.)
 
-IPC stands for inter-process communication. Electron uses IPC to send serialized JSON messages between the main and renderer processes.
-
 Asar (Atom Shell Archive Format) is a simple extensive archive format, it works like tar that concatenates all files together without compression, while having random access support. The ASAR format was created primarily to improve performance when reading large quantities of small files.
+
+`@electron/remote` is an Electron module that bridges JavaScript objects from the main process to the renderer process. This lets you access main-process-only objects as if they were available in the renderer process. https://github.com/electron/remote/blob/main/README.md
