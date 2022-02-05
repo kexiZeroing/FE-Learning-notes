@@ -23,6 +23,8 @@ The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it de
 
 - If you pull remote changes with the flag `--merge`, which is also the default, then your local changes are merged with the remote changes. This results in a merge commit that points to the latest local commit and the latest remote commit.
 
+> When your pull request's branch is out of date with the base branch in Github, you now have the option to update it by rebasing on the latest version of the base branch. Rebasing applies the changes from your branch onto the latest version of the base branch, resulting in a branch with a linear history since no merge commit is created. Previously, *Update branch* button performed a traditional merge that always resulted in a merge commit in your pull request branch. This option is still available, but now you have the choice.
+
 ### git remote
 A remote URL is the place where your code is stored. You can only push to two types of URL addresses: HTTPS URL like `https://github.com/user/repo.git` or SSH URL like `git@github.com:user/repo.git`. Git associates a remote URL with a name, and your default remote is usually called `origin`.
 
