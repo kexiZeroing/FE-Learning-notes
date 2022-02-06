@@ -385,7 +385,7 @@ https://nodejs.dev/learn
     }
    ```
 6. 桌面应用的关于窗口 [about-window](https://www.npmjs.com/package/about-window)
-7. 用户点击窗口关闭按钮时，应用只是隐藏，只有点击「退出应用」时才真正关闭窗口
+7. 用户点击窗口关闭按钮时（响应窗口的 close 事件），app 应该只是隐藏（`win.hide()`），只有点击「退出应用」时（响应 app 的 `before-quit` 事件）才是真正的关闭窗口（手动调用 `win.close()`，窗口被置为 null）
     ```js
     let willQuitApp = false
     win.on('close', (e) => {
@@ -396,25 +396,10 @@ https://nodejs.dev/learn
         win.hide()
       }
     })
-
-    function closeMainWindow() {
-      willQuitApp = true
-      win.close()
-    }
-
-    function showMainWindow() {
-      win.show()
-    }
-
-    app.on('before-quit', () => {
-      closeMainWindow()
-    })
-    app.on('activate', () => {
-      showMainWindow()
-    })
     ```
 8. 主进程管理菜单和托盘 (Menu and Tray)，如果需要在渲染进程中响应 contextMenu 事件，需要借助 remote 模块引入 Menu 来展示右键菜单
-9.  Mac 软件图标 icns 格式 (1024 * 1024 PNG 图片 -> `sips` 命令生成不同尺寸的图片 -> `iconutil` 命令转为 icns 格式)，Windows 使用 ico 格式图标
+9. Mac 软件图标 icns 格式 (1024 * 1024 PNG 图片 -> `sips` 命令生成不同尺寸的图片 -> `iconutil` 命令转为 icns 格式)，Windows 使用 ico 格式图标
+10. 自动更新机制的处理：服务端（比如使用 Koa）需要分别接收 Mac 和 Windows 的请求，query 中带有当前版本信息，检查版本是否有更新，返回包括新包地址的新版本信息，无更新返回 HTTP 204；客户端引入 autoUpdater 模块，使用`autoUpdater.checkForUpdates()` 检查更新，设置服务端地址（`app.getVersion()` 取当前版本），监听更新下载完毕事件 `update-downloaded` 给用户展示 dialog 提醒用户更新 (`autoUpdater.quitAndInstall()`)
 
 ### Knowledge
 Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the browserWindow's `webContents` object.
