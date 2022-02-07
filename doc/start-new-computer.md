@@ -19,7 +19,9 @@
 5. Use `nvm` to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
    - set default node version: `nvm alias default x.y.z` (`nvm alias default node` to make the "latest" default)
    - check npm config: `npm config ls`
-   - `npm config set registry http://xyz` to change the registry, `npm config delete registry` to change back to default (`https://registry.npmjs.org/`), `npm get registry` to see the current set.
+   - `npm config set registry https://registry.npm.taobao.org` to change the registry, `npm config delete registry` to change back to default (`https://registry.npmjs.org/`), `npm get registry` to see the current set.
+   - set npm proxy `npm config set proxy http://127.0.0.1:7890` (may pull something from Github) and remove this proxy `npm config delete proxy`
+   <img alt="npm proxy" src="https://tva1.sinaimg.cn/large/008i3skNly1gz5abxu18ij31bu0eijtx.jpg" width="700">
 
 6. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
     ```

@@ -45,6 +45,15 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 
 The `npm install` command will install both *devDependencies* and *dependencies*. With the `--production` flag (or when the `NODE_ENV` environment variable is set to production), npm will not install modules listed in *devDependencies*.
 
+### URLs as dependencies
+See details at https://docs.npmjs.com/cli/v8/configuring-npm/package-json#urls-as-dependencies
+1. Git URLs as dependencies
+    - git+ssh://git@github.com:myaccount/myprivate.git
+    - git+ssh://git@github.com:myaccount/myprivate.git#develop
+    - git+https://[username]:[password]@github.com/myaccount/myprivate.git
+2. GitHub URLs: refer to GitHub urls as `"foo": "user/foo-project"`
+3. Local Paths: You can provide a path to a local directory that contains a package `"bar": "file:../foo/bar"`
+
 ### npm link
 1. Run `npm link` from your `MyModule` directory: this will create a global package `{prefix}/node/{version}/lib/node_modules/<package>` symlinked to the `MyModule` directory.
 2. Run `npm link MyModule` from your `MyApp` directory: this will create a `MyModule` folder in `node_modules` symlinked to the globally-installed package and thus to the real location of `MyModule`.
