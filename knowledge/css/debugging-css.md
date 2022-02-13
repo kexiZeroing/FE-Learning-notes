@@ -29,6 +29,13 @@
 
 - Unlike border, `outline` is drawn outside the element's border and may overlap other content. Also, the outline is not a part of the element's dimensions; the element's total width and height is not affected by the width of the outline. You can override it with a custom one, but don’t remove that outline under any circumstances, because it will affect the accessibility of the website.
 
+```css
+/* debug your CSS layouts with one line */
+* {
+  outline: 1px solid red;
+}
+```
+
 - A long word or link can easily cause horizontal overflow (scrolling). The solution is to use `overflow-wrap: break-word`. It’s worth mentioning that the property has been renamed from `word-wrap` to `overflow-wrap`.
 
 - For `text-overflow: ellipsis` to work, the element’s `display` type should be set to `block` and the element must have the `overflow: hidden` and `white-space: nowrap` set.
