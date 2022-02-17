@@ -88,6 +88,9 @@ end$    matches the pattern only if the pattern is at the end of the line
 .*      matches zero or more of any character
 ```
 
+## lsof
+Linux/Unix considers everything as a file and `lsof` is a command meaning "list open files", which is used to report a list of all open files and the processes that opened them. Add `-i` to list network connections. Use `lsof -i -n -P | grep LISTEN` to check the listening ports and `lsof -i :22` to see a specific port.
+
 ## bash_profile and bashrc
 There are two user level files which `bash` may run when a bash shell starts. `~/.bash_profile` and `~/.bashrc`. The usual convention is that `.bash_profile` will be executed at login shells, i.e. when you ssh into a remote host, it will ask you for user name and password to log in, so it is a login shell. But when you open a terminal, it does not ask for login and you will just get a command prompt. In other versions of Unix or Linux, this will not run the `.bash_profile` but `.bashrc`. The underlying idea is that the `.bash_profile` should be run only when you login, and the `.bashrc` for every new interactive shell. However, Terminal on macOS does not follow this convention. When Terminal opens a new window, it will run `.bash_profile`. (Other third-party terminal applications on macOS may follow the precedent set by the Terminal or not.)
 
