@@ -355,6 +355,9 @@ https://github.com/kexiZeroing/vite-demo
 ## Electron 桌面端项目
 https://github.com/dengyaolong/geektime-electron  
 https://nodejs.dev/learn  
+https://simulatedgreg.gitbooks.io/electron-vue/content/en/  
+
+--- 
 
 1. Node.js API，Electron Native API，释放前端想象力，大胆使用 Chrome 支持的 API
 2. 当渲染进程 `nodeIntegration` 为 ture 时可以直接在窗口的 devTools 中使用 Node API，比如 `require(xx)`, `process.versions.electron`, `process.versions.node` 等
@@ -402,6 +405,13 @@ https://nodejs.dev/learn
 8. 主进程管理菜单和托盘 (Menu and Tray)，如果需要在渲染进程中响应 contextMenu 事件，需要借助 remote 模块引入 Menu 来展示右键菜单
 9. Mac 软件图标 icns 格式 (1024 * 1024 PNG 图片 -> `sips` 命令生成不同尺寸的图片 -> `iconutil` 命令转为 icns 格式)，Windows 使用 ico 格式图标
 10. 自动更新机制的处理：服务端（比如使用 Koa）需要分别接收 Mac 和 Windows 的请求，query 中带有当前版本信息，检查版本是否有更新，返回包括新包地址的新版本信息，无更新返回 HTTP 204；客户端引入 autoUpdater 模块，使用`autoUpdater.checkForUpdates()` 检查更新，设置服务端地址（`app.getVersion()` 取当前版本），监听更新下载完毕事件 `update-downloaded` 给用户展示 dialog 提醒用户更新 (`autoUpdater.quitAndInstall()`)
+
+### 桌面端的本地构建过程
+1. 调用 `greeting()` 方法，根据终端窗口的宽度 `process.stdout.columns` 显示不同样式的问候语。
+2. 使用 `Promise.all()` 同时启动主进程和渲染进程的构建，两者分别有自己的 webpack 配置文件 `webpack.main.config` 和 `webpack.renderer.config`
+3. 对于渲染进程，使用类似 web 端的 webpack 配置，设置入口文件、产出位置、需要的 loaders 和 plugins，并根据是否为 production 环境补充引入一些 plugin，在 npm 脚本打包的时候可以通过 `cross-env BUILD_ENV=abc` 设置一些环境变量。创建一个 WebpackDevServer，传入 webpack 配置，设置代理，监听某一端口，其实这就是启动一个本地服务，使用浏览器也可以访问构建后的页面，这里只是用 electron 的壳子把它加载进来。对于主进程，也使用了 webpack，设置入口文件用来打包产出。
+4. 利用 webpack 编译的 hooks 在构建完成后会打印日志，`logStats()` 函数接收进程名 (Main or Renderer) 和具体输出的内容。
+5. 在主进程和渲染进程都构建完成后，即主进程有一个打包后的 `main.js` 且渲染进程本地服务可以访问，这个时候启动 electron，即通常项目的 npm 脚本会执行 `electron .`，这里是通过 Node API，使用 `child_process.spawn()` 的方式启动 electron 并传入需要的参数，然后对 electron 进程的 stdout 和 stderr 监听，打印对应的日志。
 
 ### Knowledge
 Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the browserWindow's `webContents` object.

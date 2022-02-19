@@ -31,7 +31,7 @@ The lifetime of a cookie can be defined in two ways:
 - Restrict access to cookies  
 A cookie with the `Secure` attribute is sent to the server only over the HTTPS protocol, never with unsecured HTTP (except on localhost). Insecure sites `http:` cannot set cookies with the `Secure` attribute. A cookie with the `HttpOnly` attribute is inaccessible to the JavaScript `document.cookie` API; it is sent only to the server.
 
-  Note that normally localhost should be treated as a secure origin even if not HTTPs. Both Chrome (https://bugs.chromium.org/p/chromium/issues/detail?id=1056543) and Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=1648993) improved to allow secure cookies for localhost. The `https:` requirements are ignored when the `Secure` attribute is set by localhost since Firefox 75 and Chrome 89.
+  Note that normally localhost should be treated as a secure origin even if not HTTPs. Both Chrome (https://bugs.chromium.org/p/chromium/issues/detail?id=1056543) and Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=1648993) fixed issues to allow secure cookies for localhost. The `https:` requirements are ignored when the `Secure` attribute is set by localhost since Firefox 75 and Chrome 89.
 
 - Define where cookies are sent  
 The `Domain` attribute specifies which hosts are allowed to receive the cookie. If unspecified, defaults to the host of the current document URL, **not including subdomains**. If `Domain` is specified, then **subdomains are always included**. Therefore, specifying `Domain` is less restrictive than omitting it. However, it can be helpful when subdomains need to share information about a user.

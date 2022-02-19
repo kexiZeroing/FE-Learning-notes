@@ -1,6 +1,8 @@
 ## Start a modern front-end project
 Create `index.js` and `index.html` files within a folder. Assuming that you have node.js installed, go ahead and install `yarn` and run `yarn init` command on your project’s repository. Alternatively, you can use `npm`. After running `yarn init` or `npm init`, just follow the instructions on the CLI and you should end up with a file called `package.json`.
 
+> `npm init <initializer>` can be used to set up a new or existing npm package. `initializer` in this case is an npm package named `create-<initializer>`, which will be installed by `npm-exec`. The init command is transformed to a corresponding `npm exec` operation like `npm init foo` -> `npm exec create-foo`. If the initializer is omitted (by just calling `npm init`), init will fall back to legacy init behavior. It will ask you a bunch of questions, and then write a `package.json` for you. You can also use `-y/--yes` to skip the questionnaire altogether.
+
 Then let’s bring a web application bundler. We want `parcel` in our project, so install it as a development dependency by running `yarn add parcel-bundler --dev` or `npm install parcel-bundler --save-dev`. Once parcel has been added to our project, we can simply run `parcel index.html` and parcel will serve the file on its built-in development server on port 1234. We can add a `start` script to our `package.json` and simply run `yarn start` or `npm start`.
 
 > WebPack, Rollup, and Parcel are all bundlers available in the JavaScript community but not fast enough because they are built with JavaScript. There is a new bundler [esbuild](https://esbuild.github.io/) written in Go that works faster than other bundlers.
