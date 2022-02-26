@@ -174,6 +174,7 @@ module.exports = {
 - 不想在组件内重复的写 `this.$store.state.xx`，`this.$store.commit`，`this.$store.dispatch`，使用 `mapState`, `mapMutations`, `mapActions` 辅助函数把 store 中同名的状态或操作映射到组件内，相当于在组件内直接定义了这些计算属性和方法，比如 `this.incrementBy(amount)` 映射为 `this.$store.dispatch('incrementBy', amount)`
 - 可以把 store 分割成多个 module，每个 module 拥有自己的 state，mutations，actions，创建 Vuex.Store 时传入 modules 配置。可以给每个 module 添加 `namespaced: true` 使其成为带命名空间的模块，此时在组件内需将 module 的名字作为第一个参数传递给 `mapState`, `mapActions`，这样所有的映射都会自动将这个 module 作为上下文（也可以用 `createNamespacedHelpers('some/nested/module')` 函数，它会返回绑定在给定命名空间上的 `mapState`, `mapActions`）
 - 如果 store 文件太大，可以将 mutations，actions 以及每个 module 分割到单独的文件
+- `createPersistedState` 插件用来持久化存储 Vuex 的状态，默认使用 localStorage 存储，默认 key 是 vuex，可以传参修改默认的配置，然后在 `new Vuex.Store` 时传入这个 plugin
 
 ## HTTP 请求相关
 首先明确一个认识，很多同学以为 GET 的请求数据在 URL 中，而 POST 不是，所以以为 POST 更安全。不是这样的，整个请求的 HTTP URL PATH 会全部封装在 HTTP 的协议头中。只要是 HTTPS，就是安全的。所谓的 POST 更安全，只能说明该同学并不理解 HTTP 协议。使用规范的方式，可以大大减少跨团队的沟能成本。最差的情况下，也是需要做到“读写分离”的，就是说，至少要有两个动词，GET 表示是读操作，POST 表示是写操作。
@@ -404,7 +405,7 @@ https://simulatedgreg.gitbooks.io/electron-vue/content/en/
     ```
 8. 主进程管理菜单和托盘 (Menu and Tray)，如果需要在渲染进程中响应 contextMenu 事件，需要借助 remote 模块引入 Menu 来展示右键菜单
 9. Mac 软件图标 icns 格式 (1024 * 1024 PNG 图片 -> `sips` 命令生成不同尺寸的图片 -> `iconutil` 命令转为 icns 格式)，Windows 使用 ico 格式图标
-10. 自动更新机制的处理：服务端（比如使用 Koa）需要分别接收 Mac 和 Windows 的请求，query 中带有当前版本信息，检查版本是否有更新，返回包括新包地址的新版本信息，无更新返回 HTTP 204；客户端引入 autoUpdater 模块，使用`autoUpdater.checkForUpdates()` 检查更新，设置服务端地址（`app.getVersion()` 取当前版本），监听更新下载完毕事件 `update-downloaded` 给用户展示 dialog 提醒用户更新 (`autoUpdater.quitAndInstall()`)
+10. 自动更新机制的处理：服务端（比如使用 Koa）需要分别接收 Mac 和 Windows 的请求，query 中带有当前版本信息，检查版本是否有更新，返回包括新包地址的新版本信息，无更新返回 HTTP 204；客户端引入 autoUpdater 模块，使用 `autoUpdater.checkForUpdates()` 检查更新，设置服务端地址（`app.getVersion()` 取当前版本），监听更新下载完毕事件 `update-downloaded` 给用户展示 dialog 提醒用户更新 (`autoUpdater.quitAndInstall()`)
 
 ### 桌面端的本地构建过程
 1. 调用 `greeting()` 方法，根据终端窗口的宽度 `process.stdout.columns` 显示不同样式的问候语。
@@ -423,3 +424,5 @@ Each Electron app spawns a separate **renderer process** for each open `BrowserW
 Asar (Atom Shell Archive Format) is a simple extensive archive format, it works like tar that concatenates all files together without compression, while having random access support. The ASAR format was created primarily to improve performance when reading large quantities of small files.
 
 `@electron/remote` is an Electron module that bridges JavaScript objects from the main process to the renderer process. This lets you access main-process-only objects as if they were available in the renderer process. https://github.com/electron/remote/blob/main/README.md
+
+`{ webSecurity: false }` no longer controls CORS (for v9+). The `webSecurity` option controls the web security inside blink *(Blink is the name of the rendering engine used by Chromium)*, but recently the control of CORS has been moved out of blink and thus the option no longer controls CORS. --> Set `Access-Control-Allow-Origin` header in server/nginx.

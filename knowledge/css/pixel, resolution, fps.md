@@ -69,3 +69,42 @@ $("#stop").on("click", function() {
   cancelAnimationFrame(globalID);
 });
 ```
+
+## Fluid Typography
+
+```css
+html {
+  font-size: 16px;
+}
+@media screen and (min-width: 320px) {
+  html {
+    font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  }
+}
+@media screen and (min-width: 1000px) {
+  html {
+    font-size: 22px;
+  }
+}
+```
+
+That would scale `font-size` from a minimum of 16px (at a 320px viewport) to a maximum of 22px (at a 1000px viewport). So rather than always being the same size, or jumping from one size to the next at media queries, the size can be fluid based on the size of the screen. Here’s the math:
+
+```css
+font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+```
+
+Despite the amount of the required boilerplate, this approach became so popular for handling fluid sizing in general, and it became clear that a more streamlined approach was needed. This is where the CSS clamp function comes in.
+
+CSS `clamp` function takes three values — a minimum bound, preferred value, and a maximum bound. The preferred value usually includes viewport units, percentages, or other relative units to achieve the fluid effect.
+
+```css
+font-size: [value-fallback];
+font-size: clamp([value-min], [value-preferred], [value-max]);
+
+html {
+  font-size: 16px;
+  /* 375px -> 414px */
+  font-size: clamp(16px, calc(16px + 2 * (100vw - 375px) / 39), 22px);
+}
+```

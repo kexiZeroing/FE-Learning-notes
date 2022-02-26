@@ -58,6 +58,8 @@ Stackblitz - Run Node.js natively in your browser: https://blog.stackblitz.com/p
 
 Web Page Test: https://www.webpagetest.org/
 
+PageSpeed Insights: https://pagespeed.web.dev/
+
 Chrome DevTools tips: https://umaar.com/dev-tips/
 
 HTML Tips & Tricks: https://www.htmhell.dev/tips/
