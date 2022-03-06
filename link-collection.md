@@ -150,7 +150,7 @@ Minimal CSS Framework for semantic HTML: https://picocss.com
 
 ## React ecosystem
 
-The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-to-react
+The Beginner's Guide to React: https://egghead.io/courses/the-beginner-s-guide-to-react or https://www.youtube.com/watch?v=7_x4AuqHxlg
 
 React getting started tutorial: https://daveceddia.com/react-getting-started-tutorial
 
@@ -171,3 +171,5 @@ Start developing websites like it's 2025: https://react2025.com
 Introducing Remix: https://www.youtube.com/watch?v=wsJaUjd1rUo
 
 Remix Examples: https://github.com/remix-run/remix/tree/main/examples
+
+Super Simple Start to Remix: https://kentcdodds.com/blog/super-simple-start-to-remix
