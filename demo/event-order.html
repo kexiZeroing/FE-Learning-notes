@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mousedown, mouseup, click & blur order</title>
+    <style>
+        .text-group {
+            margin: 10px 0;
+            padding: 0;
+        }
+        .text-group h2 {
+            margin: 0;
+        }
+        .log-results {
+            height: 220px;
+            border: 1px dotted black;
+            margin: 10px 0;
+            padding: 10px;
+            overflow: auto;
+        }
+    </style>
+    <!-- https://releases.jquery.com -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1 class="title">
+    A pen to understand the order in which the events are fired ( mousedown, mouseup, click & blur )
+  </h1>
+  
+  <div class="text-group">
+    <h2>1. The Order </h2>
+    <p>
+      mousedown --> mouseup --> click
+    </p>
+    <i>Try cicking the button to log the event order.</i>
+  </div>
+  <hr>
+  
+  <div class="text-group">
+    <h2>2. Introducing the blur </h2>
+    <p>
+      Now when you add a blur event into the picture, it is actually fired before the mouseup event and after the mousedown event of the button.
+    </p>
+    <i> Focus the Textfield & then click the button.</i>
+  </div>
+  <hr>
+  
+  <div class="text-group">
+    <h2>3. Preventing the blur </h2>
+    <p>
+      If you want to prevent the blur event from being fired, you have to do so when you are inside the mousedown event, you can do so by invoking the method <code>preventDefault()</code> on the event.
+    </p>
+    <i> Click the checkbox, focus input & then click the button, the textfield never loses focus now.</i>
+  </div>
+  <hr>
+  
+  <div class="controls">
+    <input type="text" id="input" />
+    <button id="btn">Click me</button>
+    <label>
+      <input type="checkbox" class="prevent-blur" />
+        Prevent Blur
+    </label>
+    <button id="clear-log"> &times; Clear Log </button>
+  </div>
+  
+  <div class="log-results"></div>
+
+  <script>
+    let $button = $( '#btn' ),
+        $textfield = $( '#input' ),
+        $res = $( '.log-results' ),
+        $checkbox = $( '.prevent-blur' ),
+        preventBlur = false;
+
+    function logEvt ( el, type ) {
+        $res.append( el + ' ' + type + ' is fired. <br>' );
+    }
+
+    $( '#clear-log' ).on( 'click', function () {
+        $res.empty();
+    });
+
+    $textfield.on( 'blur', function () {
+        logEvt( 'input', 'blur' );
+    });
+
+    $checkbox.on( 'change', function () {
+        preventBlur = $( this ).prop( 'checked' );
+    });
+
+    $button.on( 'click',  function() {
+        logEvt( 'button', 'click' );
+    })
+    .on( 'mousedown', function ( e ) {
+        logEvt( 'button', 'mousedown' );
+        if ( preventBlur ) {
+            e.preventDefault();
+        }
+    })
+    .on( 'mouseup', function () {
+        logEvt( 'button', 'mouseup' );
+    });
+  </script>
+</body>
+</html>
