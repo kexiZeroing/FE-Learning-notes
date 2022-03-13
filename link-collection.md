@@ -116,6 +116,8 @@ WebRTC samples: https://webrtc.github.io/samples/
 
 Defensive CSS - writing CSS that is protected: https://ishadeed.com/article/defensive-css
 
+CSS Diner Selectors: https://flukeout.github.io
+
 CSS percentage: https://wattenberger.com/blog/css-percents
 
 Centering in CSS: https://ishadeed.com/article/learn-css-centering
