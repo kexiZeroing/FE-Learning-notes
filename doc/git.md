@@ -1,4 +1,4 @@
-## Concepts not clear
+## Git knowledge that not clear to me
 
 ### git reset
 You’ve made some commits locally (not yet pushed), but everything is terrible, you want to undo last commits like they never happened.
@@ -83,3 +83,14 @@ For example, I want to change the git user (rewrite history) after push the code
 
 ### speed up git clone
 `git clone [repo] --depth=1` When you don't need the entire history of a repository, you can speed up the download by specifying the number of revisions you need.
+
+### GitHub protocol comparison
+- plain Git, aka `git://github.com/`, does not add security beyond what Git itself provides. The server is not verified and you cannot push over it. Now Github permanently disabled the [unencrypted Git protocol](https://github.blog/changelog/2022-03-15-removed-unencrypted-git-protocol-and-certain-ssh-keys/).
+
+- HTTPS, aka `https://github.com/`, will always verify the server automatically, using certificate authorities. Uses password authentication for pushing, and still allows anonymous pull. If you have two-factor authentication enabled, you will use a personal access token instead of your regular password.
+
+- HTTP, aka `http://github.com/`, doesn't work with GitHub anymore.
+
+- SSH, aka `git@github.com:` or `ssh://git@github.com/`, uses public-key authentication. You have to generate a keypair, then add it to your GitHub account. Authentication is needed for all connections, so you always need a GitHub account – even to pull or clone.
+
+> You can tell git to use https instead of `git://` with the command `git config --global url."https://".insteadOf git://`, and the change goes to your git config file `~/.gitconfig`.

@@ -357,6 +357,7 @@ Vite only support ES Modules, and parsing the native ES Modules means it will re
 https://vitejs.dev/guide/why.html  
 https://github.com/originjs/webpack-to-vite  
 https://github.com/kexiZeroing/vite-demo  
+https://patak.dev/vite/ecosystem.html  
 
 ## Electron 桌面端项目
 https://github.com/dengyaolong/geektime-electron  
