@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Drag and Drop API</title>
+    <style>
+      .container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .box {
+        border: 3px solid #666;
+        background-color: #ddd;
+        border-radius: .5em;
+        padding: 10px;
+        cursor: move;
+      }
+      .box.over {
+        border: 3px dotted #666;
+      }
+
+      #mydiv {
+        position: absolute;
+        border: 1px solid #d3d3d3;
+        background: #eee;
+        text-align: center;
+        width: 140px;
+        height: 80px;
+        cursor: move;
+      }
+    </style>
+</head>
+<body>
+    <!-- drag and drop -->
+    <div class="container">
+      <div draggable="true" class="box">A</div>
+      <div draggable="true" class="box">B</div>
+      <div draggable="true" class="box">C</div>
+    </div>
+
+    <!-- draggable div -->
+    <div id="mydiv">Click to move</div>
+    </div>
+    <script>
+      /*
+        1. text selections, images, and links are draggable by default. To make other types of content draggable you need to use the HTML5 DnD APIs.
+        2. You need some kind of source element (where the drag originates), the data payload (what you're trying to drop), and a target (an area to catch the drop). 
+      */
+      document.addEventListener('DOMContentLoaded', (event) => {
+
+        function handleDragStart(e) {
+          this.style.opacity = '0.4';
+
+          dragSrcEl = this;
+          // The dataTransfer property holds the piece of data sent in a drag action
+          // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
+          e.dataTransfer.effectAllowed = 'move';
+          // e.dataTransfer.setData(mimeType, dataPayload)
+          e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+          this.style.opacity = '1';
+
+          items.forEach(function (item) {
+            item.classList.remove('over');
+          });
+        }
+
+        function handleDragOver(e) {
+          if (e.preventDefault) {
+            e.preventDefault();
+          }
+
+          return false;
+        }
+
+        function handleDragEnter(e) {
+          this.classList.add('over');
+        }
+
+        function handleDragLeave(e) {
+          this.classList.remove('over');
+        }
+
+        function handleDrop(e) {
+          e.stopPropagation(); // stops the browser from redirecting
+
+          if (dragSrcEl !== this) {
+            dragSrcEl.innerHTML = this.innerHTML;
+            this.innerHTML = e.dataTransfer.getData('text/html');
+          }
+
+          return false;
+        }
+
+        let items = document.querySelectorAll('.container .box');
+        items.forEach(function(item) {
+          item.addEventListener('dragstart', handleDragStart);
+          item.addEventListener('dragover', handleDragOver);
+          item.addEventListener('dragenter', handleDragEnter);
+          item.addEventListener('dragleave', handleDragLeave);
+          item.addEventListener('dragend', handleDragEnd);
+          item.addEventListener('drop', handleDrop);
+        });
+      });
+
+
+      /*** Create a Draggable HTML Element ***/
+
+      function dragElement(elmnt) {
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        elmnt.onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+          e = e || window.event;
+          e.preventDefault();
+          // get the mouse cursor position at startup
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+
+          document.onmouseup = closeDragElement;
+          document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+          e = e || window.event;
+          e.preventDefault();
+          // calculate the new cursor position
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+
+          let top = elmnt.offsetTop - pos2;
+          let left = elmnt.offsetLeft - pos1;
+
+          // if (elmnt.offsetTop - pos2 < 0) {
+          //   top = 0;
+          // } else if (elmnt.offsetTop - pos2 > window.innerHeight - e.target.offsetHeight) {
+          //   top = window.innerHeight - e.target.offsetHeight;
+          // }
+
+          // if (elmnt.offsetLeft - pos1 < 0) {
+          //   left = 0;
+          // } else if (elmnt.offsetLeft - pos1 > window.innerWidth - e.target.offsetWidth) {
+          //   left = window.innerWidth - e.target.offsetWidth;
+          // }
+
+          elmnt.style.top = `${top}px`;
+          elmnt.style.left = `${left}px`;
+        }
+
+        function closeDragElement() {
+          document.onmouseup = null;
+          document.onmousemove = null;
+        }
+      }
+
+      dragElement(document.getElementById("mydiv"));
+
+    </script>
+</body>
+</html>
