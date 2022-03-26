@@ -56,6 +56,15 @@ See details at https://docs.npmjs.com/cli/v8/configuring-npm/package-json#urls-a
 2. GitHub URLs: refer to GitHub urls as `"foo": "user/foo-project"`
 3. Local Paths: You can provide a path to a local directory that contains a package `"bar": "file:../foo/bar"`
 
+### npm overrides enable you to control your dependencies' dependencies
+If you need to make specific changes to dependencies of your dependencies, for example replacing the version of a dependency with a known security issue. Overrides (with npm v8.3+) provide a way to replace a package in your dependency tree with another version, or another package entirely.
+- `"overrides": { "foo": "1.0.0" }` to make sure the package `foo` is always installed as version `1.0.0`.
+- `"overrides": { "bar@2.0.0": {"foo": "1.0.0"} }` to override `foo` to `1.0.0`, but only when it's a child (or grandchild, or great grandchild) of `bar@2.0.0`.
+- `"overrides": { "foo": "https://registry.yarnpkg.com/xxx.tgz" }` to resolve to a different package.
+- `"overrides": { "foo": "file:./libs/bar" }` to make nested dependencies point to your own local package.
+
+Delete `package-lock.json` and `node_modules` and force the next npm install to have the version you intend to have. You can check if adding `overrides` to your `package.json` did change your nested dependencies by going into `node_modules/foo/package.json`.
+
 ### npm link
 1. Run `npm link` from your `MyModule` directory: this will create a global package `{prefix}/node/{version}/lib/node_modules/<package>` symlinked to the `MyModule` directory.
 2. Run `npm link MyModule` from your `MyApp` directory: this will create a `MyModule` folder in `node_modules` symlinked to the globally-installed package and thus to the real location of `MyModule`.

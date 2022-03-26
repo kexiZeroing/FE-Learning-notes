@@ -112,6 +112,8 @@ Guide users through a tour of your app: https://shepherdjs.dev/
 
 WebRTC samples: https://webrtc.github.io/samples/
 
+Chrome Extension CLI: https://github.com/dutiyesh/chrome-extension-cli
+
 ---
 
 ## CSS related
