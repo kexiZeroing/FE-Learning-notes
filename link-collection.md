@@ -42,6 +42,8 @@ Modern Web App Design Patterns: https://www.patterns.dev
 
 VIM alphabet: https://www.youtube.com/playlist?list=PLnc_NxpmOxaNqdGvUg8RBi8ZTaZGPdqBD
 
+Become a DevOps engineer: https://www.youtube.com/channel/UCdngmbVKX1Tgre699-XLlUA 
+
 ---
 
 ## Tools and Cool websites

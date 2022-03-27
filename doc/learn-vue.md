@@ -67,6 +67,8 @@ new Vue({
 
 
 ## webpack 配置
+Webpack 5 Crash Course: https://www.youtube.com/watch?v=IZGNcSuwBZs 
+
 ### export a function
 Besides exporting a single configuration object, you can export a function from your webpack config. The function will be invoked with two arguments `env` and `argv` (i.e. webpack --env production)
 ```js
@@ -108,7 +110,7 @@ There are different options available in webpack that help you automatically com
 - devServer 的设置既可以通过 webpack config 文件，也可以通过 CLI 给 `webpack serve` 加参数。设置开启热更新 HMR (hot)、指定端口 (port)、serve 的文件开启 gzip 压缩 (compress)、设置代理解决开发中的跨域问题 (proxy) 等。
 
 ### devtool 选项配置 source map 
-`devtool` option controls if and how source maps are generated.
+`devtool` option controls if and how source maps are generated, e.g., `devtool: 'source-map'`
 
 - 省略 devtool 选项即不生成 source map
 - `eval` 会把每个 module 封装到 eval 里包裹起来执行，并且会在每个 module 末尾追加注释 `// #sourceURL=webpack://...`
@@ -145,9 +147,9 @@ There are different options available in webpack that help you automatically com
 For the start script, which runs `webpack-dev-server`, we will use `webpack.dev.js`, and for the build script, which runs `webpack`, we will use `webpack.prod.js`. While we separate the production and development configurations, we'll still maintain a "common" configuration `webpack.common.js` to keep things DRY. In order to merge these configurations together, we'll use a utility called `webpack-merge`. It provides a merge function that concatenates arrays and merges objects creating a new object.
 
 ### webpack-bundle-analyzer
-It will create an interactive treemap visualization of the contents of all your bundles.
+It will create an interactive treemap visualization of the contents of all your bundles when you build the application.
 ```js
-// https://www.npmjs.com/package/webpack-bundle-analyzer
+// https://github.com/webpack-contrib/webpack-bundle-analyzer
 // npm install --save-dev webpack-bundle-analyzer
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
