@@ -81,7 +81,7 @@ body:after {
 ```css
 /* <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar"> */
 img {
-  margin:40px;
+  margin: 40px;
   width: 90px;
   border-radius: 50%;
   /* box-shadow: x-offset y-offset blur spread color */
