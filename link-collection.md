@@ -24,6 +24,8 @@ The Missing Semester of Your CS Education: https://missing.csail.mit.edu
 
 High Performance Browser Networking: https://hpbn.co
 
+Visualising data structures and algorithms: https://visualgo.net
+
 Modern JavaScript-based web development: https://fullstackopen.com/en
 
 Complete roadmap for web development: https://andreasbm.github.io/web-skills
@@ -43,6 +45,8 @@ Modern Web App Design Patterns: https://www.patterns.dev
 VIM alphabet: https://www.youtube.com/playlist?list=PLnc_NxpmOxaNqdGvUg8RBi8ZTaZGPdqBD
 
 Become a DevOps engineer: https://www.youtube.com/channel/UCdngmbVKX1Tgre699-XLlUA 
+
+30 Days of PWA: https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/kickoff
 
 ---
 
@@ -116,13 +120,17 @@ WebRTC samples: https://webrtc.github.io/samples/
 
 Chrome Extension CLI: https://github.com/dutiyesh/chrome-extension-cli
 
+Floating Point Math: https://0.30000000000000004.com/
+
 ---
 
 ## CSS related
 
 Defensive CSS - writing CSS that is protected: https://ishadeed.com/article/defensive-css
 
-CSS Diner Selectors: https://flukeout.github.io
+Understanding Layout Modes: https://www.joshwcomeau.com/css/understanding-layout-algorithms
+
+CSS Dinner Selectors: https://flukeout.github.io
 
 CSS percentage: https://wattenberger.com/blog/css-percents
 
@@ -181,3 +189,5 @@ Introducing Remix: https://www.youtube.com/watch?v=wsJaUjd1rUo
 Remix Examples: https://github.com/remix-run/remix/tree/main/examples
 
 Super Simple Start to Remix: https://kentcdodds.com/blog/super-simple-start-to-remix
+
+The Story of Next.js: https://www.youtube.com/watch?v=BILxV_vrZO0

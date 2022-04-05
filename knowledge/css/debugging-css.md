@@ -46,7 +46,7 @@
 
 - How we compare a design against implementation? We can take the original design as an image and place it above the page in the browser. Thanks to CSS backgrounds and pseudo-elements, this is possible. Please make sure that the browser width is equal to the design width and no other element in the same stacking context has a higher `z-index` than the pseudo-element. Also, you will notice that nothing is hoverable or clickable, that’s because the pseudo-element is covering the page. We can allow interactivity by setting `pointer-events: none` (the specified HTML element is never the target of pointer events).
 
-> The prime use case for `pointer-events` is to allow click or tap behavior to “pass through” an element to another element below it on the Z axis. For example, this would be useful for graphic overlays, or hiding elements with opacity and still allowing text-selection on the content below it.
+  > The prime use case for `pointer-events` is to allow click or tap behavior to “pass through” an element to another element below it on the Z axis. For example, this would be useful for graphic overlays, or hiding elements with opacity and still allowing text-selection on the content below it.
 
 ```css
 body {
@@ -68,3 +68,10 @@ body:after {
     pointer-events: none;
 }
 ```
+
+- The key realization I had is that CSS is so much more than a collection of properties. CSS properties on their own are meaningless. It's up to the layout algorithm to define what they do, how they're used in the calculations.
+  - `z-index` property is not implemented in the Flow layout; Flexbox algorithm implements the `z-index` property.
+  - In the Flexbox algorithm, `width` is more of a suggestion. (It's that the Flexbox algorithm implements the `width` property in a different way than the Flow algorithm.)
+  - Flow layout is designed for documents, similar to word-processing software.
+  - Inline elements are meant to be used in the middle of paragraphs, not as part of the layout. For example, maybe we want to add a little icon to the middle of a sentence.
+  - The Flow layout algorithm is treating `<image>` as if it was a character in a paragraph, and adding a bit of space below to ensure it isn't uncomfortably close to the characters on the next line of text. ("inline magic space": **Because images are inline elements by default!**)

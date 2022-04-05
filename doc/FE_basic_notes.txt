@@ -921,6 +921,9 @@ text-shadow: x-offset y-offset blur-radius color;
 
 float和inline-block一个区别：设置float元素间无间距，inline-block元素间有间距--HTML代码导致
 
+移动端常见的样式兼容性问题，比如在 Android 手机上表单获取焦点时，系统键盘会把 fixed 定位在页面底部的元素顶起来
+https://gwjacqueline.github.io/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B8%B8%E8%A7%81%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98/
+
 14.对象的赋值、传参、返回值都是引用关系（地址）--浅拷贝
 
 15.image加载
@@ -959,5 +962,3 @@ function ajax(type, url, data, success) {
      }		
   }
 }
-
-
