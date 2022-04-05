@@ -75,3 +75,20 @@ body:after {
   - Flow layout is designed for documents, similar to word-processing software.
   - Inline elements are meant to be used in the middle of paragraphs, not as part of the layout. For example, maybe we want to add a little icon to the middle of a sentence.
   - The Flow layout algorithm is treating `<image>` as if it was a character in a paragraph, and adding a bit of space below to ensure it isn't uncomfortably close to the characters on the next line of text. ("inline magic space": **Because images are inline elements by default!**)
+
+- You can add infinite borders using `box-shadow` if you want to apply multiple borders on one div. `box-shadow` is described by X and Y offsets relative to the element, blur and spread radius, and color. You can set multiple effects separated by commas.
+
+```css
+/* <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar"> */
+img {
+  margin:40px;
+  width: 90px;
+  border-radius: 50%;
+  /* box-shadow: x-offset y-offset blur spread color */
+  box-shadow:
+    0 0 0 10px #817dd1,
+    0 0 0 20px #5c58aa,
+    0 0 0 30px #3d3a84,
+    0 0 0 40px #211f56;
+}
+```
