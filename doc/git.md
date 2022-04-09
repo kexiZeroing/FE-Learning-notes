@@ -70,6 +70,8 @@ For example, I want to change the git user (rewrite history) after push the code
 5. `git commit --amend --reset-author --no-edit` and `git rebase --continue` to confirm and continue your rebase. (there is also a `git rebase --abort` command)
 6. `git push --force-with-lease` to overwrite the remote history. (`--force-with-lease` is safer than `--force`: If the remote branch has the same value as the remote branch on your local machine, you will overwrite remote. If it doesn't have the same value, it indicates a change that someone else made to the remote branch while you were working on your code and thus will not overwrite any code.)
 
+[git-blame-someone-else](https://github.com/jayphelps/git-blame-someone-else) is a tool to change the author of a commit. Usage: `git blame-someone-else <author> <commit>`.
+
 ### rename branch
 - Rename the branch while working in this branch: `git branch -m <new name>`; rename from outside the branch: `git branch -m <old name> <new name>`.
 - Using 'master' as the name for the initial branch. This default branch name is subject to change. To configure the initial branch name to use in all of your new repositories, call `git config --global init.defaultBranch <name>`.

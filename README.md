@@ -1,6 +1,6 @@
 # FE-Learning-notes
 
-> This repo is only used for self learning, and many texts and example codes are copied from other places like MDN, Stackoverflow and Github.
+> This repo is used for self learning. Some documents and examples are copied from other places like MDN, Stack Overflow and GitHub. The goal is to build a second brain.
 
 - `link-collection.md` is a collection of useful links/resources I want to put together.
 
