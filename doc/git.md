@@ -37,7 +37,7 @@ A remote URL is the place where your code is stored. You can only push to two ty
 ### undo a git merge with conflicts
 - Since your pull was unsuccessful then HEAD is the last "valid" commit on your branch: `git reset --hard HEAD`
 
-- `git reset --merge` attempts to reset the working copy to whatever the state it was before the merge. It means that it should restore any uncommitted changes before the merge.
+- If you make a mistake or you’re not confident which the decision change to accept, you can stop the merge process by running `git merge -- abort`
 
 - Generally you shouldn't merge with uncommitted changes. If you have changes you don't want to commit before starting a merge, just `git stash` them before the merge and `git stash pop` after finishing the merge.
 

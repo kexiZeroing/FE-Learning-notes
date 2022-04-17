@@ -34,7 +34,7 @@
 
 ### 唤起小程序
 微信外网页通过小程序链接 URL Scheme，微信内通过微信开放标签，且微信内不会直接拉起小程序，需要手动点击按钮跳转。这是官方提供的一个例子 https://postpay-2g5hm2oxbbb721a4-1258211818.tcloudbaseapp.com/jump-mp.html 可以用手机浏览器查看效果，直接跳转小程序。
-  - 使用微信开放标签 `<wx-open-launch-weapp>`，提供要跳转小程序的原始 ID 和路径，标签内插入自定义的 html 元素。开放标签会被渲染成一个 iframe，所以外部的样式是不会生效的。另外在开放标签上模拟 click 事件也不生效，即不可以在微信内不通过点击直接跳转小程序。
+  - 使用微信开放标签 `<wx-open-launch-weapp>`，提供要跳转小程序的原始 ID 和路径，标签内插入自定义的 html 元素。开放标签会被渲染成一个 iframe，所以外部的样式是不会生效的。另外在开放标签上模拟 click 事件也不生效，即不可以在微信内不通过点击直接跳转小程序。可以监听 `<wx-open-launch-weapp>` 元素的 `launch` 事件，用户点击跳转按钮并对确认弹窗进行操作后触发。
   - 通过[服务端接口](https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/url-scheme/urlscheme.generate.html)或在小程序管理后台的「工具」入口可以获取打开小程序任意页面的 URL Scheme。适用于从短信、邮件、微信外网页等场景打开小程序。
 
 ### Github 脚本
