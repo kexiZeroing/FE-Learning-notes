@@ -44,6 +44,8 @@ WebP is on the verge of replacing JPEG and PNG as the best image to use on the w
 AVIF outperformed both JPEG and WebP. Companies like Netflix and Facebook want AVIF to become an image format standard on the web. They provided numerous visual examples that showed how AVIF was a preferred image format compared to JPEG. It’s currently only supported by Chrome. Hopefully AVIF won’t take ten years to get adopted by all major browsers like it did for WebP. Regardless, webmasters can use the AVIF image format now by using the same `srcset` attribute used for WebP.
 
 ## Responsive images
+This is where the `img` tag's `sizes` and `srcset` attributes come to into play. The TL;DR of these attributes is that it allows you to tell the browser different versions of your image for different screen widths and what size the image should be for a given set of media queries.
+
 ```html
 <!-- Different sizes -->
 <img srcset="elva-fairy-480w.jpg 480w,
@@ -73,3 +75,13 @@ AVIF outperformed both JPEG and WebP. Companies like Netflix and Facebook want A
 The browser will look at its device width and work out which media condition in the `sizes` list is the first one to be true (`sizes` is not needed for different resolutions). Then look at the slot size given to that media query, and load the image referenced in the `srcset` list that has the same size as the slot or, if there isn't one, the first image that is bigger than the chosen slot size. The last slot width has no media condition which is the default when none of the media conditions are true.
 
 `<picture>` allows browsers to skip images they do not recognize, you can include images in your order of preference. **The browser selects the first one it supports**. The features — `srcset/sizes/<picture>` — are all supported in modern desktop and mobile browsers (including Microsoft's Edge browser, although not Internet Explorer.)
+
+## Unsplash image placeholder
+If I stopped just at this point then users would just get a blank space before the image loads in. Much better to show some kind of placeholder. Medium was the first place I saw something like this. And unsplash also has support for this. For this to work well, you need the placeholder to be smallish, server rendered, and inline.
+
+When you land on an unsplash image, there are three things that can happen in series depending on your network speed:
+1. The primary color of the image is displayed. This is server rendered.
+2. A blurred version of the image is displayed. I'm not sure whether they're using [blurhash](https://blurha.sh/) for this, but they're doing the exact same thing. It's a canvas drawing.
+3. The final image is loaded.
+
+These actually all happen, but they're layered with the image on top, then the blur canvas, then the div with a background color. So if the image loads before the JavaScript then the JavaScript won't have a chance to set up the canvas for the blurred image before you're looking at the actual image. And if the JavaScript is already loaded (like if you're doing client-side navigation) you won't see the background color and will only see the blurred image.

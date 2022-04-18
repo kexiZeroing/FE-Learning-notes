@@ -30,7 +30,7 @@ curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json"
 # in nodeJs, use `JSON.parse(req.body)` to get parameters 
 ```
 
-[HTTPie](https://github.com/httpie/httpie) is a command-line HTTP client. Its goal is to make CLI interaction with web services as human-friendly as possible.
+Convert `curl` commands into code: https://curlconverter.com
 
 ### POST and PUT
 The difference between `PUT` and `POST` is that `PUT` is idempotent (**If you PUT an object twice, it has no effect**). `PUT` implies putting a resource - completely replacing whatever is available at the given URL with a different thing. Do it as many times as you like, and the result is the same. You can PUT a resource whether it previously exists, or not. So consider like this: do you name your URL objects you create explicitly, or let the server decide? If you name them then use `PUT`. If you let the server decide then use `POST`.
