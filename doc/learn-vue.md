@@ -27,6 +27,33 @@
 - xh5 项目的路由在 production 环境下设置 `/v/index` 作为 root。
 - 如果某个接口 404，就是它的路径没有配置代理。
 
+```py
+# urls.py
+from xxx import v_views as foo
+
+# django syntax
+urlpatterns = [
+  url(r'^v/index', foo.index),
+  url(r'^web', foo.web),
+]
+
+# view.py
+response = render_to_response('bar/baz.html', context)
+
+# Import FE scripts in templates/bar/baz.html
+# <script src="/static/qux.js?_dt={{timestamp}}"></script>
+```
+
+```js
+// qux.js
+var isInIframe = window.frames.length !== parent.frames.length;
+var ua = window.navigator.userAgent;
+      
+if (!isInIframe && !ua.toLowerCase().match(/micromessenger|android|iphone/i)) {
+  window.location.href = '/web/?next=' + window.location.pathname;
+} 
+```
+
 ### 登录逻辑
 - 二维码登录使用 websocket 连接，message 中定义不同的 `op` 代表不同的操作，比如 requestlogin 会返回微信生成的二维码(ticket), 扫码成功返回类型是 loginsuccess，并附带 OpenID, UnionID, Name, UserID, Auth 等信息，前端拿到这些信息可以请求后端登录接口，拿到 sessionid，并被种在 cookie 里。
 - 账密登录，前端使用 [JSEncrypt](http://travistidwell.com/jsencrypt/) 给密码加密并请求后端登录接口，成功的话后端会把 sessionid 种在 cookie 里。

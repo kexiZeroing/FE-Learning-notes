@@ -92,3 +92,15 @@ img {
     0 0 0 40px #211f56;
 }
 ```
+
+- A simple example of how to stick an element to the bottom of a page in case the window was too big in height. But still be part of the flow of the page if there was not enough screen size. (using Tailwind CSS)
+
+```html
+<html>
+  <!-- set the minimum height to the screen-->
+  <body class="text-center min-h-screen flex flex-col">
+    <p class="flex-grow">test</p>
+    <p>&copy; 2022</p>
+  </body>
+</html>
+```
