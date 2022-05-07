@@ -454,6 +454,17 @@ https://simulatedgreg.gitbooks.io/electron-vue/content/en/
 4. 利用 webpack 编译的 hooks 在构建完成后会打印日志，`logStats()` 函数接收进程名 (Main or Renderer) 和具体输出的内容。
 5. 在主进程和渲染进程都构建完成后，即主进程有一个打包后的 `main.js` 且渲染进程本地服务可以访问，这个时候启动 electron，即通常项目的 npm 脚本会执行 `electron .`，这里是通过 Node API，使用 `child_process.spawn()` 的方式启动 electron 并传入需要的参数，然后对 electron 进程的 stdout 和 stderr 监听，打印对应的日志。
 
+### 状态持久化存储
+Electron doesn't have a built-in way to persist user preferences and other data. [electron-store](https://github.com/sindresorhus/electron-store) handles that for you, so you can focus on building your app. The data is saved in a JSON file in `app.getPath('userData')`.
+- `appData`, which by default points to `~/Library/Application Support` on macOS.
+- `userData` (storing your app's configuration files), which by default is the appData directory appended with your app's name.
+
+Advantages over `localStorage`:
+- localStorage only works in the browser process.
+- localStorage is not very fault tolerant, so if your app encounters an error and quits unexpectedly, you could lose the data.
+- localStorage only supports persisting strings. This module supports any JSON supported type.
+- The API of this module is much nicer. You can set and get nested properties. You can set default initial config.
+
 ### Knowledge
 Each Electron app has a single **main process**, which acts as the application's entry point. The main process runs in a Node.js environment, and adds native APIs to interact with the user's operating system. Each instance of the `BrowserWindow` class creates an application window that loads a web page in a separate renderer process. You can interact with this web content from the main process using the browserWindow's `webContents` object.
 

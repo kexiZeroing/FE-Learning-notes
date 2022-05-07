@@ -78,3 +78,4 @@
 73. Hold the `Ctrl` or `Cmd` key when click on the resource type to filter multiple resource types (e.g. CSS + Font + Image) in Devtools Network panel.
 74. You can type `cal 2022` or `cal june 2022` in Terminal and get the calendar right in your Terminal.
 75. Difference between **404 Not Found** and **405 Method Not Allowed**: 404 means the server has not found anything matching the Request-URI, which is commonly used when the server does not wish to reveal exactly why the request has been refused, or when no other response is applicable. 405 means the method specified in the Request-Line is not allowed for the resource identified by the Request-URI. The response must include an `Allow` header containing a list of valid methods for the requested resource.
+76. On Mac you can check the clipboard to see what’s stored there by opening Finder and then choosing `Edit > Show Clipboard`.

@@ -59,6 +59,21 @@ JSONP doesn't support other methods than GET and also doesn't support custom hea
 
 > Enter JSONP, use a script tag (the domain limitation is ignored) and pass a special parameter that tells the server a little bit about your page. Then the server is able to wrap up its response in a way that your page can handle. For example, say the server expects a parameter called `callback` to enable its JSONP capabilities. Then your request would look like `/abc?callback=mycallback`. Without JSONP, this might return some basic JavaScript object, like `{ foo: 'bar' }`. However, with JSONP, it wraps up the result a little differently, returning something like `mycallback({ foo: 'bar' })`, and it will invoke the method specified in your page `mycallback = function(data){ }`
 
+### Navigator.sendBeacon()
+This method asynchronously sends an HTTP POST request containing a small amount of data to a web server. It's intended to be used for sending analytics data to a web server.
+
+A site often wants to send analytics when the user has finished with a page. In this situation the browser may be about to unload the page, and in that case the browser may choose not to send asynchronous `XMLHttpRequest` requests. And if web pages try to delay page unload long enough to send data, it slows down navigation to the next page.
+
+With `sendBeacon()` method, the data is sent reliably and asynchronously. It doesn't impact the loading of the next page.
+
+```js
+document.addEventListener('visibilitychange', function logData() {
+  if (document.visibilityState === 'hidden') {
+    navigator.sendBeacon('/log', analyticsData);
+  }
+});
+```
+
 ## Connection management
 Opening and maintaining connections largely impacts the performance of Web sites and Web applications. In HTTP/1.x, there are several models: **short-lived connections, persistent connections, and HTTP pipelining**.
 

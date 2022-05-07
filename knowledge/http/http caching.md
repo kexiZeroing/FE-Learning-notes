@@ -59,6 +59,8 @@ Response headers can be set at multiple stages depending on your application arc
 ### Freshness
 Before this expiration time, the resource is **fresh**; after the expiration time, the resource is **stale**. Note that a stale resource is not evicted or ignored; when the cache receives a request for a stale resource, it forwards this request with a `If-None-Match` to check if it is in fact still fresh. If so, the server **returns a `304 (Not Modified)` header without sending the body of the requested resource**, saving some bandwidth.
 
+> Open Chrome DevTools / Network and reload a page multiple times, the table column "Size" will tell you that some files are loaded "from memory cache". Now close the browser, open DevTools / Network again and load that page again. All cached files are loaded "from disk cache" now, because your memory cache is empty.
+
 ### Cache validation
 When a cached document's expiration time has been reached, it is either validated or fetched again. Revalidation is triggered when the user presses the reload button. It is also triggered under normal browsing if the cached response includes the `"Cache-Control: must-revalidate"` header. When a validation request is made, the server can either ignore the validation request and response with a normal `200 OK`, or it can return `304 Not Modified` to instruct the browser to use its cached copy. The latter response can also include headers that update the expiration time of the cached document.
 
@@ -67,6 +69,54 @@ The `ETag` response header is an opaque-to-the-useragent value that can be used 
 
 - Last-Modified  
 The `Last-Modified` response header can be used as a weak validator. If the `Last-Modified` header is present in a response, then the client can issue an `If-Modified-Since` request header to validate the cached resource.
+
+### Code Example
+```js
+// node server.js
+const http = require('http')
+const path = require('path')
+const fs = require('fs')
+
+http.createServer((req, res) =>{
+  let { pathname } = require('url').parse(req.url)
+  // 打印当前的 pathname 来判断请求资源时候是否走了强缓存（不经过服务器）**index.html 作为入口不会被缓存**
+  console.log(pathname)
+  let absPath = path.join(__dirname, pathname)
+  fs.stat(absPath, (err, statObj) => {
+    if (err) {
+      res.statusCode = 404;
+      res.end()
+      return
+    }
+    if (statObj.isFile()) {
+      // 20s 内如果再发一次请求，就不用请求服务器，直接从缓存中取（强制缓存的状态码都是 200）
+      res.setHeader('Cache-Control', 'max-age=20')
+      // Cache-Control 适用于高版本浏览器，Expires 适用于低版本浏览器
+      res.setHeader('Expires', new Date(Date.now() + 20*1000).toGMTString())
+      fs.createReadStream(absPath).pipe(res)
+    }
+  })
+}).listen(5050)
+
+
+// 协商缓存的应用, Etag 和 if-None-Match
+if (statObj.isFile()) {
+  // 获取上一次请求时候md5
+  let client = req.headers['if-none-match']
+  // 根据目标路径读取文件并且转为md5
+  let fileContent = fs.readFileSync(absPath, 'utf-8')
+  let md5 = crypto.createHash('md5').update(fileContent).digest('base64')
+  if (client && client === md5) {
+      res.statusCode = 304
+      res.end()
+      return
+  }
+
+  res.setHeader('Cache-Control', 'no-cache') 
+  res.setHeader('Etag', md5)
+  fs.createReadStream(absPath).pipe(res)
+}
+```
 
 ### Revved resources
 They are some resources that would benefit the most from caching, but this makes them very difficult to update. This is typical of the resources included and linked from each web pages: JavaScript and CSS files change infrequently, but when they change you want them to be updated quickly.
