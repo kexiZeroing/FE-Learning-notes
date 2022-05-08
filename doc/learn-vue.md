@@ -59,6 +59,11 @@ if (!isInIframe && !ua.toLowerCase().match(/micromessenger|android|iphone/i)) {
 - 账密登录，前端使用 [JSEncrypt](http://travistidwell.com/jsencrypt/) 给密码加密并请求后端登录接口，成功的话后端会把 sessionid 种在 cookie 里。
 - 申请公众号/小程序的时候，都有一个 APPID 作为当前账号的标识，**OpenID** 就是用户在某一公众平台下的标识（用户微信号和公众平台的 APPID 两个数据加密得到的字符串）。如果开发者拥有多个应用，可以通过获取用户基本信息中的 **UnionID** 来区分用户的唯一性，因为同一用户，在同一微信开放平台下的不同应用，UnionID 应是相同的，代表同一个人，当然前提是各个公众平台需要先绑定到同一个开放平台。OpenID 同一用户同一应用唯一，UnionID 同一用户不同应用唯一，获取用户的 OpenID 是无需用户同意的，获取用户的基本信息则需要用户同意。
 
+> 常规的扫码登录原理（涉及 PC 端、手机端、服务端）：
+> 1. PC 端携带设备信息向服务端发起生成二维码的请求，生成的二维码中封装了 uuid 信息，并且跟 PC 设备信息关联起来，二维码有失效时间。PC 端轮询检查是否已经扫码登录。
+> 2. 手机（已经登录过）进行扫码，将手机端登录的信息凭证（token）和二维码 uuid 发送给服务端，此时的手机一定是登录的，不存在没登录的情况。服务端生成一个一次性 token 返回给移动端，用作确认时候的凭证。
+> 3. 移动端携带上一步的临时 token 确认登录，服务端校对完成后，会更新二维码状态，并且给 PC 端一个正式的 token ，后续 PC 端就是持有这个 token 访问服务端。
+
 ### 唤起小程序
 微信外网页通过小程序链接 URL Scheme，微信内通过微信开放标签，且微信内不会直接拉起小程序，需要手动点击按钮跳转。这是官方提供的一个例子 https://postpay-2g5hm2oxbbb721a4-1258211818.tcloudbaseapp.com/jump-mp.html 可以用手机浏览器查看效果，直接跳转小程序。
   - 使用微信开放标签 `<wx-open-launch-weapp>`，提供要跳转小程序的原始 ID 和路径，标签内插入自定义的 html 元素。开放标签会被渲染成一个 iframe，所以外部的样式是不会生效的。另外在开放标签上模拟 click 事件也不生效，即不可以在微信内不通过点击直接跳转小程序。可以监听 `<wx-open-launch-weapp>` 元素的 `launch` 事件，用户点击跳转按钮并对确认弹窗进行操作后触发。
@@ -368,6 +373,41 @@ new MyComponent({i18n, router}).$mount()
 var component = new MyComponent().$mount()
 document.getElementById('app').appendChild(component.$el)
 ```
+
+### 组件间通信
+1. props 和 $emit
+2. 通过 `$parent` 拿到父组件的实例，然后调用父组件的方法。同样也可以调用子组件 `$children` 的方法。
+3. 将 `$dispatch` 挂载到 Vue 原型上方便调用，`$dispatch` 的原理是一直递归找父组件，然后执行父组件中的方法。
+    ```js
+    Vue.prototype.$dispatch = function(eventName, newValue) {
+      let parent = this.$parent
+      while (parent) {
+        parent.$emit(eventName, newValue)
+        parent = parent.$parent
+      }
+    }
+    ```
+4. `.sync` 语法糖，注意在子组件中调用 `$emit(fn)` 的时候, `fn` 的名字一定是 `update:xxx` 这样的格式。
+    ```html
+    <Son @update:number="newValue => number = newValue" :number="number" />
+    // 等价于
+    <Son :number.sync="number" />
+    ```
+5. 在子组件中可以通过 `v-bind="$attrs"` 将父组件传递下来的数据传递给孙组件，而孙组件可以通过 `$attrs` 来接收。对于方法，在子组件中可以通过 `v-on="$listeners"` 将全部事件传递给孙组件。
+    ```html
+    // Parent.vue
+    <Son :number="number" @change="change" @say="say" :count="count" />
+    // Son.vue
+    <Grandson v-bind="$attrs" v-on="$listeners" />
+    // Grandson.vue
+    {{ $attrs }}
+
+    mounted() {
+      console.log(this.$listeners)
+    }
+    ```
+6. Vue 组件通信的语法糖和相关 api 太多，可以直接选择用 Vuex 处理。
+
 
 ## Webpack to Vite
 > Webpack
