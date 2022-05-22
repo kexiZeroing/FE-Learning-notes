@@ -32,9 +32,9 @@ There are two commands specific to macOS that connect the clipboard closer to th
 Using Terminal you may notice that there is a small gray square brackets before the prompt. They are called 'Marks' and every command that is executed automatically gets marked. You can quickly scroll the Terminal output to previous marks with `Cmd + Up Arrow` and to the next mark with `Cmd + Down Arrow`. You can hide them with 'Hide Marks' from the 'View' menu.
 
 ## Navigating the Terminal Prompt
-Instead of hitting the up arrow several times, you can also use `Ctrl + R` and start typing a command you used before. This will search through the history backwards and recall the latest command you used starting with what you typed. By typing `sudo !!`, the shell will substitute the `!!` with the previous command, print the entire command after the substitution and immediately execute it with `sudo`.
+Instead of hitting the up arrow several times, you can also use `Ctrl + R` and start typing a command you used before. This will search through the history backwards and recall the latest command you used starting with what you typed. `history` command will print entire bash history to the screen (e.g. `history | tail -5` shows the last 5 entries). By typing `sudo !!`, the shell will substitute the `!!` with the previous command, print the entire command after the substitution and immediately execute it with `sudo`.
 
-Once you have recalled a command and want to edit it, you will have to move the cursor. You can use `Option + Left/Right Arrow` to move word by word. You can use `Ctrl + A` to jump to the beginning of the line and `Ctrl + E` to jump to the end. `Ctrl + U` will clear the entire current line. And you can option-click with the mouse pointer on a character in the command line to move the cursor there.
+Once you have recalled a command and want to edit it, you will have to move the cursor. You can use `Option + Left/Right Arrow` to move word by word. You can use `Ctrl + A` to jump to the beginning of the line and `Ctrl + E` to jump to the end. `Ctrl + U` will clear the entire current line. `Ctrl + W` delete the word before the cursor. And you can option-click with the mouse pointer on a character in the command line to move the cursor there.
 
 The configuration for the prompt is stored in the `PS1` environment variable. You can see the default value by `echo $PS1`.
 
@@ -62,7 +62,7 @@ One thing you can change is wether tab-completion is case-sensitive or not. Sinc
 ## Viewing `man` Pages
 `open x-man-page://ls` will open the `man` page in a new yellow Terminal window, so you can still see what you are actually doing while reading the man page. Since this window shows the entire man page, you can scroll and use Command-F in this window. This behavior can also be achieved by right clicking on a word in a Terminal window and choose 'Open man Page' from the context menu.
 
-For the normal `man` page, this special display mode is actually controlled by the command `less`. You can use `/word<return>` to search in document, `n` to find next occurrence of search term, `N` to find previous occurrence of search term. (`man ascii` quick access to ascii table)
+For the normal `man` page, this special display mode is actually controlled by the command `less`. You can use `/word<return>` to search in document, `n` to find next occurrence of search term, `N` to find previous occurrence of search term. (e.g. `man ascii` quick access to ascii table, `man man` lists the sections of the manual pages)
 
 > - `cat` show the contents of file. use for relatively small files
 > - `head` show the first part of the file
@@ -90,6 +90,9 @@ end$    matches the pattern only if the pattern is at the end of the line
 
 ## lsof
 Linux/Unix considers everything as a file and `lsof` is a command meaning "list open files", which is used to report a list of all open files and the processes that opened them. Add `-i` to list network connections. Use `lsof -i -n -P | grep LISTEN` to check the listening ports and `lsof -i :22` to see a specific port.
+
+> `kill` command sends a kill signal to terminate any process gracefully when attached with a pid or a processname. This is the default and safest way to kill/terminate a or set of processes. `kill <pid> / <processname>` sends SIGTERM (15) — Termination signal. However, this signal can be handled, ignored or caught in code. If the signal is not caught by a process, the process is killed.  
+> `kill -9` command sends a kill signal to terminate any process immediately when attached with a PID or a processname. It is a forceful way to kill/terminate a or set of processes. `kill -9 <pid> / <processname>` sends SIGKILL (9) — Kill signal. This signal cannot be handled (caught), ignored or blocked. Hence, this immediately kill the process without any handling and this can create zombies process.
 
 ## bash_profile and bashrc
 There are two user level files which `bash` may run when a bash shell starts. `~/.bash_profile` and `~/.bashrc`. The usual convention is that `.bash_profile` will be executed at login shells, i.e. when you ssh into a remote host, it will ask you for user name and password to log in, so it is a login shell. But when you open a terminal, it does not ask for login and you will just get a command prompt. In other versions of Unix or Linux, this will not run the `.bash_profile` but `.bashrc`. The underlying idea is that the `.bash_profile` should be run only when you login, and the `.bashrc` for every new interactive shell. However, Terminal on macOS does not follow this convention. When Terminal opens a new window, it will run `.bash_profile`. (Other third-party terminal applications on macOS may follow the precedent set by the Terminal or not.)
@@ -141,3 +144,33 @@ Users and their access privileges control what user can read, write, or change i
 The recommended way of gaining super user privileges from the command line is the `sudo` command. The name means 'super user do' and will perform the command with `root` privileges after verifying the user has the permission to do so. The system will prompt for your password when executing a command with `sudo`. However, there is a 5 minute grace period where the sudo system caches your credentials and you do not have to re-enter the password. The Terminal prompt is set up to `#` when you are running with super user privileges. To leave the `root` shell, just type exit.
 
 There is a different command which allows you to change the user: `su` (short for 'switch user'). `su` will ask for credentials of the user you are switching to. So if you run `su bob`, you need to have Bob’s credentials. When you run `su` without a username, it assumes `root`. But since logging in as `root` is disabled by default on macOS, it will fail, but you can use `sudo -s` or `sudo -i` instead. When you run `sudo -s` it will invoke a new shell running as `root`. The shell that is run is the default shell of your account, and it doesn't change the working directory. Alternatively you can use `sudo -i` to invoke a `root` shell. The working directory becomes `/var/root`, and the shell will be `/bin/sh` on macOS. It will be set up as if the `root` user were logging in and will read `root`'s profile.
+
+## 常⽤命令和作用
+| 常⽤命令 |  作用 |
+|  ----   | ---- |
+| shutdown -h now | 即刻关机 (graceful shutdown)
+| reboot  | 重启
+| uname -m | 处理器名称
+| uname -s | 操作系统名称
+| hostname | 计算机名
+| whoami | 当前用户名
+| who | 当前登录系统的⽤户 (The console is your physical computer and the various tty are virtual terminals)
+| last | ⽤户登录⽇志
+| uptime | 系统运⾏时间、⽤户数、负载
+| env | 系统的环境变量
+| cal 2022 | 年日历
+| ps -ax | 系统中运行的进程 (include processes not initiated by users through a terminal)
+| ps -ax \| grep "Visual Studio Code" | combining `grep` with a pipe
+| top | 动态显示 cpu /内存/进程等情况
+| df -h | 磁盘使⽤情况及挂载点
+| du -sh /dir | 指定某个⽬录的⼤⼩
+| groups | 查看所在用户组
+| find /dir -name *.bin | 在指定⽬录搜索文件
+| cat -n file1 | 查看内容并标示⾏数
+| tail -f /log | 实时查看添加到⽂件中的内容
+| grep foo hello.txt | 在⽂件中查找关键词
+| grep ^foo hello.txt | 查找以 foo 开头的内容
+| tar -cvf xxx.tar file | 创建⾮压缩 tar 包
+| tar -tf xxx.tar | 查看 tar 包的内容
+| tar -xvf xxx.tar | 解压 tar 包
+| python3 -m http.server 8080 | 快速启动 http 服务

@@ -33,6 +33,10 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 2. If you run `npm i` against that `package.json` and `package-lock.json`, the latter will never be updated, even if the `package.json` would be happy with newer versions.
 3. If you manually edit your `package.json` to have different ranges and run `npm i` and those ranges aren't compatible with your `package-lock.json`, then the latter will be updated with version that are compatible with your `package.json`.
 
+> - `npm ls` (aliases: list, la, ll) list dependencies that have been installed to `node_modules`.
+> - [depcheck](https://github.com/depcheck/depcheck) check your npm module for unused dependencies. `npx depcheck` (needs node.js >= 10)
+> - [npm-check-updates](https://github.com/raineorshine/npm-check-updates) find the latest versions of your package dependencies, ignoring specified versions.
+
 ### npm install and npm ci
 - `npm install` reads `package.json` to create a list of dependencies and uses `package-lock.json` to inform which versions of these dependencies to install. If a dependency is not in `package-lock.json` it will be added by `npm install`.
 
@@ -118,6 +122,8 @@ console.log(module)  // { exports: { name: 'Bob', add: [Function] } }
 ```
 
 `require` keyword refers to a function which is used to import all the constructs exported using the `module.exports` from another module. The value returned by the `require` function in module y is equal to the `module.exports` object in the module x. The require function takes in an argument which can be a name or a path. You should provide the name as an argument when you are using the third-party modules or core modules provided by NPM. On the other hand, when you have custom modules defined by you, you should provide the path of the module as the argument.
+
+Modules are cached after the first time they are loaded. This means every call to `require('foo')` will get exactly the same object returned, if it would resolve to the same file.
 
 ### Live Reload and Hot Reload
 > When a file is edited, the dev server recompiles with the changes, then pushes a notification to the client code in the browser. The app code can then subscribe to "some file changed" notifications, re-import the new version of the code, and swap out the old code for the new code as the app is still running.
@@ -275,14 +281,16 @@ NPM Scripts are a set of built-in and custom scripts defined in the `package.jso
 5. On your Mac, in Safari, the name of the iOS device will appear as a submenu in the `Develop menu`. This will open a Web Inspector window on your Mac. 
 
 ## Jamstack
-Jamstack is a web architecture and stands for **J**avascript, **A**PIs, and **M**arkup stack. In this architecture, the frontend and the backend are completely separate. All interactions with the backend and third parties are done using APIs. Markup that incorporates Javascript, is pre-built into static assets, served to a client from a CDN, and relies on reusable APIs for its functionalities. **(essentially meaning static hosting + services)**
+Jamstack is a web architecture and stands for **J**avascript, **A**PIs, and **M**arkup stack. In this architecture, the frontend and the backend are completely separate. All interactions with the backend and third parties are done using APIs. Markup that incorporates Javascript, is pre-built into static assets, served to a client from a CDN, and relies on reusable APIs for its functionalities. **「a Jamstack site is a set of pre-generated static assets served from a CDN」**
 
-Jamstack sites have better performance, are easier to secure and scale, and cost a lot less than sites built with traditional architectures. Pre-building pages ensure that any errors can be detected early enough. Most importantly, Jamstack allows teams to outsource complex services to vendors who provide, maintain, and secure APIs used on their sites. The APIs can provide specific functionality to static sites like payments, authentication, search, image uploads using Paypal, Auth0, Algolia, Cloudinary.
+> Jamstack is a way of working. It’s not a group of frameworks or services or tied to any particular brands or tech stack. Jamstack is defined by how you build websites, rather than the tools with which you choose to build them.
+
+Jamstack sites have better performance, are easier to secure and scale, and cost a lot less than sites built with traditional architectures (Jamstack hosting providers take care of all of this for you). Pre-building pages ensure that any errors can be detected early enough. Most importantly, Jamstack allows teams to outsource complex services to vendors who provide, maintain, and secure APIs used on their sites. The APIs can provide specific functionality to static sites like payments, authentication, search, image uploads using Paypal, Auth0, Algolia, Cloudinary.
 
 The most common types of Jamstack site build tools include static site generators (SSG) and headless content management systems (CMS). **Static site generators** are build tools that add content to templates and produce static web pages of a site. These generators can be used for Jamstack sites. Some well-known site generators include Hugo, Gatsby, Jekyll, Next.js, etc. 
 
 There are two points in time that you can integrate dynamic content into a Jamsack application:
-- **Build time** - A Jamstack application may load data from files, APIs, third-party services or even a database at build time. You can think of it like a content cache that applies to all your site’s users. Parts of the cache may need to be refreshed at specific intervals - that could be once a month, once a day or even multiple times a day dependent on the type of content.
+- **Build time** - During the build process, a Jamstack site can call out to any number of external API services to fetch data to pre-generate static pages. You can think of it like a content cache that applies to all your site’s users.
 - **Run time** - This should typically be content that is user specific, needs to update frequently, or is in response to a specific user action. For example, an ecommerce site may have product details populated at build time, but things like the current inventory, shipping options/prices based upon the user’s location, or the user’s shopping cart would all be populated at run time in the browser. As you may notice, in this example, the content on a single page (product details) may be a combination of both pre-rendered (build time) content (i.e. the product name, photo and description) and run time content (i.e. the product inventory and shipping options based on location).
 
 ## CMS and headless CMS

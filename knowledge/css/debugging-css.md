@@ -104,3 +104,16 @@ img {
   </body>
 </html>
 ```
+
+- Example of using `:has()` pseudo-class (will be supported in Chrome 105)
+```css
+/* 5 or more items display next to each other */
+ul:has(:nth-child(n + 5)) li {
+  display: inline;
+}
+
+/* Adds semicolon after each item except the last item */
+ul:has(:nth-child(n + 5)) li:not(:last-child)::after {
+  content: ';';
+}
+```

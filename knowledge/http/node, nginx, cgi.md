@@ -37,7 +37,7 @@ Nginx can also be configured to act as a load balancer that can **handle a large
 - **IP hash**: selects an upstream server by generating a hash value based on the client’s IP address as a key. This allows the request from clients to be forwarded to the same upstream server provided it is available and the clients IP address has not changed. Add `ip_hash` directive at the first line within the upstream module.
 - **weighted method**: the upstream server with the highest weight is selected most often. This scheme is useful in the situation where the upstream server’s resources are not equal and favors the one with better available resources. Add `weight` directive after the URL parameter in the upstream section.
 
-```nginx
+```nginx.conf
 # backend_servers is the upstream module name
 upstream backend_servers {
    # may specify load balancing method here
@@ -56,3 +56,17 @@ server {
     }
 }
 ```
+
+### Nginx command line
+> NGINX has only a few command-line parameters. Unlike many other software systems, the configuration is done entirely via the configuration file (`/usr/local/etc/nginx/nginx.conf`).
+
+|  |  |
+|  ---  | --- |
+| nginx             | start NGINX (`brew install nginx`)
+| nginx -s stop     | quick shutdown
+| nginx -s quit     | graceful shutdown
+| nginx -s reload   | reloade the configuration file
+| nginx -c filename | specify a configuration file which is not default
+| nginx -t          | don’t run, just test the configuration file 
+| nginx -v          | print version
+| nginx -V          | print NGINX version, compiler version and configure parameters

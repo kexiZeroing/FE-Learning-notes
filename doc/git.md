@@ -65,12 +65,12 @@ To stash your working directory including untracked files, use `git stash --incl
 For example, I want to change the git user (rewrite history) after push the code:
 1. `git config user.name "New User"` and `git config user.email "newuser@gmail.com"` to change the user info.
 2. `git log` shows commit logs and find out **the commit id that ahead of your commit which you want to change**.
-3. `git rebase -i <commit_id>`
+3. `git rebase -i <after-this-commit>`
 4. Change the word 'pick' to 'edit' (there is a commit list you can change), save and exit; rebase is stopped at the next commit (you just changed) and you can amend this commit.
 5. `git commit --amend --reset-author --no-edit` and `git rebase --continue` to confirm and continue your rebase. (there is also a `git rebase --abort` command)
 6. `git push --force-with-lease` to overwrite the remote history. (`--force-with-lease` is safer than `--force`: If the remote branch has the same value as the remote branch on your local machine, you will overwrite remote. If it doesn't have the same value, it indicates a change that someone else made to the remote branch while you were working on your code and thus will not overwrite any code.)
 
-[git-blame-someone-else](https://github.com/jayphelps/git-blame-someone-else) is a tool to change the author of a commit. Usage: `git blame-someone-else <author> <commit>`.
+Another example, I want to squash my last 3 commits together into one commit: `git reset --soft HEAD~3 && git commit`. The soft reset just re-points HEAD to the last commit that you do not want to squash. Neither the index nor the working tree are touched, leaving the index in the desired state for your new commit.
 
 ### rename branch
 - Rename the branch while working in this branch: `git branch -m <new name>`; rename from outside the branch: `git branch -m <old name> <new name>`.

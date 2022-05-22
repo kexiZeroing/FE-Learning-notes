@@ -16,13 +16,18 @@
    > - set proxy address: `git config --global http.proxy 127.0.0.1:7890`
    > - reset the proxy: `git config --global --unset http.proxy`
 
-5. Use `nvm` to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
+5. Use `nvm` (Node Version Manager) to install Node.js, then install a version of node `nvm install xx.xx`, `nvm use xx.xx` and run `nvm ls`. Use `node -v && npm -v` to check the version. (`echo $PATH` or `which node`)
+   - `nvm ls-remote` to browse available versions
    - set default node version: `nvm alias default x.y.z` (`nvm alias default node` to make the "latest" default)
    - check npm config: `npm config ls`
-   - `npm config set registry https://registry.npm.taobao.org` to change the registry, `npm config delete registry` to change back to default (`https://registry.npmjs.org/`), `npm get registry` to see the current set.
+   - `npm config set registry https://registry.npmmirror.com` to change the registry, `npm config delete registry` to change back to default (`https://registry.npmjs.org/`), `npm get registry` to see the current set.
    - set npm proxy `npm config set proxy http://127.0.0.1:7890` and remove this proxy `npm config delete proxy`
    <img alt="npm proxy" src="https://tva1.sinaimg.cn/large/008i3skNly1gz5abxu18ij31bu0eijtx.jpg" width="700">
    - `npm list -g --depth=0` to find globally installed modules, and you can run `npm list` to see the installed non-global libraries for your current location.
+   - Global Node modules will be installed at `~/.nvm/versions/node/v12.13.0/bin/` if you use nvm.
+
+   > package manager proxy settings: https://github.com/comwrg/package-manager-proxy-settings
+   > package manager mirrors: https://github.com/eryajf/Thanks-Mirror
 
 6. Set global configuration with Git `touch ~/.gitconfig`, and check with `git config --list`.
     ```
@@ -61,7 +66,7 @@
 
 8. Install Chrome extension [DevTools Theme: New Moon](https://github.com/taniarascia/new-moon-chrome-devtools), then set devtool's theme to "Dark" and go to Experiments and select "Allow custom UI themes".
 
-9. Add VS code extentions: `Prettier`, `GitLens`, `New Moon Theme`, `Live Server`, `Import Cost`. 
+9.  Add VS code extentions: `Prettier`, `GitLens`, `New Moon Theme`, `Live Server`, `Import Cost`. 
    - Prettier usage: https://prettier.io/docs/en/install.html
    - `Import Cost` will display inline in the editor the size of the imported packages (imports and requires). 
   

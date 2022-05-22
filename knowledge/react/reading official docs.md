@@ -106,11 +106,18 @@ class Toggle extends React.Component {
 
 The problem with `onClick={() => this.handleClick()}` is that a different callback is created each time the component renders. In most cases, this is fine. However, if this callback is passed as a prop to lower components, those components might do an extra re-rendering. We generally recommend binding in the constructor or using the class fields syntax, to avoid this sort of performance problem.
 
-#### List and Form
+#### Lists and Keys
 A "key" is a special string attribute you need to include when creating lists of elements. Keys help React identify which items have changed, are added, or are removed. Keys serve as a hint to React but they don’t get passed to your components.
 
 Keys used within arrays should be unique among their siblings (not globally unique). We don’t recommend using indexes for keys if the order of items may change. This can negatively impact performance and may cause issues with component state.
 
+- Never use random value in the "key" attribute: it will cause the item to re-mount on every render.
+- There is no harm in using the array’s index as "key" in static lists - those whose items number and order stay the same.
+- Use item unique identifier as "key" when the list can be re-sorted or items can be added in random places.
+
+> Why "index" as a "key" attribute is not a good idea? When React does the comparison, it sees the item with the `key="0"` in both "before" and "after" lists, so it thinks that the item with `key="0"` (first item in the array) is exactly the same before and after the state change, so it re-uses the same component instance, keeps the state as it was (i.e. the first item stays selected), and just updates the props values.
+
+#### Forms
 The React component that renders a form also controls what happens in that form on subsequent user input. An input form element whose value is controlled by React in this way is called a "controlled component". With a controlled component, the input’s value is always driven by the React state.
 
 > The alternative is uncontrolled components, where form data is handled by the DOM itself. To write an uncontrolled component, instead of writing an event handler for every state update, you can use a ref to get form values from the DOM.
