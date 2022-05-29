@@ -3,6 +3,8 @@ Pixel is the unit of measurement for digital images. **Resolution** is the numbe
 
 The Retina screen doubled the PPI while keeping the same screen size, meaning the number of pixels that fit into the same space had quadrupled (twice the number of pixels across and twice the number of pixels down). But all the old graphics had to be drawn at the same size on the higher density phone. If the phone had drawn all the graphics at a 1:1 scale like it did originally, everything would have been drawn at a quarter the size in the new screen. To prevent this, Apple started **using points as a way of separating the drawing of the graphics from the density of the screen they were on**. Points (abstract unit) are equal to different pixels based on PPI. On a standard-resolution screen, 1 point (1pt) is equivalent of 1 pixel (1px). High-resolution screens or Retina displays have a higher pixel density and as a result, 1 point is equal to 2 pixels across and 2 pixels down, or 4 total pixels.
 
+> There is a distinction between the physical pixels in a screen and the software pixels we write in CSS. Every time a user changes their screen's resolution or zooms in, they're changing how software pixels map onto hardware pixels.
+
 A standard resolution image has a scale factor of 1.0 and is referred to as an @1x image. High resolution images have a scale factor of 2.0 or 3.0 and are referred to as @2x and @3x images. Suppose you have a standard resolution @1x image that’s 100px by 100px, then the @2x version of this image would be 200px by 200px. The @3x version would be 300px by 300px. *(iPhone X, iPhone 8 Plus, iPhone 7 Plus, and iPhone 6s Plus = @3x; Retina displays and all other high-resolution iOS devices = @2x)*
 
 There is another issue in the workplace. Look at the number of pixels in the PSDs. The @2x PSD has four times as many pixels. The @3x has nine times as many. Designers have been working @2x or @3x and then begin to spec their design for developers. The developers get a complete spec in which they need to divide everything by 2 or 3.
@@ -108,3 +110,8 @@ html {
   font-size: clamp(16px, calc(16px + 2 * (100vw - 375px) / 39), 22px);
 }
 ```
+
+### Strategic unit deployment
+Changing the default font size in our [browser settings](https://support.google.com/chrome/answer/96810) will redefine the default font size that all relative units will be based on (rem, em, %). When we use a pixel value for a font-size, it will no longer be affected by the user's chosen default font size. When the user zooms in or out, it essentially applies a multiple to every unit, including pixels. 
+
+So asking yourself: “Should this value scale up as the user increases their browser's default font size?” If the value should increase with the default font size, use `rem`. Otherwise, use `px`.

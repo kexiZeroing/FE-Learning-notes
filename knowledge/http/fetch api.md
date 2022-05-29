@@ -169,6 +169,11 @@ console.log(url.hash);      // "#abc"
 console.log(url.search);    // "?id=1"
 console.log(url.searchParams.get('id'));  // "1"
 
+/*
+- `hostname` is the host name (example.org)
+- `host` includes both the host name, and any port numbers associated (example.org:8888)
+*/
+
 // `location.searchParams` is undefined. To work around it:
 new URL(location.href).searchParams;
 new URLSearchParams(location.search);
