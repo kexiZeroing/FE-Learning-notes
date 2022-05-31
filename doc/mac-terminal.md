@@ -20,6 +20,8 @@ In Terminal if you type `open .`, it will open the current working directory in 
 ## Hidden Files
 In UNIX, files or directories with a name beginning with `.` are considered hidden and will not be shown in a normal file list with `ls`. However you can list them with the option `ls -a`. Usually dot files are configuration files or folders. macOS Sierra added a Finder keyboard shortcut to quickly show hidden files using `Command + Shift + .`, which will quickly show all hidden files and a second time will re-hide them.
 
+How to hide a file or folder in macOS Finder? Open the terminal and run `chflags hidden <path>`. In case you need to set it back to visible, use `chflags nohidden <path>`.
+
 ## Deleting Files
 In the Finder, deleted files are moved to the Trash, which is actually the invisible directory `~/.Trash`. There the file will remain until the user chooses 'Empty Trash'. Only then is the file removed from disk. The command line has no such safety net. When you delete a file with the `rm` command it is gone. You can add the `-i` option to the `rm` command which will ask for confirmation before actually deleting it. There is a command `rmdir` which is the destructive equivalent of `mkdir`. However, `rmdir` can only remove empty directories.
 

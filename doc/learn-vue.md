@@ -227,6 +227,17 @@ module.exports = {
 - 创建路由时可以提供一个 `scrollBehavior` 方法返回滚动位置，`scrollBehavior (to, from, savedPosition) {}`，其中第三个参数 `savedPosition` 当且仅当通过浏览器的 前进/后退 按钮触发时才可用
 - 组件中监听 `$route(to, from)` 的变化，可以利用 `to.matched` 的数据构造面包屑，它是一个数组，里面有匹配到的每一层嵌套路由
 
+### View is not refreshing when params id is changing
+1. To react to params changes in the same component, you can simply watch the `$route` object.
+  ```js
+    watch: {
+      $route(to, from) { 
+        if(to !== from) { location.reload(); } 
+      } 
+    }
+  ```
+2. The reloading part is not truly useful since we don't want to reload the page. You can easily achieve that with `<router-view :key="$route.path" />`. The unique key tells Vue to use a different instance of the component instead of reusing the existing one whenever the route changes.
+
 ## Vue Loader 相关
 - `vue-loader` 会解析单文件形式的 Vue 组件。应该将 `vue-loader` 和 `vue-template-compiler` 一起安装，而且 `vue-template-compiler` 的版本要和 vue 保持同步。同时需要添加 `VueLoaderPlugin` 插件，它的职责是将你定义过的其它规则复制并应用到 `.vue` 文件里相应语言的块，比如 `['vue-style-loader', 'css-loader', 'sass-loader']` 处理普通的 `.scss` 文件和 `*.vue` 文件中的 `<style lang="scss">`
 - `vue-loader` 会把 template 中遇到的资源 URL 转换为 webpack 模块请求；处理 scoped style 的样式只作用于当前组件中的元素，如果希望 scoped 样式影响到更深的子组件，可以使用 `::v-deep`
