@@ -184,10 +184,8 @@ Webpack 5 boilerplate: https://github.com/taniarascia/webpack-boilerplate
 
 Start developing websites like it's 2025: https://react2025.com
 
+The Story of Next.js: https://www.youtube.com/watch?v=BILxV_vrZO0
+
 Introducing Remix: https://www.youtube.com/watch?v=wsJaUjd1rUo
 
-Remix Examples: https://github.com/remix-run/remix/tree/main/examples
-
-Super Simple Start to Remix: https://kentcdodds.com/blog/super-simple-start-to-remix
-
-The Story of Next.js: https://www.youtube.com/watch?v=BILxV_vrZO0
+Up and Running with Remix: https://egghead.io/courses/up-and-running-with-remix-b82b6bb6

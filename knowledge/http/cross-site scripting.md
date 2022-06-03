@@ -12,7 +12,9 @@ For example, open a URL such as: `https://xss-doc.appspot.com/demo#'><img src=x 
 ### Preventing XSS
 A common technique for preventing XSS vulnerabilities is "escaping". The purpose of character and string escaping is to make sure that every part of a string is interpreted as a string primitive, not as a control character or code. **Escape certain characters (like `<`, `>`, `&`, and `"`) with HTML entity to prevent them being executed**. For example, if you include `&lt;script&gt;alert('testing')&lt;/script&gt;` in the HTML of a page, it will print out the text `"<script>alert('testing')</script>"`, and it will not actually execute the script.
 
-A good test string is `>'>"><img src=x onerror=alert(0)>`. If your application doesn't correctly escape this string, you will see an alert and will know that something went wrong. 
+A good test string is `>'>"><img src=x onerror=alert(0)>`. If your application doesn't correctly escape this string, you will see an alert and will know that something went wrong.
+
+> [The Big List of Naughty Strings](https://github.com/minimaxir/big-list-of-naughty-strings) is a list of strings which have a high probability of causing issues when used as user-input data.
 
 We do not recommend that you manually escape user-supplied data. Instead, we strongly recommend that you use a templating system or web development framework that provides context-aware auto-escaping. If this is impossible for your website, use existing libraries and functions that are known to work, and apply these functions consistently to all user-supplied data.
 

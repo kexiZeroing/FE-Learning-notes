@@ -309,6 +309,12 @@ There are different families of cloud services.
 - **Software as a service (SaaS)** - Dropbox, iCloud, Slack
 - **Function as a service (FaaS)** - AWS Lambda
 
+### What is "edge compute"?
+To solve the latency problem, very smart folks came up with the idea of deploying multiple copies of a program and distributing it around the world. When a user makes a request, it can be handled by the closest copy, thus reducing the distance traveled and the time spent in transit.
+
+- Move things closer to users (like a CDN)
+- Do work on servers (like cloud servers/functions)
+
 ## Web Hosting and Domain registration
 Domain registrants (GoDaddy, Hover, Google Domains, Amazon Route 53...) are for registering domain names. If you want `itiscool.com`, you’re going to have to buy it, and domain registrants are companies that help you do that. Just because you own a domain doesn’t mean it will do anything. It’s likely that you will see a “coming soon” page after buying a domain name.
 
