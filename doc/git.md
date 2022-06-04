@@ -18,14 +18,12 @@ The `--no-ff` flag prevents `git merge` from executing a "fast-forward" if it de
 
 - `--no-ff`, create a merge commit in all cases, even when the merge could instead be resolved as a fast-forward.
 
-- `--ff-only`, resolve the merge as a fast-forward when possible. When not possible, refuse to merge and exit with a non-zero status. **(Unix systems have a convention that an exit status of 0 denotes success, and any non-zero exit status denotes failure)**
+- `--ff-only`, resolve the merge as a fast-forward when possible. When not possible, refuse to merge and exit with a non-zero status. *(Unix systems have a convention that an exit status of 0 denotes success, and any non-zero exit status denotes failure)*
 
 ### git pull --rebase vs. --merge
 - If you pull remote changes with the flag `--rebase`, then your local changes are reapplied on top of the remote changes.
 
 - If you pull remote changes with the flag `--merge`, which is also the default, then your local changes are merged with the remote changes. This results in a merge commit that points to the latest local commit and the latest remote commit.
-
-> When your pull request's branch is out of date with the base branch in Github, you now have the option to update it by rebasing on the latest version of the base branch. Rebasing applies the changes from your branch onto the latest version of the base branch, resulting in a branch with a linear history since no merge commit is created. Previously, *Update branch* button performed a traditional merge that always resulted in a merge commit in your pull request branch. This option is still available, but now you have the choice.
 
 ### git remote
 A remote URL is the place where your code is stored. You can only push to two types of URL addresses: HTTPS URL like `https://github.com/user/repo.git` or SSH URL like `git@github.com:user/repo.git`. Git associates a remote URL with a name, and your default remote is usually called `origin`.
@@ -56,7 +54,7 @@ To stash your working directory including untracked files, use `git stash --incl
 ### git log and git reflog
 - `git log` shows the current HEAD and its ancestry. That is, it prints the commit HEAD points to, then its parent, its parent, and so on. It traverses back through the repo's ancestry by recursively looking up each commit's parent. (often use `git log --pretty=oneline`)
 
-- `git reflog` doesn't traverse HEAD's ancestry. The reflog is an ordered list of the commits that HEAD has pointed to: **it's the undo history for your repo**. The reflog isn't part of the repo itself (it's stored separately to the commits themselves) and isn't included in pushes, fetches or clones; it's purely local. If you accidentally reset to an older commit, or rebase wrongly, or any other operation that visually "removes" commits, you can use the reflog to see where you were before and `git reset --hard` back to that ref to restore your previous state.
+- `git reflog` doesn't traverse HEAD's ancestry. The reflog is an ordered list of the commits that HEAD has pointed to: **it's the undo history for your repo**. The reflog isn't part of the repo itself (it's stored separately to the commits themselves and it's purely local). If you accidentally reset to an older commit, or rebase wrongly, or any other operation that visually "removes" commits, you can use the reflog to see where you were before and `git reset --hard HEAD@{index}` back to that ref to restore your previous state.
 
 ### rewrite history: squash commit, fixup and autosquash
 - https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History

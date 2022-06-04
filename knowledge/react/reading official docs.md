@@ -117,6 +117,8 @@ Keys used within arrays should be unique among their siblings (not globally uniq
 
 > Why "index" as a "key" attribute is not a good idea? When React does the comparison, it sees the item with the `key="0"` in both "before" and "after" lists, so it thinks that the item with `key="0"` (first item in the array) is exactly the same before and after the state change, so it re-uses the same component instance, keeps the state as it was (i.e. the first item stays selected), and just updates the props values.
 
+See more: https://www.developerway.com/posts/react-key-attribute
+
 #### Forms
 The React component that renders a form also controls what happens in that form on subsequent user input. An input form element whose value is controlled by React in this way is called a "controlled component". With a controlled component, the input’s value is always driven by the React state.
 
