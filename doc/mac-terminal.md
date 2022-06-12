@@ -176,3 +176,4 @@ There is a different command which allows you to change the user: `su` (short fo
 | tar -tf xxx.tar | 查看 tar 包的内容
 | tar -xvf xxx.tar | 解压 tar 包
 | python3 -m http.server 8080 | 快速启动 http 服务
+| netstat -P tcp | 显示特定传输协议的状态

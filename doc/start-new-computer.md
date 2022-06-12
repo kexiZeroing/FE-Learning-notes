@@ -25,6 +25,7 @@
    <img alt="npm proxy" src="https://tva1.sinaimg.cn/large/008i3skNly1gz5abxu18ij31bu0eijtx.jpg" width="700">
    - `npm list -g --depth=0` to find globally installed modules, and you can run `npm list` to see the installed non-global libraries for your current location.
    - Global Node modules will be installed at `~/.nvm/versions/node/v12.13.0/bin/` if you use nvm.
+   <img alt="global node_modules" src="https://tva1.sinaimg.cn/large/e6c9d24ely1h2zj27plslj218q04ydgm.jpg" width="700" />
 
    > package manager proxy settings: https://github.com/comwrg/package-manager-proxy-settings
    > package manager mirrors: https://github.com/eryajf/Thanks-Mirror
