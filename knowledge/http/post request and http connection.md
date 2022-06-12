@@ -74,6 +74,8 @@ document.addEventListener('visibilitychange', function logData() {
 });
 ```
 
+> `fetch()` with `keepalive` option can be used to allow the request to outlive the page. Fetch with the keepalive flag is a replacement for the `Navigator.sendBeacon()` API.
+
 ## Connection management
 Opening and maintaining connections largely impacts the performance of Web sites and Web applications. In HTTP/1.x, there are several models: **short-lived connections, persistent connections, and HTTP pipelining**.
 
