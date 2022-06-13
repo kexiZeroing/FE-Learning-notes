@@ -185,6 +185,27 @@ There are different options available in webpack that help you automatically com
 - `@babel/preset-typescript` does code transforms, the build step becomes fast as it skips the type-checking step and just strips out the all the TypeScript type-annotations – converting it to vanilla JS. No type-safety at build time.
 - Type check first, then run webpack `"build": "tsc && webpack"`
 
+### Load images
+Webpack goes through all the `imported` and `required` files in your project, and for all those files which have a `.png|.jpg|.gif` extension, it uses as an input to the webpack `file-loader`. For each of these files, the file loader emits the file in the output directory and resolves the correct URL to be referenced. Note that this config only works for webpack 4, and Webpack 5 has deprecated the `file-loader`. If you are using webpack 5 you should change `'file-loader'` to `'asset/resource'`.
+
+By default, `file-loader` renames each file it process to a filename with random characters. Then it puts the file in the root of the output folder. We can change both the file name of the processed files and the output folder. We do that in an `options` section.
+```js
+module: {
+  rules: [
+    {
+      test: /\.png$/,
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]', // keeps the original file names
+        outputPath: 'images'  // outputs all processed files in a subfolder called images
+      }
+    }
+  ]
+}
+```
+
+Webpack 4 also has the concept `url-loader`. It first base64 encodes the file and then inlines it. It will become part of the bundle. That means it will not output a separate file like `file-loader` does. If you are using webpack 5, then `url-loader` is deprecated and instead, you should use `asset/inline`.
+
 ### extract-text-webpack-plugin
 - 打包样式，一种是使用 `style-loader` 将生成的 style 标签并且插入到 head 里，另一种是使用  `extract-text-webpack-plugin`，将样式文件单独打包并指定生成的 filename，它需要同时配置 loader 和 plugin 两个地方。
 - Since webpack v4 the `extract-text-webpack-plugin` should not be used for css. Use `mini-css-extract-plugin` instead.
@@ -215,6 +236,11 @@ module.exports = {
   ]
 }
 ```
+
+### Code split vendors
+One way to get faster loading speed is to split the bundle up into smaller pieces. Then users only have to load the code they actually want instead of the whole site. This technique is called code splitting. What we want to do is to split the bundle up into two. One of the bundles containing the code that we write. And the other bundle containing only the dependencies in the `package.json` file. (improve caching)
+
+With the [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin) we can split up a chunk into smaller chunks. *(A chunk is code which will break apart from main bundle and form it’s own file known as chunk file.)* This plugin is pretty smart and out-of-the-box it will split chunks where the plugin thinks it makes sense. Everything under `optimization.splitChunks` is the configuration for `SplitChunksPlugin`.
 
 ## 路由相关
 - 使用 `vue-router 3.x`，由于 VueRouter 是 default export 只有一个，所以在引入时可以任意起名字。
