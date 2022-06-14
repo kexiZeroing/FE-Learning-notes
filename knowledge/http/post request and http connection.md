@@ -30,7 +30,12 @@ curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json"
 # in nodeJs, use `JSON.parse(req.body)` to get parameters 
 ```
 
-Convert `curl` commands into code: https://curlconverter.com
+Convert `curl` commands into different languages of code: https://curlconverter.com
+
+More options (`open x-man-page://curl`):
+- **-I, --head**: Fetch the headers only. When used on an FTP or FILE, displays the file size and last modification time only.
+- **-i, --include**: Include the HTTP response headers in the output.
+- **-v, --verbose**: Makes curl verbose during the operation. Useful for seeing what's going on under the hood. A line starting with `>` means header data sent by curl, `<` means header data received by curl. Try `curl -vI https://www.baidu.com` as an exmple.
 
 ### POST and PUT
 The difference between `PUT` and `POST` is that `PUT` is idempotent (**If you PUT an object twice, it has no effect**). `PUT` implies putting a resource - completely replacing whatever is available at the given URL with a different thing. Do it as many times as you like, and the result is the same. You can PUT a resource whether it previously exists, or not. So consider like this: do you name your URL objects you create explicitly, or let the server decide? If you name them then use `PUT`. If you let the server decide then use `POST`.
@@ -73,8 +78,6 @@ document.addEventListener('visibilitychange', function logData() {
   }
 });
 ```
-
-> `fetch()` with `keepalive` option can be used to allow the request to outlive the page. Fetch with the keepalive flag is a replacement for the `Navigator.sendBeacon()` API.
 
 ## Connection management
 Opening and maintaining connections largely impacts the performance of Web sites and Web applications. In HTTP/1.x, there are several models: **short-lived connections, persistent connections, and HTTP pipelining**.
@@ -149,3 +152,16 @@ fetchPromise.then(response => {
 ```
 
 Things aren’t much rosier in Python. The requests library uses a default timeout of infinity. Go’s HTTP package doesn’t use timeouts by default either. Modern HTTP clients for Java and .NET do a much better job and usually, come with default timeouts. That comes as no surprise since those languages are used to build large scale distributed systems that need to be robust against network failures. As a rule of thumb, always set timeouts when making network calls. And if you build libraries, always set reasonable default timeouts and make them configurable for your clients.
+
+In addition, `addEventListener` accepts an AbortSignal as of Chrome 88. It can be used as an alternate of `removeEventListener`. The listener will be removed when the given AbortSignal object's `abort()` method is called.
+
+```js
+const controller = new AbortController();
+window.addEventListener("click", () => alert("window"), { signal: controller.signal });
+document.addEventListener("click", () => alert("document"), { signal: controller.signal });
+
+// remove listeners
+controller.abort();
+```
+
+> `addEventListener(type, listener, options)`: options is an object that specifies characteristics about the event listene. The available options are: `capture`, `once`, `passive`, `signal`.

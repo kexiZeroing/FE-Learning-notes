@@ -146,21 +146,29 @@ Box alignment in Grid and Flexbox: https://ishadeed.com/article/learn-box-alignm
 
 Flexbox: https://github.com/samanthaming/Flexbox30
 
-CSS Grid generator: https://cssgrid-generator.netlify.app
+Build faithful recreations of old UIs: https://jdan.github.io/98.css, https://botoxparty.github.io/XP.css, https://khang-nd.github.io/7.css
 
-1-Line Layouts: https://1linelayouts.glitch.me
+---
 
-Box-shadow: https://neumorphism.io
+## FE dev resources
 
-Snippets for modern CSS layouts and components: https://smolcss.dev
+Stackoverflow Design: https://stackoverflow.design
+
+Minimal CSS Framework for semantic HTML: https://picocss.com
+
+Modern & Interactive Open-source Charts: https://apexcharts.com
+
+SVG spinners: https://github.com/n3r4zzurr0/svg-spinners
 
 CSS animations on demand: https://animista.net
 
-Build faithful recreations of old UIs: https://jdan.github.io/98.css, https://botoxparty.github.io/XP.css, https://khang-nd.github.io/7.css
-
 Buttons Generator: https://markodenic.com/tools/buttons-generator
 
-Minimal CSS Framework for semantic HTML: https://picocss.com
+Box-shadow: https://neumorphism.io
+
+1-Line Layouts: https://1linelayouts.glitch.me
+
+CSS Grid generator: https://cssgrid-generator.netlify.app
 
 ---
 
