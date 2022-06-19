@@ -24,6 +24,8 @@ The Missing Semester of Your CS Education: https://missing.csail.mit.edu
 
 High Performance Browser Networking: https://hpbn.co
 
+HTTP Semantics: https://www.rfc-editor.org/rfc/rfc9110.html
+
 Visualising data structures and algorithms: https://visualgo.net
 
 Modern JavaScript-based web development: https://fullstackopen.com/en
@@ -41,8 +43,6 @@ Docker Guide: https://www.robertcooper.me/docker-guide
 Tail Call Optimization: https://www.youtube.com/watch?v=-PX0BV9hGZY
 
 Modern Web App Design Patterns: https://www.patterns.dev
-
-VIM alphabet: https://www.youtube.com/playlist?list=PLnc_NxpmOxaNqdGvUg8RBi8ZTaZGPdqBD
 
 Become a DevOps engineer: https://www.youtube.com/channel/UCdngmbVKX1Tgre699-XLlUA 
 
