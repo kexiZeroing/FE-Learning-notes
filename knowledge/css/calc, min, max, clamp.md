@@ -36,3 +36,18 @@ The `clamp()` function takes three values, and order matters. The first is the l
 An area you may have already encountered the use of `clamp()` is for fluid typography. The essential concept is that the `font-size` value can fluidly adjust based on the viewport size: `font-size: clamp(1rem, 2.5vw, 2rem)`.
 
 Another example is responsive padding. The interesting thing about using percentages for padding is that it is relative to the element's width. Given `padding: clamp(1rem, 5%, 3rem)`, where the padding will grow and shrink relative to the element's width. It will never be less than `1rem`, and never greater than `3rem`. (You may have realized this removes some scenarios where you might have previously reached for media queries.)
+
+### New syntax for range media queries
+Media Queries enabled responsive design, and the range features that enable testing the minimum and maximum size of the viewport are used by around 80% of sites that use media queries. e.g., `@media (min-width: 400px) { ... }`.
+
+The new syntax makes media queries less verbose, and has been available in Firefox since Firefox 63, and will be available in Chrome from 104.
+
+```css
+@media (width >= 400px) {
+  /* Styles for viewports with a width of 400 pixels or greater. */
+}
+
+@media (400px <= width <= 600px )  {
+  /* Styles for viewports between 400px and 600px. */
+}
+```

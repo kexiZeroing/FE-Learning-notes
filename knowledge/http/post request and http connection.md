@@ -153,12 +153,13 @@ fetchPromise.then(response => {
 
 Things aren’t much rosier in Python. The requests library uses a default timeout of infinity. Go’s HTTP package doesn’t use timeouts by default either. Modern HTTP clients for Java and .NET do a much better job and usually, come with default timeouts. That comes as no surprise since those languages are used to build large scale distributed systems that need to be robust against network failures. As a rule of thumb, always set timeouts when making network calls. And if you build libraries, always set reasonable default timeouts and make them configurable for your clients.
 
-In addition, `addEventListener` accepts an AbortSignal as of Chrome 88. It can be used as an alternate of `removeEventListener`. The listener will be removed when the given AbortSignal object's `abort()` method is called.
+Besides aggressively cancelling a network request, we can use `AbortController` to remove event handlers. `addEventListener` accepts an AbortSignal as of Chrome 88. It can be used as an alternate of `removeEventListener`. The listener will be removed when the given AbortSignal object's `abort()` method is called.
 
 ```js
 const controller = new AbortController();
-window.addEventListener("click", () => alert("window"), { signal: controller.signal });
-document.addEventListener("click", () => alert("document"), { signal: controller.signal });
+const { signal } = controller;
+window.addEventListener("click", () => alert("window"), { signal });
+document.addEventListener("click", () => alert("document"), { signal });
 
 // remove listeners
 controller.abort();

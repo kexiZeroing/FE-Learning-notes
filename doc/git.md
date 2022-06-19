@@ -41,9 +41,9 @@ A remote URL is the place where your code is stored. You can only push to two ty
 
 ### working on a wrong branch
 - If you did't commit the changes, use `git stash` (**git stash is per-repository, not per-branch**)
-    - git stash
-    - git checkout right_branch
-    - git stash apply
+  - git stash
+  - git checkout right_branch
+  - git stash apply
 - If you committed to the wrong branch, `git reset` those commits individually. Once you have done that, switch back to the desired branch and there you can use `git cherry-pick` to pick the specific commits.
   - git checkout right_branch
   - git cherry-pick commit_hash
@@ -83,6 +83,14 @@ Another example, I want to squash my last 3 commits together into one commit: `g
 
 ### speed up git clone
 `git clone [repo] --depth=1` When you don't need the entire history of a repository, you can speed up the download by specifying the number of revisions you need.
+
+### update your GitHub fork
+Take contributing to Angular as an example. You have a fork of the Angular repository. You want to update your GitHub fork to the new `main` branch naming:
+1. git checkout master
+2. git fetch upstream main
+3. git rebase upstream/main
+
+> `git fetch` is the command that tells your local git to retrieve the latest meta-data info from the original yet doesn't do any file transferring. `git pull` on the other hand does that AND brings those changes from the remote repository.
 
 ### GitHub protocol comparison
 - plain Git, aka `git://github.com/`, does not add security beyond what Git itself provides. The server is not verified and you cannot push over it. Now Github permanently disabled the [unencrypted Git protocol](https://github.blog/changelog/2022-03-15-removed-unencrypted-git-protocol-and-certain-ssh-keys/).

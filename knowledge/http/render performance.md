@@ -56,7 +56,18 @@ Another one, `<link rel="prefetch">` is a low priority resource hint that allows
 
 For script tags, **`<script async>`** downloads the file during HTML parsing and will pause the HTML parser to execute it when it has finished downloading. Async scripts are executed as soon as the script is loaded, so it doesn't guarantee the order of execution. **`<script defer>`** downloads the file during HTML parsing and will only execute it after the parser has completed. Defer scripts are guaranteed to execute in the order that they appear in the document. Typically you want to use `async` where possible, then `defer` then no attribute. 
 
-Additionally, use [code-splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting), [tree-shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), and/or lazy loading features as needed. 
+Additionally, use [code-splitting](https://developer.mozilla.org/en-US/docs/Glossary/Code_splitting), [tree-shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking), and [lazy-loading](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading) features as needed.
+
+> I always thought of tree shaking as the same thing as dead code elimination. TBH I think it's a pretty JS-specific term (implemented by webpack). The rest of the compiler world calls it DCE.
+
+#### Preloader / Speculative parser in browsers
+When the HTML parser creates the DOM and encounters a synchronous script, it has to stop the DOM creation and run the script. Therefore, if resource fetching is done only by the HTML parser, the network will be idle when synchronous scripts are involved.
+
+That's where the preloader comes in. It uses the results of an early parsing phase (called "tokenization") in order to look into the various tags that comprise the HTML document, find ones that may contain resources, and accumulates the URLs of these resources. The URLs are sent to the "fetcher" along with the type of resource that initiated the resource download in the first place. That enables the "fetcher" to attach priorities to the various URLs and download them according to their impact on the page's loading speed.
+
+- It's called speculative because the script might do `document.write('<!--')` or so.
+- Resources that are loaded by JavaScript will not be parsed and loaded by the preloader, which means that they're likely to be "last in line" in the resource fetching queue.
+- Browsers start to load eager images literally as soon as possible, possibly before layout is known, and possibly before the regular HTML parser has even reached the `<img>` tag.
 
 ### Adaptive serving
 When loading resources that make up the main content of a page, it can be effective to conditionally fetch different assets depending on the user's device or network conditions. This can be done using the **Network Information, Device Memory, and HardwareConcurrency APIs**.
