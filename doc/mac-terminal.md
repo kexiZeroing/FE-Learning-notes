@@ -138,6 +138,14 @@ Underneath the file system, files are represented by inodes. A file in the file 
 
 Symbolic links (i.e. `etc -> private/etc`) are links to another name in the file system like shortcuts in Windows. `/etc`, `/tmp` and `/var` are standard directories in Unix systems, but in this case these directories are actually located in `/private`. You can use `readlink` command to determine where a symbolic links points to. Most operations such as reading or changing are directed to the original, rather than the symbolic link. To create a symbolic link use the `ln -s <source> <target>` command. The first argument is the path the symbolic link points to. If a symbolic link is deleted, its target remains unaffected. If the target is moved, renamed or deleted, the symbolic link is not automatically updated or deleted, but continues to points to the old target, a non-existing location (the link will not work).
 
+<img alt="hard and symbolic link" src="https://tva1.sinaimg.cn/large/e6c9d24ely1h3fodeoojfj20ea0730st.jpg" width="400">
+
+```sh
+echo 'Hello, World' > myfile.txt
+ln myfile.txt my-hard-link
+ln -s myfile.txt my-soft-link
+```
+
 In macOS Finder, you can create aliases with the menu item 'Make Alias' from the context menu. Finder Aliases have much the same role as symbolic links, but when the original is deleted and replaced by an item of the same name, a Finder Alias will resolve to the new item. Finder will display Aliases and symbolic links with a small arrow in the corner of the icon. Both symbolic links and Finder Aliases have a 'Show Original' menu item in the context menu.
 
 ## The `sudo` Command

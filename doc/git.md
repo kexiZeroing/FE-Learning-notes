@@ -84,6 +84,9 @@ Another example, I want to squash my last 3 commits together into one commit: `g
 ### speed up git clone
 `git clone [repo] --depth=1` When you don't need the entire history of a repository, you can speed up the download by specifying the number of revisions you need.
 
+### degit - straightforward project scaffolding
+[degit](https://github.com/Rich-Harris/degit) makes copies of git repositories. When you run `degit some-user/some-repo`, it will find the latest commit and download the associated tar file if it doesn't exist locally. This is much quicker than using git clone, because you're not downloading the entire git history.
+
 ### update your GitHub fork
 Take contributing to Angular as an example. You have a fork of the Angular repository. You want to update your GitHub fork to the new `main` branch naming:
 1. git checkout master

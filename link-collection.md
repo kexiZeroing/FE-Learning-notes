@@ -170,6 +170,8 @@ Box-shadow: https://neumorphism.io
 
 CSS Grid generator: https://cssgrid-generator.netlify.app
 
+Icon Explorer: https://icones.js.org
+
 ---
 
 ## React ecosystem

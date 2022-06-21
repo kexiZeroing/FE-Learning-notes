@@ -231,7 +231,7 @@ module.exports = {
 ```
 
 ### Code split vendors
-One way to get faster loading speed is to split the bundle up into smaller pieces. Then users only have to load the code they actually want instead of the whole site. This technique is called code splitting. What we want to do is to split the bundle up into two. One of the bundles containing the code that we write. And the other bundle containing only the dependencies in the `package.json` file. (improve caching)
+Your dependencies usually do not change as often as your production code. With code splitting, you can split your dependencies into a separate bundle. This bundle can be cached by your user’s browser for longer periods than your production code bundle.
 
 With the [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin) we can split up a chunk into smaller chunks. *(A chunk is code which will break apart from main bundle and form it’s own file known as chunk file.)* This plugin is pretty smart and out-of-the-box it will split chunks where the plugin thinks it makes sense. Everything under `optimization.splitChunks` is the configuration for `SplitChunksPlugin`.
 
@@ -349,6 +349,8 @@ webpackConfig.plugins.push(
 ```
 
 ## Vue 语法
+Updates, tips & opinions from the maintainers of Vue.js: https://blog.vuejs.org
+
 ### computed and watch
 Computed properties are a calculated result of its dependent values (data properties, props). They are used whenever you have some data and need to transform it before using it in the template. In this case, creating a computed property is the best thing because **it’s cached**. They should not have any side effects and they have to be synchronous.
 
@@ -466,33 +468,24 @@ document.getElementById('app').appendChild(component.$el)
     ```
 6. Vue 组件通信的语法糖和相关 api 太多，可以直接选择用 Vuex 处理。
 
+### ref() and reactive() in Vue 3
+- `reactive()` only takes objects, not JS primitives.
+- `ref()` is calling `reactive()` behind the scenes.
+- `ref()` has a `.value` property for reassigning, `reactive()` does not have this and therefore cannot be reassigned.
 
-## Webpack to Vite
-> Webpack
-> - supported modules: ES Modules, CommonJS and AMD Modules
-> - dev-server: bundled modules served via webpack-dev-server using Express.js web server
-> - production build: webpack
+```js
+// use `ref()` for primitives and is good for objects that need to be reassigned
+const blogPosts = ref([]); 
+getBlogPosts() {
+  blogPosts.value = await fetchBlogPosts();
+}
 
-> Vite
-> - supported modules: ES Modules
-> - dev-server: native ES Modules served via Vite using Koa web server
-> - production build: Rollup
-
-When you start the app in development, Webpack will bundle all of your code, and start the webpack-dev-server, the Express.js web server which will serve the bundled code. Within the bundled js file contains all modules for the app and need to regenerate the entire file when we change a file for HMR. It can often take an long wait to spin up a dev server, and even with HMR, file edits can take a couple seconds to be reflected in the browser.
-
-Vite doesn't set out to be a new bundler. Rather, it's a pre-configured build environment using the Rollup bundler and a tool for local development.
-- Vite pre-bundles dependencies (when install vite) using `esbuild` which is written in Go, 10-100x faster than JavaScript-based bundlers.
-- Vite serves source code over native ES Modules. It only needs to transform and serve source code on demand, as the browser requests it.
-
-Vite only support ES Modules, and parsing the native ES Modules means it will read the `export` and `import` lines from your code. It will convert those lines into HTTP requests back to the server, where it will again read the `export` and `import` lines and make new requests. Vite also leverages HTTP headers to speed up full page reloads: source code module requests are made conditional via `304 Not Modified`, and dependency module requests are strongly cached via `Cache-Control` header.
-
-https://vitejs.dev/guide/why.html  
-https://github.com/originjs/webpack-to-vite  
-https://github.com/kexiZeroing/vite-demo  
-https://patak.dev/vite/ecosystem.html  
-
-### Vue3 + TypeScript + Pinia + Vite
-https://github.com/HalseySpicy/Geeker-Admin
+// `reactive()` requires reassigning a property instead of the whole object
+const blog = reactive({ posts: [] });
+getBlogPosts() {
+  blog.posts = await fetchBlogPosts();
+}
+```
 
 
 ## Electron 桌面端项目
