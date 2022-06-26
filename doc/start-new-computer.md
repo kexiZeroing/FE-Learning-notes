@@ -83,6 +83,7 @@ Some references:
 - https://github.com/nicolashery/mac-dev-setup
 - https://github.com/kentcdodds/dotfiles
 - https://github.com/stefanjudis/dotfiles
+- https://github.com/antfu/use
 
 ### Moving to zsh
 From macOS Catalina the default shell is `zsh`. `zsh` has a list of configuration files (`.z*` files) that will get executed at shell startup. `zsh` will start with `/etc/zshenv`, then the user’s `.zshenv`. Since changes in the `zshenv` will affect `zsh` behavior in all contexts, you should be very cautious about the changes applied here. Next, when the shell is a login shell, `zsh` will run `/etc/zprofile` and `.zprofile`. For interactive shells `/etc/zshrc` and `.zshrc`. Then, again, for login shells `/etc/zlogin` and `.zlogin`.

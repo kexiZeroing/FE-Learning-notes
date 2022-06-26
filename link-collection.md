@@ -110,15 +110,13 @@ Code Generator for HTTP Requests: https://www.labnol.org/apps/urlfetch.html
 
 Create README for your open source project: https://readme.so/
 
-The Timeline Of The Web: https://thehistoryoftheweb.com/timeline/
+The Timeline of The Web: https://thehistoryoftheweb.com/timeline/
 
 Visual history of your favorite technology: https://www.versionmuseum.com/
 
 Guide users through a tour of your app: https://shepherdjs.dev/
 
-WebRTC samples: https://webrtc.github.io/samples/
-
-Chrome Extension CLI: https://github.com/dutiyesh/chrome-extension-cli
+Lightweight fuzzy-search library: https://fusejs.io/
 
 Floating Point Math: https://0.30000000000000004.com/
 

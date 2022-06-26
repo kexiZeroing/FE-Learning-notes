@@ -1,5 +1,6 @@
 ## 项目是怎么跑起来的
 ### 项目属于多页应用，这里面有很多子项目（`pages/`）
+- 目录结构参考 http://vuejs-templates.github.io/webpack/
 - 在 webpack 配置的 entry 里可以看到这些子项目入口（有的是列举出所有的入口 js 文件，有的是通过遍历 `src/pages` 得到所有入口），entry 的 base 路径可以由 context 字段指定
 - 对于每一个 page，都有对应的 `HtmlWebpackPlugin` 指定它的模板，并注入它需要的 chunks （对应每一个 entry 打包出的 js），本地直接通过 `localhost/xx.html` 访问，线上通过配置 nginx 路由映射访问 `try_files $uri /static/xx.html`
   - 指定 `chunks` 是因为项目是多 entry 会生成多个编译后的 js 文件，chunks 决定使用哪些 js 文件，如果没有指定默认会全部引用
