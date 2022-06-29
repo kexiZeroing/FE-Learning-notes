@@ -357,6 +357,8 @@ Computed properties are a calculated result of its dependent values (data proper
 
 Watch properties are just a mechanism to detect changes in properties, allowing you to perform custom logic. It runs when the thing you're watching changes, like a listener. In general, the gist is: Try to use computed properties and if they won’t work, use a watcher.
 
+> The trickiest part of using a watcher is that sometimes it doesn't seem to trigger correctly. Usually, this is because you're trying to watch an Array or an Object but didn't set `deep` to true, which will let Vue know to look inside the array or object.
+
 Filters (pipe in template) are removed from Vue 3.0 and no longer supported. Instead, we recommend replacing them with method calls or computed properties.
 
 > 1. Filters are not bound to the component instance, so `this` inside a filter function is `undefined`.
@@ -369,6 +371,8 @@ Filters (pipe in template) are removed from Vue 3.0 and no longer supported. Ins
 - If the prop is an array or object, mutating the object or array itself inside the child component will affect parent state.
 
 ### $nextTick
+In Vue, a tick is a single DOM update cycle. Vue will collect all updates made in the same tick, and at the end of a tick it will update what is rendered into the DOM based on these updates.
+
 The key concept to understand is that the DOM is updated asynchronously. **When you change a value in Vue, the change is not immediately rendered to the DOM**. Instead, Vue queues a DOM update and then, on a timer, updates the DOM. Most of the time we don’t need to care about this, but it can be tricky when you want to do something that depends on the post-update DOM state. In order to wait until Vue has finished updating the DOM after a data change, you can use `Vue.nextTick(callback)` immediately after the data is changed. The callback will be called after the DOM has been updated.
 
 ### $parent and $refs
@@ -396,6 +400,40 @@ The `.sync` modifier for props is just a syntax sugar that automatically expands
 
 ### watch $route
 When the user navigates from `/user/foo` to `/user/bar`, the same component instance will be reused. Since both routes render the same component, this is more efficient than destroying the old instance and then creating a new one. However, this also means that the lifecycle hooks of the component will not be called. To react to params changes in the same component, you can watch the `$route` object using `watch: { $route(to, from) {...} }`
+
+### force Vue to re-render a component
+You can use `forceUpdate` on the component instance itself as well as globally:
+```js
+// Globally
+import Vue from 'vue';
+Vue.forceUpdate();
+
+// Using the component instance
+export default {
+  methods: {
+    methodThatForcesUpdate() {
+      this.$forceUpdate();  // force the view to re-render
+    }
+  }
+}
+```
+
+The best way to force Vue to re-render a component is to set a `:key` on the component. When you need the component to be re-rendered, you just change the value of the key and Vue knows that it should get rid of the old component and create a new one. (`key` is one of special attributes reserved by Vue. It can't be passed as a prop, same as `ref` or `is`.)
+
+```js
+export default {
+  data() {
+    return {
+      componentKey: 0,
+    };
+  },
+  methods: {
+    forceRerender() {
+      this.componentKey += 1;
+    }
+  }
+}
+```
 
 ### Vue.extend
 It creates a subclass of the base Vue constructor. The argument should be an object containing component options. You can use `Vue.extend()` to create component definition (called "component constructor" in old documentation). `Vue.component()`, on the other hand, is to associate a given constructor with a name so Vue can pick it up in templates. When directly passing in options to `Vue.component()`, it calls `Vue.extend()` under the hood.

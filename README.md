@@ -1,6 +1,6 @@
 # FE-Learning-notes
 
-> This repo is used for self learning. Some documents and examples are copied from other places like MDN, Stack Overflow and GitHub. The goal is to build a second brain.
+> This repo is used for self learning. Some documents and examples are copied from other places like MDN, Stack Overflow and GitHub. 1. The goal is to build a second brain. 2. The best way to commit something to long-term memory is to periodically review it, gradually increasing the time between reviews.
 
 - `link-collection.md` is a collection of useful links/resources I want to put together.
 
