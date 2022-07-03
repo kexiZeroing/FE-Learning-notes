@@ -135,6 +135,8 @@ module.exports = function(env, argv) {
 - `output.filename` 的输出文件名是 `[name].[chunkhash].js`，`[name]` 根据 entry 的配置推断为 index，所以输出为 `index.[chunkhash].js`。`output.chunkFilename` 默认使用 `[id].js`, 会把 `[name]` 替换为 chunk 文件的 id 号。
 - `chunkhash` 根据不同的入口文件构建对应的 chunk，生成对应的哈希值，来源于同一个 chunk，则 hash 值就一样。
 
+> `chunkFilename` determines the name of non-initial chunk files (lazy load). `[name]` is replaced with `[id]` or `[id].` is prepended.
+
 ### resolve
 - extensions 数组，在 import 不带文件后缀时，webpack 会自动带上后缀去尝试访问文件是否存在，默认值 `['.js', '.json', '.wasm']`
 - mainFiles 设置解析目录时要使用的文件名，默认值 `['index']`
@@ -473,44 +475,12 @@ var component = new MyComponent().$mount()
 document.getElementById('app').appendChild(component.$el)
 ```
 
-### 组件间通信
-1. props 和 $emit
-2. 通过 `$parent` 拿到父组件的实例，然后调用父组件的方法。同样也可以调用子组件 `$children` 的方法。
-3. 将 `$dispatch` 挂载到 Vue 原型上方便调用，`$dispatch` 的原理是一直递归找父组件，然后执行父组件中的方法。
-    ```js
-    Vue.prototype.$dispatch = function(eventName, newValue) {
-      let parent = this.$parent
-      while (parent) {
-        parent.$emit(eventName, newValue)
-        parent = parent.$parent
-      }
-    }
-    ```
-4. `.sync` 语法糖，注意在子组件中调用 `$emit(fn)` 的时候, `fn` 的名字一定是 `update:xxx` 这样的格式。
-    ```html
-    <Son @update:number="newValue => number = newValue" :number="number" />
-    // 等价于
-    <Son :number.sync="number" />
-    ```
-5. 在子组件中可以通过 `v-bind="$attrs"` 将父组件传递下来的数据传递给孙组件，而孙组件可以通过 `$attrs` 来接收。对于方法，在子组件中可以通过 `v-on="$listeners"` 将全部事件传递给孙组件。
-    ```html
-    // Parent.vue
-    <Son :number="number" @change="change" @say="say" :count="count" />
-    // Son.vue
-    <Grandson v-bind="$attrs" v-on="$listeners" />
-    // Grandson.vue
-    {{ $attrs }}
-
-    mounted() {
-      console.log(this.$listeners)
-    }
-    ```
-6. Vue 组件通信的语法糖和相关 api 太多，可以直接选择用 Vuex 处理。
-
-### ref() and reactive() in Vue 3
+### ref() and reactive() in Vue Composition API
 - `reactive()` only takes objects, not JS primitives.
 - `ref()` is calling `reactive()` behind the scenes.
 - `ref()` has a `.value` property for reassigning, `reactive()` does not have this and therefore cannot be reassigned.
+- `unref()` returns the inner value if the argument is a ref, otherwise return the argument itself. This is a sugar function for `val = isRef(val) ? val.value : val`.
+- With [script setup](https://vuejs.org/api/sfc-script-setup.html), we get rid of all the unnecessary boilerplate code and trim our component down to only what is needed.
 
 ```js
 // use `ref()` for primitives and is good for objects that need to be reassigned

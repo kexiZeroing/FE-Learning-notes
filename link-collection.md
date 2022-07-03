@@ -70,6 +70,8 @@ Performance Insights: https://www.builder.io/c/performance-insights
 
 Chrome DevTools tips: https://umaar.com/dev-tips/
 
+Can I DevTools: https://www.canidev.tools/
+
 HTML Tips & Tricks: https://www.htmhell.dev/tips/
 
 HTML DOM with vanilla JavaScript: https://htmldom.dev/
@@ -158,6 +160,8 @@ Modern & Interactive Open-source Charts: https://apexcharts.com
 
 SVG spinners: https://github.com/n3r4zzurr0/svg-spinners
 
+Epic Spinners: https://github.com/epicmaxco/epic-spinners
+
 CSS animations on demand: https://animista.net
 
 Buttons Generator: https://markodenic.com/tools/buttons-generator
@@ -169,6 +173,10 @@ Box-shadow: https://neumorphism.io
 CSS Grid generator: https://cssgrid-generator.netlify.app
 
 Icon Explorer: https://icones.js.org
+
+A lightweight image and video gallery plugin: https://www.lightgalleryjs.com
+
+Vue Skeleton Cards: https://github.com/neelansh15/vue-ultimate-skeleton-cards
 
 ---
 
