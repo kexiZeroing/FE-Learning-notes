@@ -101,7 +101,7 @@ JavaScript experience is improved when you have a `jsconfig.json` file in your w
 
 The `exclude` attribute tells the language service what files are not part of your source code (e.g. `node_modules`, `dist`). Alternatively, you can explicitly set the files in your project using the `include` attribute (e.g. `src/**/*`).
 
-Below are `compilerOptions` to configure the JavaScript language support. Do not be confused by `compilerOptions`, since no actual compilation is required for JavaScript. This attribute exists because `jsconfig.json` is a descendant of `tsconfig.json`.
+Below are `compilerOptions` to configure the JavaScript language support. Do not be confused by `compilerOptions`, since no actual compilation is required for JavaScript. This attribute exists because `jsconfig.json` is a descendant of `tsconfig.json`. See an example at https://github.com/Microsoft/TypeScript-Babel-Starter/blob/master/tsconfig.json
 
 - `target`: This setting changes which JS features are downleveled and which are left intact. Modern browsers support all ES6 features, so `ES6` is a good choice. The values are "es3", "es5", "es6", "es2015", "es2016", "es2017", "es2018", "es2019", "es2020", "esnext".
 - `module`: Specifies the module system when generating module code. The values are "amd", "commonJS", "es2015", "es6", "esnext", "none", "system", "umd".

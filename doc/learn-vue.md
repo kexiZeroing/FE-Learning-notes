@@ -16,6 +16,13 @@
 - webpack 设置请求代理 proxy，默认情况下假设前端是 localhost:3000，后端是 localhost:8082，那么后端通过 request.getHeader("Host") 获取的依旧是 localhost:3000。如果设置了 `changeOrigin: true`，那么后端才会看到的是 localhost:8082, 代理服务器会根据请求的 target 地址修改 Host（这个在浏览器里看请求头是看不到改变的）。
 - 老项目（vue 1.x + webpack 1.x）是纯单页应用，单一的入口文件 `index.js`，里面有路由的配置，需要的模块懒加载。这里面也有很多独立的宣传页，结合 `HtmlWebpackPlugin` 生成纯静态页面。
 
+### 升级 Vue 2.7 并支持 TypeScript
+1. https://blog.vuejs.org/posts/vue-2-7-naruto.html
+2. Install `typescript` and `ts-loader` as devDependencies
+3. Add `ts-loader` rule to webpack config, right before the `vue-loader` rule. Pass `appendTsSuffixTo: [/\.vue$/]` option, which causes `.vue` files to be treated as `.vue.ts`.
+4. Create a `tsconfig.json` file.
+5. Vetur and Volar
+
 ### 本地 build 与上线 build
 1. 公共组件库 C 需要先 build，再 `npm link` 映射到全局的 node_modules，然后被其他项目 `npm link C` 引用。
 2. 项目 A 的上线脚本中会先进入组件库 C，执行 `npm build` 和 `npm link`，之后再进入项目 A 本身，执行 `npm link C`，`npm build` 等项目本身的构建。
@@ -480,7 +487,7 @@ document.getElementById('app').appendChild(component.$el)
 - `ref()` is calling `reactive()` behind the scenes.
 - `ref()` has a `.value` property for reassigning, `reactive()` does not have this and therefore cannot be reassigned.
 - `unref()` returns the inner value if the argument is a ref, otherwise return the argument itself. This is a sugar function for `val = isRef(val) ? val.value : val`.
-- With [script setup](https://vuejs.org/api/sfc-script-setup.html), we get rid of all the unnecessary boilerplate code and trim our component down to only what is needed.
+- When using the `watch` methods, `ref()` are automatically unwrapped.
 
 ```js
 // use `ref()` for primitives and is good for objects that need to be reassigned
