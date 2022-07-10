@@ -92,6 +92,8 @@ Manage node_modules in the system: https://github.com/voidcosmos/npkill
 
 Interactive website with live coding: https://www.strml.net/
 
+Neal.Fun: https://neal.fun/
+
 Annual portfolio refresh (resize your browser): https://lynnandtonic.com/archive/
 
 HTTP Cats: https://http.cat/

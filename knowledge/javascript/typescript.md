@@ -72,6 +72,23 @@ enum ThemeColors {
   Dark = 'dark',
   DarkSecondary = 'darkSecondary',
 }
+
+// Real-world examples of Typescript enums
+enum LogLevel {
+    ERROR,
+    WARNING,
+    INFO,
+    DEBUG
+}
+
+enum HTTPStatus {
+  OK = 200,
+  Redirect = 301,
+  BadRequest = 400,
+  Unauthorized = 401,
+  NotFound = 404,
+  InternalServerError = 500,
+}
 ```
 
 Fortunately, you don't have to specify types absolutely everywhere in your code because TypeScript has **Type Inference**. Type inference is what the TypeScript compiler uses to automatically determine types. TypeScript can infer types during variable initialization, when default parameter values are set, and while determining function return values.
