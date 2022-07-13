@@ -19,7 +19,54 @@ yarn add --dev typescript
 
 A `tsconfig.json` file is used to configure TypeScript project settings. The `tsconfig.json` file should be put in the project's root directory. You can run the `tsc --init` to generate a `tsconfig.json` file with some default options set and a bunch of other options commented out. In order to transpile the TypeScript code to JavaScript, the `tsc` command needs to be run. Running `tsc` will have the TypeScript compiler search for the `tsconfig.json` file which will determine the project's root directory as well as which options to use when compiling the TypeScript.
 
+```json
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "ES2015"
+  }
+}
+```
+
+At the moment, a `.ts` file will be transpiled to the ES5 version of JavaScript (`target`) and all import statements will be kept in the ES2015 format (`module`) in the output. You can also set the `module` to `CommonJS` as Webpack can also handle the CommonJS module system.
+
 Run `tsc --noEmit` that tells TypeScript that we just want to check types and not create any output files. If everything in our code is all right, `tsc` exits with no error. `tsc --noEmit --watch` will add a `watch` mode so TypeScript reruns type-checking every time you save a file.
+
+### TypeScript and Webpack
+Webpack is extensible with "loaders" that can be added to handle particular file formats.
+
+1. Install `typescript` and [ts-loader](https://github.com/TypeStrong/ts-loader) as devDependencies.
+2. The default behavior of `ts-loader` is to act as a drop-in replacement for the `tsc` command, so it respects the options in `tsconfig.json`.
+3. If you want to further optimize the code produced by TSC, use `babel-loader` with `ts-loader`. We need to compile a `.ts` file using `ts-loader` first and then using `babel-loader`.
+4. `ts-loader` does not write any file to disk. It compiles TypeScript files and passes the resulting JavaScript to webpack, which happens in memory.
+
+But TypeScript still isn't happy. It doesn't know anything about Webpack, and obviously doesn't understand `.vue` files - they aren't actually Typescript modules.
+
+> What should TypeScript do with something that isn’t a JS or TS module? Throwing an error! Could not find module.
+
+So it will throw an error when you try to import `Foo.vue`. The solution is `shims-vue.d.ts` in `src` directory. The filename does not seem to be important, as long as it ends with `.d.ts`. It basically means, "every time you import a module with the name `*.vue`, then treat it as if it had these contents, and the type of `Foo` will be Vue.".
+
+```ts
+// shims-vue.d.ts
+declare module "*.vue" {
+  import Vue from 'vue';
+  export default Vue;
+}
+```
+
+> TypeScript looks for `.d.ts` files in the same places it looks for your regular `.ts` files, i.e. the third-party module you are importing might not provide typings, which means that you need to declare the module in a file with a `.d.ts` extension.
+
+If that doesn't help, make sure the module you are trying to import is tracked by TypeScript. It should be covered in your `include` array setting and not be present in the `exclude` array in your `tsconfig.json` file.
+
+```json
+{
+  "compilerOptions": {
+    // ...
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/**/*.spec.ts"]
+}
+```
 
 ### Basic Static Types
 TypeScript brings along static types to the JavaScript language, and those **types are evaluated at compile time**. Static types can help warn you of possible errors without having to run the code.

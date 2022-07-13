@@ -85,6 +85,9 @@ Github takes all of the commits on your PR branch and combines them into a singl
 
 `git checkout -` will checkout the previous branch.
 
+### Another git process seems to be running in this repository
+Such problems generally occur when you execute two git commands simultaneously; maybe one from the command prompt and one from an IDE. Try `rm -f .git/index.lock` to delete the `index.lock` file and release the active lock.
+
 ### speed up git clone
 `git clone [repo] --depth=1` When you don't need the entire history of a repository, you can speed up the download by specifying the number of revisions you need.
 
