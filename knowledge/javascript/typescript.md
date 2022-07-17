@@ -68,6 +68,12 @@ If that doesn't help, make sure the module you are trying to import is tracked b
 }
 ```
 
+> Above was created in the days before Vue shipped with TypeScript out of the box. Now the best path to get started is through the official CLI.
+
+#### Faster Build
+1. [fork-ts-checker-webpack-plugin](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin) runs the type checker on a separate process, so your build remains fast thanks to `transpileOnly: true` but you still have the type checking.
+2. `ts-loader` does not support HMR.
+
 ### Basic Static Types
 TypeScript brings along static types to the JavaScript language, and those **types are evaluated at compile time**. Static types can help warn you of possible errors without having to run the code.
 
@@ -327,4 +333,9 @@ const storage = {
   max: 10,
   items: []
 }
+
+/**
+ * @param {ShipStorage} storage
+ */
+function doStuff(storage) {}
 ```

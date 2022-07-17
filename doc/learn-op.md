@@ -1,8 +1,5 @@
 ## 前端相关的部署
 
-https://shanyue.tech/op  
-https://shanyue.tech/no-vps  
-
 ### 最基本的 Node 服务
 ```js
 const http = require('node:http')
@@ -11,6 +8,8 @@ server.listen(3000, () => {
   console.log('Listening 3000')
 })
 ```
+
+> Node.js supports a `node:` protocol for built-in modules (`'fs/promises'` -> `'node:fs/promises'`). It’s immediately clear that a built-in Node.js module is imported and there is no risk of a module in `node_modules` overriding the built-in module.
 
 自己写代码无论从开发效率还是性能都会比专业工具 nginx 之类的静态资源服务差很多。从开发而言，基本的 rewrite, redirect, cache 都需要重新开发，比如单页应用中所有的 `*.html` 均为读取根目录 `index.html`。静态网站生成器将会有 `.html` 后缀，此时可通过 rewrite 去除后缀，比如将 `/hello` rewrite 到 `/hello.html`。
 
@@ -220,3 +219,5 @@ jobs:
       - name: Deploy
         run: docker-compose -f domain.docker-compose.yaml up --build -d domain
 ```
+
+### 云服务
