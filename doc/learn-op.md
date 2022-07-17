@@ -152,7 +152,7 @@ location /api {
 ```
 
 ### 持续集成
-使用 CI/CD 对部署进行自动化，即每当将前端代码更新到仓库后，自动拉取仓库代码并部署到服务器。`Runner` 表示用来执行 CI/CD 的服务器，`job` 代表任务，比如构建、测试、部署等，每个 `workflow`/`pipeline` 由多个 `job` 组成。
+使用 CI/CD 对部署进行自动化，即每当将前端代码更新到仓库后，自动拉取仓库代码并部署到服务器。`runner` 表示用来执行 CI/CD 的服务器，`job` 代表任务，比如构建、测试、部署等，每个 `workflow`/`pipeline` 由多个 `job` 组成，每个 `job` 由多个 `step` 组成。
 
 ```yaml
 # 关于本次 workflow 的名字
@@ -220,4 +220,34 @@ jobs:
         run: docker-compose -f domain.docker-compose.yaml up --build -d domain
 ```
 
-### 云服务
+使用 GitHub Actions 可以实现自动部署，如果需要 secret 等敏感数据，可以在项目仓库 `Settings -> Secrets` 里面设置。比如下面使用 vuepress 创建的博客部署阿里云 OSS 的配置：
+
+```yaml
+name: deploy to aliyun oss
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 省略下面这些步骤: checkout, setup Node, npm install and build
+    
+      - name: setup aliyun oss
+        uses: actions/setup-aliyun-oss@v1
+        with:
+          endpoint: oss-cn-beijing.aliyuncs.com
+          access-key-id: ${{ secrets.OSS_KEY_ID }}
+          access-key-secret: ${{ secrets.OSS_KEY_SECRET }}
+      - name: cp files to aliyun
+        run: ossutil cp -rf .vuepress/dist oss://xxx
+```
+
+GitHub Actions 还可以作为跑定时任务的脚本服务器，比如实现各种社交平台的自动签到。
+
+### 搭建博客
+如果你只想搭建一个博客，那么你不需要一个服务器就能完成搭建工作。相对而言使用一个静态网站托管服务，复杂度与工作量就会少了很多，毕竟它部署时只需要维护若干静态文件。
+
+当使用 SSG (hugo, hexo, vuepress, gatsby...) 在本地搭建好一个博客后，需要部署在互联网提供服务，可以使用很多免费的托管平台，其中 Netlify 与 Vercel 都是国外优秀的网站托管平台，全球各地均有 CDN 节点，并支持与 GitHub 协作进行自动部署。如果域名有备案，可以考虑使用阿里云 OSS 托管。使用阿里云的 OSS (object storage service，对象存储服务) 主要是因为国内的网络问题，并且可以结合阿里云的 CDN 使用，按量收费。*注意为带有 hash 的静态资源文件在源站（比如 Netlify）配置永久缓存，能在阿里云上为 CDN 与 https 节省流量费。*
+
+如果你想使用自己的域名，可以在域名提供商 godaddy 或者阿里云注册一个，并且在域名提供商处配置 CNAME，比如 `yourdomain.com -> xxx.netlify.com`。
