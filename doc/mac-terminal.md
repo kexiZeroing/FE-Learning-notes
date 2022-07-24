@@ -155,6 +155,15 @@ The recommended way of gaining super user privileges from the command line is th
 
 There is a different command which allows you to change the user: `su` (short for 'switch user'). `su` will ask for credentials of the user you are switching to. So if you run `su bob`, you need to have Bob’s credentials. When you run `su` without a username, it assumes `root`. But since logging in as `root` is disabled by default on macOS, it will fail, but you can use `sudo -s` or `sudo -i` instead. When you run `sudo -s` it will invoke a new shell running as `root`. The shell that is run is the default shell of your account, and it doesn't change the working directory. Alternatively you can use `sudo -i` to invoke a `root` shell. The working directory becomes `/var/root`, and the shell will be `/bin/sh` on macOS. It will be set up as if the `root` user were logging in and will read `root`'s profile.
 
+## What happens when you press a key in your terminal
+Remote terminals are very old technology. In the 70s, computers were expensive. So many employees at an institution would share a single computer, and each person could have their own "terminal" to that computer.
+
+It’s obvious that if you want to connect to a remote computer, then some information needs to be sent between the client and the server. The client needs to send the keystrokes that the user typed in, and the server needs to tell the client what to display on the screen.  
+
+For example, when you press `enter`, it sends a `\r` (carriage return) symbol. When you press `Ctrl+C`, the client sends `\x03`. If look up an [ASCII table](https://donsnotes.com/tech/charsets/ascii.html), `\x03` is "End of Text". `Ctrl+D` is very similar, which sends `\x04` corresponding to ASCII "End of Transmission". What about `Ctrl` + another letter? It turns out that it’s literally just the number of that letter in the alphabet, like this `Ctrl+a => \x01`, `Ctrl+b => \x02`. Press `Tab`, it sends `\x09`, which is the ASCII code for a horizontal tab. (same as `Ctrl+I`, since `I` is the 9th letter)
+
+Terminals are not just able to display black and white text; they can display colors and formatted texts thanks to escape sequences. The `\x1b[` things sending to the client are called *escape sequences*. They change the cursor’s position, make text bold or underlined, change colours, etc.
+
 ## 常⽤命令和作用
 | 常⽤命令 |  作用 |
 |  ----   | ---- |
