@@ -28,6 +28,8 @@ A `tsconfig.json` file is used to configure TypeScript project settings. The `ts
 }
 ```
 
+> `json` doesn't normally allow comments, but comments are valid in `tsconfig.json`. It's officially supported by TypeScript and VSCode understands it too. `npx tsc --init` command generates the `tsconfig.json` with all the settings commented. What's going on here is [jsonc](https://github.com/microsoft/node-jsonc-parser), or "JSON with JavaScript style comments", a proprietary format used by a bunch of Microsoft products, most notably Typescript and VSCode.
+
 At the moment, a `.ts` file will be transpiled to the ES5 version of JavaScript (`target`) and all import statements will be kept in the ES2015 format (`module`) in the output. You can also set the `module` to `CommonJS` as Webpack can also handle the CommonJS module system.
 
 Run `tsc --noEmit` that tells TypeScript that we just want to check types and not create any output files. If everything in our code is all right, `tsc` exits with no error. `tsc --noEmit --watch` will add a `watch` mode so TypeScript reruns type-checking every time you save a file.
