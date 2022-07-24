@@ -148,6 +148,10 @@ Box alignment in Grid and Flexbox: https://ishadeed.com/article/learn-box-alignm
 
 Flexbox: https://github.com/samanthaming/Flexbox30
 
+Scroll Snap: https://oh-snap.netlify.app
+
+Incomplete List of Mistakes in the Design of CSS: https://wiki.csswg.org/ideas/mistakes
+
 Build faithful recreations of old UIs: https://jdan.github.io/98.css, https://botoxparty.github.io/XP.css, https://khang-nd.github.io/7.css
 
 ---

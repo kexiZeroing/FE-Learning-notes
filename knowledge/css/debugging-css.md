@@ -117,3 +117,8 @@ ul:has(:nth-child(n + 5)) li:not(:last-child)::after {
   content: ';';
 }
 ```
+
+- `position:sticky` not working
+  1. In order for the sticky element to function correctly, it needs to have at least one of it's `top`, `right`, `left`, or `bottom` placement properties set.
+  2. If the sticky element has a parent with `overflow: hidden`, `overflow: auto`, or `overflow: scroll`, then `position: sticky` will not work properly.
+  3. The sticky element will not have a place to stick if the parent's `height` property is not set.

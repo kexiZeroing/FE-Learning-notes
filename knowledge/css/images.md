@@ -76,12 +76,28 @@ The browser will look at its device width and work out which media condition in 
 
 `<picture>` allows browsers to skip images they do not recognize, you can include images in your order of preference. **The browser selects the first one it supports**. The features — `srcset/sizes/<picture>` — are all supported in modern desktop and mobile browsers (including Microsoft's Edge browser, although not Internet Explorer.)
 
-## Unsplash image placeholder
-If I stopped just at this point then users would just get a blank space before the image loads in. Much better to show some kind of placeholder. Medium was the first place I saw something like this. And unsplash also has support for this. For this to work well, you need the placeholder to be smallish, server rendered, and inline.
+[Check more](https://github.com/nucliweb/image-element) about best practices for web images.
 
-When you land on an unsplash image, there are three things that can happen in series depending on your network speed:
-1. The primary color of the image is displayed. This is server rendered.
-2. A blurred version of the image is displayed. I'm not sure whether they're using [blurhash](https://blurha.sh/) for this, but they're doing the exact same thing. It's a canvas drawing.
-3. The final image is loaded.
+## v-lazy-image
+[v-lazy-image](https://github.com/alexjoverm/v-lazy-image) is a Vue.js component that imitates the `<img>` tag API and applies lazy loading (when it enters the viewport using the Intersection Observer API).
 
-These actually all happen, but they're layered with the image on top, then the blur canvas, then the div with a background color. So if the image loads before the JavaScript then the JavaScript won't have a chance to set up the canvas for the blurred image before you're looking at the actual image. And if the JavaScript is already loaded (like if you're doing client-side navigation) you won't see the background color and will only see the blurred image.
+As simple as using the `src-placeholder` property to define an image that is shown until the `src` image is loaded. Make sure the placeholder image is a tiny version of the original one. When the `src` image is loaded, a `v-lazy-image-loaded` class is added, so you can use it to perform animations.
+
+```vue
+<template>
+  <v-lazy-image
+    src="https://cdn-images-1.medium.com/max/1600/1*xjGrvQSXvj72W4zD6IWzfg.jpeg"
+    src-placeholder="https://cdn-images-1.medium.com/max/80/1*xjGrvQSXvj72W4zD6IWzfg.jpeg"
+  />
+</template>
+
+<style scoped>
+.v-lazy-image {
+  filter: blur(10px);
+  transition: filter 0.7s;
+}
+.v-lazy-image-loaded {
+  filter: blur(0);
+}
+</style>
+```
