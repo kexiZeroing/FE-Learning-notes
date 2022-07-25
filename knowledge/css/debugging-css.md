@@ -122,3 +122,5 @@ ul:has(:nth-child(n + 5)) li:not(:last-child)::after {
   1. In order for the sticky element to function correctly, it needs to have at least one of it's `top`, `right`, `left`, or `bottom` placement properties set.
   2. If the sticky element has a parent with `overflow: hidden`, `overflow: auto`, or `overflow: scroll`, then `position: sticky` will not work properly.
   3. The sticky element will not have a place to stick if the parent's `height` property is not set.
+
+- Elements are grouped into **stacking contexts**. When we give an element a `z-index`, that value is only compared against other elements in the same context. `z-index` values are not global. By default, a plain HTML document will have a single stacking context that encompasses all nodes. But there are many ways to create stacking contexts, e.g., combining relative or absolute positioning with `z-index`; Setting position to `fixed` or `sticky` (No `z-index` needed for these values); Setting `opacity` to a value less than 1; Adding a `z-index` to a child inside a `display: flex` or `display: grid` container; Using `transform`, `filter`, `clip-path`, or `perspective`.

@@ -164,6 +164,20 @@ For example, when you press `enter`, it sends a `\r` (carriage return) symbol. W
 
 Terminals are not just able to display black and white text; they can display colors and formatted texts thanks to escape sequences. The `\x1b[` things sending to the client are called *escape sequences*. They change the cursor’s position, make text bold or underlined, change colours, etc.
 
+## Mac terminal prompt's host becomes "bogon"
+When you are doing DNS reverse lookup, the DNS server can give your machine a hostname. Normally your machine uses a router, so it has a IP like 192.168.x.x in LAN, and this IP will be sent to the DNS server for a reverse lookup, and since it is a reserved IP address, the DNS server returns a hostname as "bogon" *(an illegitimate IP address that falls into a set of IP addresses that have not been officially assigned to an entity by an internet registration institute)*, thus, changes your machine's hostname.
+
+```sh
+man scutil  ## Manage system configuration parameters
+
+scutil --get HostName       # HostName: not set
+scutil --get LocalHostName  # Kexis-MacBook-Air
+scutil --get ComputerName   # Kexi’s MacBook Air
+
+scutil --set HostName <newval>
+scutil --set ComputerName <newval>
+```
+
 ## 常⽤命令和作用
 | 常⽤命令 |  作用 |
 |  ----   | ---- |
