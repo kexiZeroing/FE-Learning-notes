@@ -1,0 +1,187 @@
+## Notes from reading offical docs
+
+### Getting Started
+In most build-tool-enabled Vue projects, we author Vue components using an HTML-like file format called Single-File Component. SFC is a defining feature of Vue, and is the recommended way to author Vue components if your use case warrants a build setup.
+
+Vue components can be authored in two different API styles: Options API and Composition API.
+
+With Options API, we define a component's logic using an object of options such as `data`, `methods`, and `mounted`. Properties defined by options are exposed on `this` inside functions, which points to the component instance.
+
+With Composition API, we define a component's logic using imported API functions. In SFCs, Composition API is typically used with `<script setup>`. The `setup` attribute is a hint that makes Vue perform compile-time transforms that allow us to use Composition API with less boilerplate. For example, imports and top-level variables / functions declared in `<script setup>` are directly usable in the template.
+
+The Composition API is centered around declaring reactive state variables directly in a function scope, and composing state from multiple functions together to handle complexity. It is more free-form, and requires understanding of how reactivity works in Vue to be used effectively. In return, its flexibility enables more powerful patterns for organizing and reusing logic.
+
+Both API styles are fully capable of covering common use cases. They are different interfaces powered by the exact same underlying system. In fact, the Options API is implemented on top of the Composition API! The fundamental concepts and knowledge about Vue are shared across the two styles.
+
+For learning purposes, go with the style that looks easier to understand to you. You can always pick up the other style later.
+
+### Quick Start
+Depending on your use case and preference, you can use Vue with or without a build step.
+
+#### With Build Tools
+A build setup allows us to use Vue Single-File Components. The official Vue build setup is based on [Vite](https://vitejs.dev), a frontend build tool that is modern, lightweight and extremely fast.
+
+- You can try Vue with SFCs online on [StackBlitz](https://vite.new/vue). StackBlitz runs the Vite-based build setup directly in the browser.
+- To create a build-tool-enabled Vue project on your machine, run `npm init vue@latest`. This command will install and execute [create-vue](https://github.com/vuejs/create-vue), the official Vue project scaffolding tool. You will be presented with prompts for a number of optional features such as TypeScript and testing support. Note that the example components in the generated project are written using the Composition API and `<script setup>`.
+
+#### Without Build Tools
+To get started with Vue without a build step, simply copy the following code into an HTML file and open it in the browser. It uses the global build of Vue where all APIs are exposed under the global Vue variable.
+
+```html
+<script src="https://unpkg.com/vue@3"></script>
+
+<div id="app">{{ message }}</div>
+
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        message: 'Hello Vue!'
+      }
+    }
+  }).mount('#app')
+</script>
+```
+
+### Essentials
+Every Vue application starts by creating a new **application instance** with the `createApp` function. The object we are passing into `createApp` is in fact a component. Every app requires a **root component** that can contain other components as its children.
+
+```js
+import { createApp } from 'vue'
+// import the root component App from a single-file component.
+import App from './App.vue'
+
+const app = createApp(App)
+```
+
+An application instance won't render anything until its `.mount()` method is called. It expects a "container" argument, which can either be an actual DOM element or a selector string. The content of the app's root component will be rendered inside the container element. Also note that the `.mount()` method returns the root component instance instead of the application instance.
+
+When using Vue without a build step, we can write our root component's template directly inside the mount container. Vue will automatically use the container's `innerHTML` as the template if the root component does not already have a template option.
+
+```html
+<div id="app">
+  <button @click="count++">{{ count }}</button>
+</div>
+```
+```js
+import { createApp } from 'vue'
+
+const app = createApp({
+  data() {
+    return {
+      count: 0
+    }
+  }
+})
+
+app.mount('#app')
+```
+
+The application instance exposes a `.config` object that allows us to configure a few app-level options. The application instance also provides a few methods for registering app-scoped assets. For example, registering a component: `app.component('TodoDeleteButton', TodoDeleteButton)`. This makes the `TodoDeleteButton` available for use anywhere in our app. Make sure to apply all app configurations before mounting the app.
+
+#### Template Syntax
+All Vue templates are syntactically valid HTML that can be parsed by spec-compliant browsers and HTML parsers. Under the hood, Vue compiles the templates into highly-optimized JavaScript code. Combined with the reactivity system, Vue is able to intelligently figure out the minimal number of components to re-render and apply the minimal amount of DOM manipulations when the app state changes.
+
+The double mustaches interpret the data as plain text, not HTML. In order to output real HTML, you will need to use the `v-html` directive.
+
+> Dynamically rendering arbitrary HTML on your website can be very dangerous because it can easily lead to XSS vulnerabilities. Only use `v-html` on trusted content and never on user-provided content.
+
+Mustaches cannot be used inside HTML attributes. Instead, use a `v-bind` directive. If the bound value is `null` or `undefined`, then the attribute will be removed from the rendered element.
+
+Each binding can only contain one single expression. An expression is a piece of code that can evaluate to a value. A simple check is whether it can be used after `return`. It is possible to call a component-exposed method inside a binding expression.
+
+Template expressions are sandboxed and only have access to a restricted list of globals. The list exposes commonly used built-in globals such as `Math` and `Date`.
+
+```js
+const GLOBALS_WHITE_LISTED =
+  'Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,' +
+  'decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,' +
+  'Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt'
+```
+
+A directive's job is to reactively apply updates to the DOM when the value of its expression changes. Modifiers are special postfixes denoted by a dot, which indicate that a directive should be bound in some special way. For example, the `.prevent` modifier tells the `v-on` directive to call `event.preventDefault()` on the triggered event.
+
+#### Reactivity Fundamentals
+We can create a reactive object or array with the `reactive()` function. Reactive objects are JavaScript Proxies and behave just like normal objects. The difference is that Vue is able to track the property access and mutations of a reactive object.
+
+To use reactive state in a component's template, declare and return them from a component's `setup()` function. `setup` is a special hook dedicated for composition API.
+
+Manually exposing state and methods via `setup()` can be verbose. When using SFCs, we can greatly simplify the usage with `<script setup>`. Top-level imports and variables declared in `<script setup>` are automatically usable in the template of the same component.
+
+In Vue, state is **deeply reactive by default**. This means you can expect changes to be detected even when you mutate nested objects or arrays:
+
+```js
+import { reactive } from 'vue'
+
+const obj = reactive({
+  nested: { count: 0 },
+  arr: ['foo', 'bar']
+})
+
+function mutateDeeply() {
+  // these will work as expected.
+  obj.nested.count++
+  obj.arr.push('baz')
+}
+```
+
+The returned value from `reactive()` is a Proxy of the original object, which is not equal to the original object. To ensure consistent access to the proxy, calling `reactive()` on the same object always returns the same proxy, and calling `reactive()` on an existing proxy also returns that same proxy.
+
+It should be noted that the DOM updates are not applied synchronously. Instead, Vue buffers them until the "next tick" in the update cycle to ensure that each component needs to update only once no matter how many state changes you have made. To wait for the DOM update to complete after a state change, you can use the `nextTick()` global API.
+
+The `reactive()` API has two limitations:
+- It only works for object types. It cannot hold primitive types such as `string`, `number` or `boolean`.
+- Since Vue's reactivity tracking works over property access, we must always keep the same reference to the reactive object. This means we can't easily "replace" a reactive object because the reactivity connection to the first reference is lost.
+
+```js
+const state = reactive({ count: 0 })
+
+// n is a local variable that is disconnected from state.count
+let n = state.count
+// does not affect original state
+n++
+
+// count is also disconnected from state.count
+let { count } = state
+// does not affect original state
+count++
+
+// the function receives a plain number and
+// won't be able to track changes to state.count
+callSomeFunction(state.count)
+```
+
+To address the limitations of `reactive()`, Vue also provides a `ref()` function which allows us to create reactive "refs" that can hold any value type. `ref()` takes the argument and returns it wrapped within a ref object with a `.value` property, and the `.value` property is reactive.
+
+```js
+const obj = {
+  foo: ref(1),
+  bar: ref(2)
+}
+
+// the function receives a ref
+// it needs to access the value via .value but it
+// will retain the reactivity connection
+callSomeFunction(obj.foo)
+
+// still reactive
+const { foo, bar } = obj
+```
+
+- When refs are accessed as top-level properties in the template, they are automatically "unwrapped" so there is no need to use `.value`.
+- When a ref is accessed or mutated as a property of a reactive object, it is also automatically unwrapped so it behaves like a normal property.
+
+#### Computed Properties
+For complex logic that includes reactive data, it is recommended to use a computed property. The `computed()` function expects to be passed a getter function, and the returned value is a computed ref.
+
+A computed property automatically tracks its reactive dependencies. It is important to remember that computed getter functions should only perform pure computation and be free of side effects.
+
+Instead of a computed property, we can define the same function as a method. The difference is that computed properties are cached based on their reactive dependencies. A computed property will only re-evaluate when some of its reactive dependencies have changed. This also means the following computed property will never update, because `Date.now()` is not a reactive dependency:
+
+```js
+const now = computed(() => Date.now())
+```
+
+#### Class and Style Bindings
