@@ -48,6 +48,8 @@ Become a DevOps engineer: https://www.youtube.com/channel/UCdngmbVKX1Tgre699-XLl
 
 30 Days of PWA: https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/kickoff
 
+What happens when we type google.com in a browser: https://github.com/vasanthk/how-web-works
+
 ---
 
 ## Tools and Cool websites

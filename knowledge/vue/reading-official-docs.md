@@ -185,3 +185,48 @@ const now = computed(() => Date.now())
 ```
 
 #### Class and Style Bindings
+We can pass an object to `:class` to dynamically toggle classes. `:class="{ active: isActive }"` means the presence of the `active` class will be determined by the truthiness of the data property `isActive`. You can have multiple classes toggled by having more fields in the object. In addition, the `:class` directive can also co-exist with the plain `class` attribute.
+
+We can bind `:class` to an array to apply a list of classes. If you would like to also toggle a class in the list conditionally, you can do it with a ternary expression.
+
+```js
+const activeClass = ref('active')
+const errorClass = ref('text-danger')
+<div :class="[activeClass, errorClass]"></div>
+
+// which will render:
+<div class="active text-danger"></div>
+
+// with ternary expression:
+<div :class="[isActive ? activeClass : '', errorClass]"></div>
+```
+
+When you use the `class` attribute on a component with a single root element, those classes will be added to the component's root element, and merged with any existing class already on it.
+
+`:style` supports binding to JavaScript object values. (Although camelCase keys are recommended, `:style` also supports kebab-cased CSS property keys corresponding to how they are used in actual CSS.) It is often a good idea to bind to a style object directly so that the template is cleaner:
+
+```js
+const styleObject = reactive({
+  color: 'red',
+  fontSize: '13px'
+})
+
+<div :style="styleObject"></div>
+```
+
+When you use a CSS property that requires a vendor prefix in `:style`, Vue will automatically add the appropriate prefix. Vue does this by checking at runtime to see which style properties are supported in the current browser. If the browser doesn't support a particular property then various prefixed variants will be tested to try to find one that is supported.
+
+#### Conditional Rendering
+A `v-else` element must immediately follow a `v-if` or a `v-else-if` element.
+
+If we want to toggle more than one element, we can use `v-if` on a `<template>` element, which serves as an invisible wrapper. The final rendered result will not include the `<template>` element. `v-else` and `v-else-if` can also be used on `<template>`.
+
+`v-show` doesn't support the `<template>` element, nor does it work with `v-else`.
+
+`v-if` is "real" conditional rendering because it ensures that event listeners and child components inside the conditional block are properly destroyed and re-created during toggles. `v-if` is also lazy: if the condition is false on initial render, it will not do anything - the conditional block won't be rendered until the condition becomes true for the first time. In comparison, `v-show` is much simpler - the element is always rendered regardless of initial condition, with CSS `display` property toggling.
+
+Generally speaking, `v-if` has higher toggle costs while `v-show` has higher initial render costs. So prefer `v-show` if you need to toggle something very often, and prefer `v-if` if the condition is unlikely to change at runtime.
+
+When `v-if` and `v-for` are both used on the same element, `v-if` will be evaluated first. (It's not recommended to use `v-if` and `v-for` on the same element due to implicit precedence.)
+
+#### List Rendering
