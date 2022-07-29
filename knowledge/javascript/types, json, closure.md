@@ -56,6 +56,13 @@ bits  value
 - `Number.MAX_VALUE` is the largest number possible to represent using a double precision floating point representation. 
 - With the introduction of `BigInt`, you can operate with numbers beyond the `Number.MAX_SAFE_INTEGER`. A `BigInt` is created by appending `n` to the end of an integer or by calling the constructor.
 
+### Integer Math
+In C if `x` and `y` are integers then `x / y` will do integer division, rounding the result down. In JavaScript `x / y` will always be a floating point division with a floating point result. But if you apply a bitwise operator right afterward, then the result will be rounded down, converted to integer, and you'll get the same number as C did. (Of course you don't want your bitwise operator to change the result, so you can do a no-op bitwise operation such as `>> 0` or `| 0`.)
+
+JavaScript turns out to have a full set of bit manipulation instructions. The bitwise `and/or/xor/not/shift` operators are just like C, and I have no idea why JavaScript originally had them because they don't seem very useful for web development. Also that's weird when all numbers are double precision floating point, right? Nobody does bitwise operations on floating point numbers. And neither does JavaScript. In fact, JavaScript will first round your 64-bit double to a 32-bit signed integer, do the bitwise operation, and then convert it back to a double precision value. Weird!
+
+Once [asm.js](https://en.wikipedia.org/wiki/Asm.js) started doing `| 0` everywhere, people started being very interested in optimizing it. It turns out that if you add a `| 0` after every operation, your JavaScript JIT compiler can skip the redundant conversions too, and just keep your numbers as integers the whole time. When the inputs to a division are known to be integers, and `| 0` converts it to integer again afterward, then instead of emitting two conversions to floating point, a floating point division instruction, and then a conversion to integer, the JIT can emit a single integer division instruction, just like a C compiler would, without changing the result at all.
+
 ### Why `[] + {}` is `"[object Object]"`
 Firstly convert both operands to primitive values, and try `valueOf()` followed by `toString()`. If either of them is a string, do `String(a) + String(b)`, otherwise do `Number(a) + Number(b)`.
 

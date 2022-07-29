@@ -482,27 +482,6 @@ var component = new MyComponent().$mount()
 document.getElementById('app').appendChild(component.$el)
 ```
 
-### ref() and reactive() in Vue Composition API
-- `reactive()` only takes objects, not JS primitives.
-- `ref()` is calling `reactive()` behind the scenes.
-- `ref()` has a `.value` property for reassigning, `reactive()` does not have this and therefore cannot be reassigned.
-- `unref()` returns the inner value if the argument is a ref, otherwise return the argument itself. This is a sugar function for `val = isRef(val) ? val.value : val`.
-- When using the `watch` methods, `ref()` are automatically unwrapped.
-
-```js
-// use `ref()` for primitives and is good for objects that need to be reassigned
-const blogPosts = ref([]); 
-getBlogPosts() {
-  blogPosts.value = await fetchBlogPosts();
-}
-
-// `reactive()` requires reassigning a property instead of the whole object
-const blog = reactive({ posts: [] });
-getBlogPosts() {
-  blog.posts = await fetchBlogPosts();
-}
-```
-
 
 ## Electron 桌面端项目
 https://github.com/dengyaolong/geektime-electron  
