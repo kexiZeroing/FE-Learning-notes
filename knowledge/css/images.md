@@ -101,3 +101,14 @@ As simple as using the `src-placeholder` property to define an image that is sho
 }
 </style>
 ```
+
+## CSS Filter functions
+The `blur()` function applies a Gaussian blur to the input image. The value of `radius` defines how many pixels on the screen blend into each other, so a larger value will create more blur. The initial value for interpolation is 0. The parameter is specified as a CSS length, but does not accept percentage values. e.g. `filter: blur(5px)`
+
+The `brightness()` function applies a linear multiplier to the input image, making it appear more or less bright. A value of `0%` will create an image that is completely black. A value of `100%` leaves the input unchanged. Other values are linear multipliers on the effect. Values of an amount over `100%` are allowed, providing brighter results. The initial value for interpolation is 1. e.g. `filter: brightness(2)`
+
+The `contrast()` function adjusts the contrast of the input image. A value of `0%` will create an image that is completely gray. A value of `100%` leaves the input unchanged. Values of an amount over `100%` are allowed, providing results with more contrast. The initial value for interpolation is 1. e.g. `filter: contrast(200%)`
+
+The `grayscale()` function converts the input image to grayscale. The value of `amount` defines the proportion of the conversion. A value of `100%` is completely grayscale. A value of `0%` leaves the input unchanged. Values between `0%` and `100%` are linear multipliers on the effect. The initial value for interpolation is 0. e.g. `filter: grayscale(100%)`
+
+The `hue-rotate()` function applies a hue rotation on the input image. The value of `angle` defines the number of degrees around the color circle the input samples will be adjusted. A value of `0deg` leaves the input unchanged. The initial value for interpolation is 0. Though there is no maximum value; the effect of values above `360deg` wraps around. e.g. `filter: hue-rotate(90deg)`

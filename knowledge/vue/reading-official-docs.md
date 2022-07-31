@@ -1,5 +1,12 @@
 ## Notes from reading offical docs
 
+Recently Vue 3 became the new default. With this, we have also seen the release of a brand new Vue docs. Here are some of the exciting developments we could observe in Vue ecosystem:
+- We had the first stable release of **Vite** - a new kind of build tool for frontend development. Vite brings a combination of blazing-fast development experience and highly optimized production bundles. It’s also framework agnostic and anyone can use it. Vite is the new recommended choice, while Vue CLI enters maintenance mode.
+- Following the naming convention, we have also seen the release of **Vitest** - a new unit-test framework powered by Vite.
+- **Pinia** released its first stable version and it is now the recommended library for state management in Vue 3. Introducing a simpler API, proper TypeScript support, and utilizing hot module replacement, it’s a huge step up in the development experience. While Vuex is still compatible with Vue 3, it is now in maintenance mode.
+- **Volar** was released as the new official development tooling for our IDEs.
+- We also had quite a few libraries from the community, for example **VueUse**, that can run in both Vue 2 and 3 seamlessly.
+
 ### Getting Started
 In most build-tool-enabled Vue projects, we author Vue components using an HTML-like file format called Single-File Component. SFC is a defining feature of Vue, and is the recommended way to author Vue components if your use case warrants a build setup.
 

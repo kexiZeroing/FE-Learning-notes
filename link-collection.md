@@ -160,6 +160,8 @@ Build faithful recreations of old UIs: https://jdan.github.io/98.css, https://bo
 
 ## FE dev resources
 
+GUI Challenges: https://github.com/argyleink/gui-challenges
+
 Stackoverflow Design: https://stackoverflow.design
 
 Minimal CSS Framework for semantic HTML: https://picocss.com
@@ -184,7 +186,7 @@ Icon Explorer: https://icones.js.org
 
 A lightweight image and video gallery plugin: https://www.lightgalleryjs.com
 
-Vue Skeleton Cards: https://github.com/neelansh15/vue-ultimate-skeleton-cards
+Split an element by words, characters, children and more: https://splitting.js.org
 
 ---
 

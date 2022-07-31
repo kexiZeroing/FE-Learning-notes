@@ -124,3 +124,13 @@ ul:has(:nth-child(n + 5)) li:not(:last-child)::after {
   3. The sticky element will not have a place to stick if the parent's `height` property is not set.
 
 - Elements are grouped into **stacking contexts**. When we give an element a `z-index`, that value is only compared against other elements in the same context. `z-index` values are not global. By default, a plain HTML document will have a single stacking context that encompasses all nodes. But there are many ways to create stacking contexts, e.g., combining relative or absolute positioning with `z-index`; Setting position to `fixed` or `sticky` (No `z-index` needed for these values); Setting `opacity` to a value less than 1; Adding a `z-index` to a child inside a `display: flex` or `display: grid` container; Using `transform`, `filter`, `clip-path`, or `perspective`.
+
+- `:nth-child()` and `:nth-last-child()` pseudo-class matches elements based on their position among a group of siblings. Element indices are 1-based.
+  - `tr:nth-child(odd)` or `tr:nth-child(2n+1)` represents the odd rows: 1, 3, 5, etc.
+  - `tr:nth-child(even)` or `tr:nth-child(2n)` represents the even rows: 2, 4, 6, etc.
+  - `:nth-child(5n)` represents elements 5, 10, 15, etc.
+  - `:nth-child(n+7)` represents elements 7, 8, 9, etc.
+  - `:nth-child(-n+3)` represents the first three elements. [=-0+3, -1+3, -2+3]
+  - `:nth-last-child(5n)` represents elements 5, 10, 15, etc., counting from the end.
+  - `:nth-last-child(3n+4)` represents elements 4, 7, 10, 13, etc., counting from the end.
+  - `:nth-last-child(-n+3)` represents the last three elements among a group of siblings.
