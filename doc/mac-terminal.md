@@ -3,6 +3,9 @@ Date back to the days when computing started with big mainframe computers, many 
 
 The Terminal application on macOS is a virtual terminal program to run a shell, either locally or to connect to servers. The terminal only provides a means to enter and display text. It will display a 'prompt' which tells the user, that the system is ready and the user can enter a command.
 
+> - A terminal is different than a shell. It used to be a hardware device, but now we use terminal emulators for similar functionality.
+> - Bash is just one of many shells, it happens to be the default shell in most Linux systems, but you may also be familiar with zsh, the default on macOS, and PowerShell or cmd.exe, the default on Windows.
+
 A shell protects the user from the dangerous, complicated parts of the system and abstracts differences from one system to the other. Another way of looking at it, is that a shell protects the vulnerable, fragile parts of the system from the user. Technically, GUI which display files, folders and programs as icons in windows such as macOS, Windows, and even iOS and Android are also shells, since they shield the system internals from the user and vice versa. However, usually the term 'shell' is used for interfaces where the user has to type commands, or CLI. Command Line shells commonly have two major roles. The first is to interpret and execute commands entered in an interactive prompt and deliver the results back to the user. The second role is to interpret and process list of commands called scripts.
 
 Many Unix and Unix-like systems have `sh` as well as bash and other shells available. `sh` goes back to the very early UNIX shells. `sh` has survived because it serves as the lowest common standard for shell scripting. These standards are defined in the POSIX specification. When you have to build scripts that need to run across many different flavors and versions of Unix where you cannot rely on bash being present, then conforming to `sh` might be necessary. (bash is also POSIX compliant, but it has more features). As a macOS administrator you should always choose `/bin/bash` over `/bin/sh`. You can check all the available shells in macOS `cat /etc/shells`, show the current shell being used `echo $SHELL`, and use `chsh -s /bin/zsh` to change the current interactive shell.
@@ -126,6 +129,91 @@ There are environments where you cannot predict the absolute path of a given too
 ## sh and source
 When you call `sh`, you initiate a fork (sub-process) that runs a new session of `/bin/sh`, which is usually a symbolic link to bash. If you launch it using `./test.sh`, the first line `#!/bin/sh` would be detected, then it would be exactly the same as `/bin/sh ./test.sh`. (`chmod +x test.sh` to make the script executable). It executes shell scripts in a new shell process, so any variables which are assigned will disappear after the script is done. `. test.sh` or `source test.sh` will run the commands in the current shell (source is a synonym for dot).
 
+Similarly, we can tell the OS to always execute a file with node using `#!/usr/bin/env node`. Here we use the `env` program to find the node’s path because it’s usually in a more dynamic place, depending on your OS or node version manager.
+
+## Script arguments
+A Bash script may take arguments to accomplish a task. Here’s how we can handle them in Bash and Node.js.
+
+```sh
+#!/bin/bash
+echo "Script name is $0"
+echo "First argument: ${1:-empty}"  # `empty` is the default value in case $1 is unset
+echo "All arguments: $*"
+```
+
+```sh
+#!/usr/bin/env node
+console.log(`Script name is ${process.argv[0]}`)
+console.log(`First argument: ${process.argv[1] || 'empty'}`)
+console.log(`All arguments: ${process.argv.join(' ')}`)
+```
+
+## Bash Variables
+Pay attention to the syntax used for assignment – `foo = bar` won’t work, `foo` will be interpreted as a command and `= bar` as arguments.
+
+Bash has built-in variables, like `$HOME` and `$BASH_VERSION`, and special parameters, like `$_` which holds the last argument passed to the last executed command.
+
+Parameter expansion is simply the usage of a value that a variable holds. Note that it won’t work within single quotes.
+
+```sh
+$ foo=bar
+$ echo "Here is the content of: $foo"
+Here is the content of: bar
+$ echo "This is also valid: ${foo}"
+This is also valid: bar
+
+$ echo 'Here is the content of: $foo'
+Here is the content of: $foo
+
+# Command substitution
+$ foo=$(echo bar)
+$ echo "\$foo is $foo, but this gives us the same result: $(echo $foo)"
+$foo is bar, but this gives us the same result: bar
+
+# Arithmetic expressions
+$ foo=$(( 1+2 ))
+$ echo $foo
+3
+```
+
+## Bash Conditionals
+There are some commands designed specifically to test things and return an exit status based on what they find. The first such command is `test` (also known as `[`). A more advanced version is `[[`. `[[` is much like `[`, but it offers far more versatility. Read `man test` for more information.
+
+```sh
+# Comparing numbers
+$ num=1
+$ [[ $num == 1 ]] && echo "$num is equal to 1"
+$ [[ $num != 10 ]] && echo "$num is different than 10"
+$ [[ $num > 0 ]] && echo "$num is greater than 0"
+$ [[ $num < 10 ]] && echo "$num is less than 10"
+
+# Comparing strings 
+$ foobar="foo bar"
+$ #mnemonic: is length *z*ero?
+$ [[ -z $foobar ]] && echo '$foobar is empty' || echo '$foobar is not empty'
+$foobar is not empty
+$ #mnemonic: is length *n*ot zero?
+$ [[ -n $foobar ]] && echo '$foobar is not empty' || echo '$foobar is empty'
+$foobar is not empty
+$ [[ $foobar == "foo bar" ]] && echo "\$foobar is equal to 'foo bar'"
+$foobar is equal to 'foo bar'
+$ [[ $foobar =~ "^foo" ]] && echo "\$foobar starts with 'foo'"
+$foobar starts with 'foo'
+$ [[ $foobar =~ "bar$" ]] && echo "\$foobar ends with 'bar'"
+$foobar ends with 'bar'
+
+# Conditional blocks
+if true
+then
+  echo "This will be printed."
+elif false
+then
+  echo "This is unreachable."
+else
+  echo "This is also unreachable."
+fi
+```
+
 ## Moving to zsh
 From macOS Catalina the default shell is zsh. The bash bundled with macOS has been stuck on version 3.2 for a long time now. bash v4 was released in 2009 and bash v5 in January 2019. The reason Apple has not switched to these newer versions is that they are licensed with `GPL v3`. bash v3 is still `GPL v2`. zsh, on the other hand, has an MIT-like license, which makes it much more palatable for Apple to include in the system by default.
 
@@ -165,7 +253,7 @@ For example, when you press `enter`, it sends a `\r` (carriage return) symbol. W
 Terminals are not just able to display black and white text; they can display colors and formatted texts thanks to escape sequences. The `\x1b[` things sending to the client are called *escape sequences*. They change the cursor’s position, make text bold or underlined, change colours, etc.
 
 ## Mac terminal prompt's host becomes "bogon"
-When you are doing DNS reverse lookup, the DNS server can give your machine a hostname. Normally your machine uses a router, so it has a IP like 192.168.x.x in LAN, and this IP will be sent to the DNS server for a reverse lookup, and since it is a reserved IP address, the DNS server returns a hostname as "bogon" *(an illegitimate IP address that falls into a set of IP addresses that have not been officially assigned to an entity by an internet registration institute)*, thus, changes your machine's hostname.
+When you are doing DNS reverse lookup, the DNS server can give your machine a hostname. Normally your machine uses a router, so it has a IP like 192.168.x.x in LAN, and this IP will be sent to the DNS server for a reverse lookup, and since it is a reserved IP address, the DNS server returns a hostname as "bogon" *(an illegitimate IP address that falls into a set of IP addresses that have not been officially assigned to an entity by an internet registration institute.)*
 
 ```sh
 man scutil  ## Manage system configuration parameters
