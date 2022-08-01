@@ -234,6 +234,90 @@ If we want to toggle more than one element, we can use `v-if` on a `<template>` 
 
 Generally speaking, `v-if` has higher toggle costs while `v-show` has higher initial render costs. So prefer `v-show` if you need to toggle something very often, and prefer `v-if` if the condition is unlikely to change at runtime.
 
-When `v-if` and `v-for` are both used on the same element, `v-if` will be evaluated first. (It's not recommended to use `v-if` and `v-for` on the same element due to implicit precedence.)
+When `v-if` and `v-for` are both used on the same element, `v-if` will be evaluated first. That means the `v-if` condition will not have access to variables from the scope of the `v-for`. This can be fixed by moving `v-for` to a wrapping `<template>` tag. (It's not recommended to use `v-if` and `v-for` on the same element due to implicit precedence.)
 
 #### List Rendering
+We can use the `v-for` directive to render a list of items based on an array. The `v-for` directive requires a special syntax in the form of `item in items`, where `items` is the source data array and `item` is an alias for the array element being iterated on. In fact, you can use destructuring on the `v-for` item alias similar to destructuring function arguments. You can also use `of` as the delimiter instead of `in`, so that it is closer to JavaScript's syntax for iterators.
+
+```vue
+<li v-for="({ message }, index) in items">
+  {{ message }} {{ index }}
+</li>
+
+<div v-for="item of items"></div>
+```
+
+`v-for` can also take an integer. In this case it will repeat the template that many times, based on a range of `1...n`.
+
+Similar to template `v-if`, you can also use a `<template>` tag with `v-for` to render a block of multiple elements.
+
+To give Vue a hint so that it can track each node's identity, and thus reuse and reorder existing elements, you need to provide a unique `key` attribute for each item. The `key` binding expects primitive values - i.e. strings and numbers. Do not use objects as `v-for` keys. When using `<template v-for>`, the key should be placed on the `<template>` container.
+
+Vue is able to detect when a reactive array's **mutation methods** are called and trigger necessary updates. These mutation methods are: `push()`, `pop()` ,`shift()`, `unshift()`, `splice()`, `sort()`, `reverse()`.
+
+In comparison, there are also non-mutating methods, e.g. `filter()`, `concat()` and `slice()`, which do not mutate the original array but always return a new array. When working with non-mutating methods, we should replace the old array with the new one.
+
+> You might think this will cause Vue to throw away the existing DOM and re-render the entire list - luckily, that is not the case. Vue implements some smart heuristics to maximize DOM element reuse, so replacing an array with another array containing overlapping objects is a very efficient operation.
+
+Sometimes we want to display a filtered or sorted version of an array without actually mutating or resetting the original data. In this case, you can create a computed property that returns the filtered or sorted array.
+
+#### Event Handling
+We can use the `v-on` directive, which we typically shorten to the `@` symbol, to listen to DOM events and run some JavaScript when they're triggered. The handler value can be one of the following:
+- Inline handlers: Inline JavaScript to be executed when the event is triggered.
+- Method handlers: A property name or path that points to a method defined on the component.
+
+For example, `foo`, `foo.bar` and `foo['bar']` are treated as method handlers, while `foo()` and `count++` are treated as inline handlers.
+
+A method handler automatically receives the native DOM Event object that triggers it, e.g., we are able to access the element dispatching the event via `event.target.tagName`.
+
+Sometimes we also need to access the original DOM event in an inline handler. You can pass it into a method using the special `$event` variable, or use an inline arrow function.
+
+```vue
+<!-- using $event special variable -->
+<button @click="warn('Form cannot be submitted yet.', $event)">Submit</button>
+
+<!-- using inline arrow function -->
+<button @click="(event) => warn('Form cannot be submitted yet.', event)">Submit</button>
+```
+
+It is a very common need to call `event.preventDefault()` or `event.stopPropagation()` inside event handlers. Vue provides event modifiers for `v-on`.
+
+```vue
+<!-- the click event's propagation will be stopped -->
+<a @click.stop="doThis"></a>
+
+<!-- the submit event will no longer reload the page -->
+<form @submit.prevent="onSubmit"></form>
+
+<!-- modifiers can be chained -->
+<a @click.stop.prevent="doThat"></a>
+
+<!-- only trigger handler if event.target is the element itself -->
+<!-- i.e. not from a child element -->
+<div @click.self="doThat">...</div>
+
+<!-- use capture mode when adding the event listener -->
+<!-- i.e. an event targeting an inner element is handled here before being handled by that element -->
+<div @click.capture="doThis">...</div>
+
+<!-- the click event will be triggered at most once -->
+<a @click.once="doThis"></a>
+
+<!-- the scroll event's default behavior (scrolling) will happen -->
+<!-- immediately, instead of waiting for `onScroll` to complete  -->
+<div @scroll.passive="onScroll">...</div>
+```
+
+> The `.capture`, `.once`, and `.passive` modifiers mirror the options of the native addEventListener method.
+
+When listening for keyboard events, Vue allows adding key modifiers for `v-on` when listening for key events, providing aliases for the most commonly used keys: `.enter`, `.tab`, `.space`, `.up`, `.down`, `.ctrl`, `.shift`, `.meta`.
+
+```vue
+<input @keyup.page-down="onPageDown" />
+
+<!-- Alt + Enter -->
+<input @keyup.alt.enter="clear" />
+
+<!-- Ctrl + Click -->
+<div @click.ctrl="doSomething">Do something</div>
+```
