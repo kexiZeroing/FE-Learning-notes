@@ -321,3 +321,177 @@ When listening for keyboard events, Vue allows adding key modifiers for `v-on` w
 <!-- Ctrl + Click -->
 <div @click.ctrl="doSomething">Do something</div>
 ```
+
+#### Form Input Bindings
+When dealing with forms, we often need to sync the state of form input elements with corresponding state in JavaScript. `v-model` can be used on inputs of different types, `<textarea>`, and `<select>` elements. It automatically expands to different DOM property and event pairs based on the element it is used on:
+
+- `<input>` with text types and `<textarea>` elements use `value` property and `input` event;
+- `<input type="checkbox">` and `<input type="radio">` use `checked` property and `change` event;
+- `<select>` use `value` as a prop and `change` as an event.
+
+```html
+<input
+  type="checkbox"
+  v-model="toggle"
+  true-value="yes"
+  false-value="no" />
+```
+
+`true-value` and `false-value` are Vue-specific attributes that only work with `v-model`. Here the `toggle` property's value will be set to 'yes' when the box is checked, and set to 'no' when unchecked.
+
+We can also bind multiple checkboxes to the same array or Set value:
+
+```html
+<div>Checked names: {{ checkedNames }}</div>
+
+<input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+<label for="jack">Jack</label>
+
+<input type="checkbox" id="john" value="John" v-model="checkedNames">
+<label for="john">John</label>
+
+<input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+<label for="mike">Mike</label>
+```
+
+By default, `v-model` syncs the input with the data after each `input` event. You can add the `lazy` modifier to instead sync after `change` events. 
+
+> Unlike the `input` event, the `change` event is not necessarily fired for each alteration to an element's value. For some elements, including `<input type="text">`, the change event doesn't fire until the control loses focus.
+
+If you want user input to be automatically typecast as a number, you can add the `number` modifier to your `v-model` managed inputs. If the value cannot be parsed with `parseFloat()`, then the original value is used instead.
+
+```html
+<input v-model.lazy="msg" />
+
+<input v-model.number="age" />
+
+<input v-model.trim="msg" />
+```
+
+#### Lifecycle Hooks
+Each Vue component instance goes through a series of initialization steps when it's created - for example, it needs to set up data observation, compile the template, mount the instance to the DOM, and update the DOM when data changes. Along the way, it also runs functions called lifecycle hooks, giving users the opportunity to add their own code at specific stages. Do note these hooks need to be registered synchronously during component setup. 
+
+Setup (Composition API) -> beforeCreate -> created -> compile template on the fly -> beforeMount -> mounted -> beforeUpdate -> updated -> beforeUnmount -> unmounted
+
+#### Watchers
+There are cases where we need to perform "side effects" in reaction to state changes. With Composition API, we can use the `watch` function to trigger a callback whenever a piece of reactive state changes.
+
+`watch`'s first argument can be different types of reactive "sources": it can be a ref (including computed refs), a reactive object, a getter function, or an array of multiple sources:
+
+```js
+const x = ref(0)
+const y = ref(0)
+
+// single ref
+watch(x, (newX) => {
+  console.log(`x is ${newX}`)
+})
+
+// getter
+watch(
+  () => x.value + y.value,
+  (sum) => {
+    console.log(`sum of x + y is: ${sum}`)
+  }
+)
+
+// watch a property of a reactive object
+// you can't watch a property of a reactive object like `watch(obj.count, () => {})`,
+// which won't work because we are passing a number to watch()
+watch(
+  () => obj.count,
+  (count) => {
+    console.log(`count is: ${count}`)
+  }
+)
+
+// array of multiple sources
+watch([x, () => y.value], ([newX, newY]) => {
+  console.log(`x is ${newX} and y is ${newY}`)
+})
+```
+
+When you call `watch()` directly on a reactive object, it will implicitly create a deep watcher - the callback will be triggered on all nested mutations. This should be differentiated with a getter that returns a reactive object - in the latter case, the callback will only fire if the getter returns a different object. You can, however, force the second case into a deep watcher by explicitly using the `deep` option.
+
+```js
+const obj = reactive({ count: 0 })
+
+watch(obj, (newValue, oldValue) => {
+  // fires on nested property mutations
+  // Note: `newValue` will be equal to `oldValue` here
+  // because they both point to the same object
+})
+
+obj.count++
+
+watch(
+  () => state.someObject,
+  (newValue, oldValue) => {
+    // Note: `newValue` will be equal to `oldValue` here
+    // unless state.someObject has been replaced
+  },
+  { deep: true }
+)
+```
+
+> Deep watch requires traversing all nested properties in the watched object, and can be expensive when used on large data structures. Use it only when necessary and beware of the performance implications.
+
+`watchEffect()` allows us to perform a side effect immediately while automatically tracking the effect's reactive dependencies. In below example, the callback will run immediately. During its execution, it will also automatically track `url.value` as a dependency. Whenever `url.value` changes, the callback will be run again.
+
+```js
+watchEffect(async () => {
+  const response = await fetch(url.value)
+  data.value = await response.json()
+})
+```
+
+- `watch` only tracks the explicitly watched source. It won't track anything accessed inside the callback. In addition, the callback only triggers when the source has actually changed. `watch` separates dependency tracking from the side effect, giving us more precise control over when the callback should fire.
+- `watchEffect`, on the other hand, combines dependency tracking and side effect into one phase. It automatically tracks every reactive property accessed during its synchronous execution. This is more convenient and typically results in terser code, but makes its reactive dependencies less explicit.
+
+When you mutate reactive state, it may trigger both Vue component updates and watcher callbacks. By default, user-created watcher callbacks are called **before** Vue component updates. This means if you attempt to access the DOM inside a watcher callback, the DOM will be in the state before Vue has applied any updates. If you want to access the DOM in a watcher callback **after** Vue has updated it, you need to specify the `flush: 'post'` option. Post-flush `watchEffect()` also has a convenience alias, `watchPostEffect()`.
+
+Watchers declared synchronously inside `<script setup>` are bound to the owner component instance, and will be automatically stopped when the owner component is unmounted.
+
+#### Template Refs
+While Vue's declarative rendering model abstracts away most of the direct DOM operations for you, there may still be cases where we need direct access to the underlying DOM elements. This may be useful when you want to, for example, programmatically focus an input on component mount, or initialize a 3rd party library on an element.
+
+To achieve it, we can use the special `ref` attribute. Note that you can only access the ref after the component is mounted.
+
+```vue
+<script setup>
+import { ref, onMounted } from 'vue'
+
+// declare a ref to hold the element reference
+// the name must match template ref value
+const input = ref(null)
+
+onMounted(() => {
+  input.value.focus()
+})
+</script>
+
+<template>
+  <input ref="input" />
+</template>
+```
+
+`ref` can also be used on a child component. In this case the reference will be that of a component instance.
+- If the child component is using Options API or not using `<script setup>`, the referenced instance will be identical to the child component's `this`.
+- A parent component referencing a child component using `<script setup>` won't be able to access anything unless the child component chooses to expose a public interface using the `defineExpose` macro.
+
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const a = 1
+const b = ref(2)
+
+// the retrieved instance will be of the shape { a: number, b: number }
+defineExpose({
+  a,
+  b
+})
+</script>
+```
+
+#### Components Basics
