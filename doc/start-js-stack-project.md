@@ -37,6 +37,7 @@ There’s an [awesome-npx](https://github.com/junosuarez/awesome-npx) repo with 
 > - [depcheck](https://github.com/depcheck/depcheck) check your npm module for unused dependencies. `npx depcheck` (needs node.js >= 10)
 > - [npm-check-updates](https://github.com/raineorshine/npm-check-updates) find the latest versions of your package dependencies, ignoring specified versions.
 > - Interactive CLI that bumps version number (with `--commit` `--tag` `--push` by default): https://github.com/antfu/bumpp
+> - Generic CLI tool to automate versioning and package publishing related tasks: https://github.com/release-it/release-it
 
 ### npm and pnpm
 The very first package manager ever released was npm, back in January 2010. In 2020, GitHub acquired npm, so in principle, npm is now under the stewardship of Microsoft.

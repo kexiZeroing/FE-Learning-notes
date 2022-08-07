@@ -126,6 +126,8 @@ Lightweight fuzzy-search library: https://fusejs.io/
 
 Floating Point Math: https://0.30000000000000004.com/
 
+Text to Handwriting: https://github.com/saurabhdaware/text-to-handwriting
+
 ---
 
 ## CSS related

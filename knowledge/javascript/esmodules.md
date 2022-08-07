@@ -131,3 +131,24 @@ import('./modules/square.js').then((Module) => {
   square1.reportArea();
 })
 ```
+
+## Import maps
+In common module systems, such as CommonJS, or a module bundler like webpack, the import specifier was mapped to a specific file, and users only needed to apply the bare module specifier (usually the package name) in the import statement, and concerns around module resolution were taken care of automatically.
+
+Now many web developers are using JavaScript's native module syntax, but combining it with bare import specifiers, making their code unable to run on the web without per-application, ahead-of-time modification. We'd like to solve that, and bring these benefits to the web.
+
+[This proposal](https://github.com/WICG/import-maps) allows control over what URLs get fetched by JavaScript `import` statements. This allows "bare import specifiers", such as `import moment from "moment"`, to work. The mechanism for doing this is via an *import map* which can be used to control the resolution of module specifiers generally.
+
+Today, `import moment from "moment"` throws, as such bare specifiers are [reserved](https://html.spec.whatwg.org/multipage/webappapis.html#resolve-a-module-specifier). (specifier needs to start with the character `/`, `./`, `../`)
+
+By supplying the browser with the following import map, the above would act as if you had written `import moment from "/node_modules/moment/src/moment.js"`.
+
+```html
+<script type="importmap">
+{
+  "imports": {
+    "moment": "/node_modules/moment/src/moment.js",
+  }
+}
+</script>
+```
