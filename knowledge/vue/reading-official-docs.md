@@ -494,4 +494,41 @@ defineExpose({
 </script>
 ```
 
-#### Components Basics
+### Components In-Depth
+Components allow us to split the UI into independent and reusable pieces, and think about each piece in isolation. When using a build step, we typically define each Vue component in a dedicated file using the `.vue` extension - known as a Single-File Component.
+
+When switching between multiple components with `<component :is="...">`, a component will be unmounted when it is switched away. We can force the inactive components to stay alive with the built-in `<KeepAlive>` component.
+
+#### Component Registration
+A Vue component needs to be "registered" so that Vue knows where to locate its implementation when it is encountered in a template. There are two ways to register components: global and local.
+
+```js
+import { createApp } from 'vue'
+
+const app = createApp({})
+
+// global registration
+// `app.component()` method can be chained:
+app
+  .component('ComponentA', ComponentA)
+  .component('ComponentB', ComponentB)
+  .component('ComponentC', ComponentC)
+```
+
+Global registration prevents build systems from removing unused components (a.k.a "tree-shaking"). If you globally register a component but end up not using it anywhere in your app, it will still be included in the final bundle.
+
+Local registration scopes the availability of the registered components to the current component only. When using SFC with `<script setup>`, imported components can be locally used without registration. In non-`<script setup>`, you will need to use the `components` option. Note that locally registered components are not also available in its child components.
+
+It's recommended to use `PascalCase` tag names for components to differentiate from native HTML elements when working with SFC or string templates. Luckily, Vue supports resolving `kebab-case` tags to components registered using `PascalCase`. This means a component registered as `MyComponent` can be referenced in the template via both `<MyComponent>` and `<my-component>`.
+
+#### Props
+In SFCs using `<script setup>`, props can be declared using the `defineProps()` macro. In addition to declaring props using an array of strings, we can also use the object syntax. The key is the name of the prop, while the value should be the constructor function of the expected type.
+
+```js
+const props = defineProps(['foo'])
+
+defineProps({
+  title: String,
+  likes: Number
+})
+```
