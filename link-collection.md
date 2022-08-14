@@ -128,6 +128,8 @@ Floating Point Math: https://0.30000000000000004.com/
 
 Text to Handwriting: https://github.com/saurabhdaware/text-to-handwriting
 
+Generate fake but realistic data: https://fakerjs.dev/
+
 ---
 
 ## CSS related

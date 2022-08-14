@@ -22,7 +22,8 @@
 3. Add `ts-loader` rule to webpack config, right before the `vue-loader` rule. Pass `appendTsSuffixTo: [/\.vue$/]` option, which causes `.vue` files to be treated as `.vue.ts`.
 4. Create a `tsconfig.json` file.
 5. Vetur and Volar
-6. Use Vuex with Composition API: https://github.com/greenpress/vuex-composition-helpers
+6. Use Vuex with Composition API: https://github.com/greenpress/vuex-composition-helpers, add support of Vue 2.7: https://github.com/greenpress/vuex-composition-helpers/pull/72
+7. Access `this.$route` in Vue 2 Composition API setup function: You could import the router from its module and access both `router` and `route` from it. Use `router.app.$route` as `this.$route`.
 
 ### 本地 build 与上线 build
 1. 公共组件库 C 需要先 build，再 `npm link` 映射到全局的 node_modules，然后被其他项目 `npm link C` 引用。
