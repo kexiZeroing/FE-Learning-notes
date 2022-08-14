@@ -1,5 +1,8 @@
 ## Notes from reading offical docs
 
+> Learn Vue 3: Step By Step (31 episodes. 100% free to all. No sign up required.)  
+> https://laracasts.com/series/learn-vue-3-step-by-step
+
 Recently Vue 3 became the new default. With this, we have also seen the release of a brand new Vue docs. Here are some of the exciting developments we could observe in Vue ecosystem:
 - We had the first stable release of **Vite** - a new kind of build tool for frontend development. Vite brings a combination of blazing-fast development experience and highly optimized production bundles. It’s also framework agnostic and anyone can use it. Vite is the new recommended choice, while Vue CLI enters maintenance mode.
 - Following the naming convention, we have also seen the release of **Vitest** - a new unit-test framework powered by Vite.
@@ -522,6 +525,10 @@ Local registration scopes the availability of the registered components to the c
 It's recommended to use `PascalCase` tag names for components to differentiate from native HTML elements when working with SFC or string templates. Luckily, Vue supports resolving `kebab-case` tags to components registered using `PascalCase`. This means a component registered as `MyComponent` can be referenced in the template via both `<MyComponent>` and `<my-component>`.
 
 #### Props
+Vue components require explicit props declaration so that Vue knows what external props passed to the component should be treated as fallthrough attributes.
+
+> A "fallthrough attribute" is an attribute that is passed to a component, but is not explicitly declared in the receiving component. Common examples of this include `class`, `style`, and `id` attributes. **When a component renders a single root element, fallthrough attributes will be automatically added to the root element's attributes**. Fallthrough attributes can be accessed directly in template expressions as `$attrs`, or `v-bind="$attrs"` to control over where they should be applied.
+
 In SFCs using `<script setup>`, props can be declared using the `defineProps()` macro. In addition to declaring props using an array of strings, we can also use the object syntax. The key is the name of the prop, while the value should be the constructor function of the expected type.
 
 ```js
@@ -531,4 +538,179 @@ defineProps({
   title: String,
   likes: Number
 })
+
+// use TypeScript with `<script setup lang="ts">`
+defineProps<{
+  title?: string
+  likes?: number
+}>()
+```
+
+```html
+<!-- Including the prop with no value will imply `true` -->
+<BlogPost is-published />
+
+<!-- equivalent of passing :is-published="false" -->
+<BlogPost />
+
+<!-- Even though `42` is static, we need v-bind to tell Vue that -->
+<!-- this is a JavaScript expression rather than a string.       -->
+<BlogPost :likes="42" />
+```
+
+We declare prop names using camelCase. It allows us to reference them directly in template expressions because they are valid JavaScript identifiers. Technically, you can also use camelCase when passing props to a child component. However, the convention is using kebab-case in all cases to align with HTML attributes. (There isn't much practical benefit in using camelCase when passing props, so we choose to follow each language's conventions.)
+
+All props form a one-way-down binding between the child property and the parent one: when the parent property updates, it will flow down to the child, but not the other way around. In addition, every time the parent component is updated, all props in the child component will be refreshed with the latest value. This means you should not attempt to mutate a prop inside a child component. In most cases, the child should emit an event to let the parent perform the mutation.
+
+1. The prop is used to pass in an initial value; the child component wants to use it as a local data property afterwards. In this case, it's best to define a local data property that uses the prop as its initial value.
+2. The prop is passed in as a raw value that needs to be transformed. In this case, it's best to define a computed property using the prop's value.
+
+All props are optional by default, unless `required: true` is specified. An absent optional prop other than `Boolean` will have `undefined` value. The `Boolean` absent props will be cast to `false`. When prop validation fails, Vue will produce a console warning (if using the development build).
+
+```js
+defineProps({
+  // Basic type check
+  //  (`null` and `undefined` values will allow any type)
+  propA: Number,
+  // Multiple possible types
+  propB: [String, Number],
+  // Required string
+  propC: {
+    type: String,
+    required: true
+  },
+  // Number with a default value
+  propD: {
+    type: Number,
+    default: 100
+  },
+  // Object with a default value
+  propE: {
+    type: Object,
+    // Object or array defaults must be returned from
+    // a factory function. The function receives the raw
+    // props received by the component as the argument.
+    default(rawProps) {
+      return { message: 'hello' }
+    }
+  },
+  // Custom validator function
+  propF: {
+    validator(value) {
+      // The value must match one of these strings
+      return ['success', 'warning', 'danger'].includes(value)
+    }
+  }
+})
+```
+
+#### Events
+A component can emit custom events directly in template expressions using the built-in `$emit` method. Unlike native DOM events, component emitted events do not bubble. 
+
+```vue
+<!-- MyComponent -->
+<button @click="$emit('someEvent')">click me</button>
+
+<MyComponent @some-event="callback" />
+<MyComponent @some-event.once="callback" />
+```
+
+Like components and props, event names provide an automatic case transformation. Notice we emitted a camelCase event, but can listen for it using a kebab-cased listener in the parent. As with props casing, we recommend using kebab-cased event listeners in templates.
+
+It's sometimes useful to emit a specific value with an event. All extra arguments passed to `$emit()` after the event name will be forwarded to the listener. For example, with `$emit('foo', 1, 2, 3)` the listener function will receive three arguments.
+
+Emitted events can be explicitly declared on the component via the `defineEmits()` macro. The `$emit` method that we used in the `<template>` isn't accessible within the `<script setup>` section of a component, but `defineEmits()` returns an equivalent function that we can use instead.
+
+```vue
+<script setup>
+const emit = defineEmits(['inFocus', 'submit'])
+
+function buttonClick() {
+  emit('submit')
+}
+</script>
+```
+
+An emitted event can be validated if it is defined with the object syntax instead of the array syntax. To add validation, the event is assigned a function that receives the arguments passed to the `emit` call and returns a boolean to indicate whether the event is valid or not.
+
+```vue
+<script setup>
+const emit = defineEmits({
+  // No validation
+  click: null,
+
+  // Validate submit event
+  submit: ({ email, password }) => {
+    if (email && password) {
+      return true
+    } else {
+      console.warn('Invalid submit event payload!')
+      return false
+    }
+  }
+})
+
+function submitForm(email, password) {
+  emit('submit', { email, password })
+}
+</script>
+```
+
+#### Slots
+We may want to pass a template fragment to a child component, and let the child component render the fragment within its own template. The `<slot>` element is a slot outlet that indicates where the parent-provided slot content should be rendered. There are cases when it's useful to specify fallback content for a slot, to be rendered only when no content is provided. 
+
+```html
+<FancyButton>
+  Click me! <!-- slot content -->
+</FancyButton>
+
+<button class="fancy-btn">
+  <slot></slot> <!-- slot outlet -->
+</button>
+```
+
+Slot content has access to the data scope of the parent component, because it is defined in the parent. Expressions in Vue templates can only access the scope it is defined in, consistent with JavaScript's lexical scoping.
+
+There are times when it's useful to have multiple slot outlets in a single component. For these cases, the `<slot>` element has a special attribute, `name`, which can be used to assign a unique ID to different slots so you can determine where content should be rendered. A `<slot>` outlet without name implicitly has the name "default". In a parent component, we need to pass multiple slot content fragments, each targeting a different slot outlet. To pass a named slot, we need to use a `<template>` element with the `v-slot` directive.
+
+```html
+<!-- `BaseLayout` component-->
+<div class="container">
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>
+```
+
+```html
+<BaseLayout>
+  <template v-slot:header>
+    <!-- content for the header slot -->
+  </template>
+</BaseLayout>
+```
+
+`v-slot` has a dedicated shorthand `#`, so `<template v-slot:header>` can be shortened to just `<template #header>`. Think of it as "render this template fragment in the child component's 'header' slot".`
+
+```html
+<BaseLayout>
+  <template #header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <template #default>
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </template>
+
+  <template #footer>
+    <p>Here's some contact info</p>
+  </template>
+</BaseLayout>
 ```
