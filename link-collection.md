@@ -130,6 +130,8 @@ Text to Handwriting: https://github.com/saurabhdaware/text-to-handwriting
 
 Generate fake but realistic data: https://fakerjs.dev/
 
+A cache that deletes the least-recently-used items: https://github.com/isaacs/node-lru-cache
+
 ---
 
 ## CSS related
@@ -155,6 +157,8 @@ Box alignment in Grid and Flexbox: https://ishadeed.com/article/learn-box-alignm
 Flexbox: https://github.com/samanthaming/Flexbox30
 
 Scroll Snap: https://oh-snap.netlify.app
+
+What was that media query code again: https://mediaquery.style
 
 Incomplete List of Mistakes in the Design of CSS: https://wiki.csswg.org/ideas/mistakes
 

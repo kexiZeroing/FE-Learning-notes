@@ -414,6 +414,16 @@ The `.sync` modifier for props is just a syntax sugar that automatically expands
 ### watch $route
 When the user navigates from `/user/foo` to `/user/bar`, the same component instance will be reused. Since both routes render the same component, this is more efficient than destroying the old instance and then creating a new one. However, this also means that the lifecycle hooks of the component will not be called. To react to params changes in the same component, you can watch the `$route` object using `watch: { $route(to, from) {...} }`
 
+You may not have known this, but you can easily watch nested values directly, just by using quotes. This is really useful for working with deeply nested objects.
+
+```js
+watch: {
+  '$route.query.id'() {
+    // ...
+  }
+}
+```
+
 ### force Vue to re-render a component
 You can use `forceUpdate` on the component instance itself as well as globally:
 ```js

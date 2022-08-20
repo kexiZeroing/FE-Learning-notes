@@ -39,6 +39,11 @@ A remote URL is the place where your code is stored. You can only push to two ty
 
 - Generally you shouldn't merge with uncommitted changes. If you have changes you don't want to commit before starting a merge, just `git stash` them before the merge and `git stash pop` after finishing the merge.
 
+### merge with ours & theirs
+Let's merge conflicting branch feature into master by `git merge feature`. You can use `git checkout --ours <file>` to select the changes done in master or `git checkout --theirs <file>` to select the changes done in feature. Then, continue as you would normally merge with `git add <file>` and `git merge --continue`.
+
+How about resolving cherry-pick conflicts using their changes? First you should undo your cherry-pick, try to run `git cherry-pick --abort`. Second, try to make cherry-pick getting their changes not yours with `git cherry-pick -s recursive -X theirs {commit}`. Here `-s` is a short for `--strategy` and `-X` short for `--strategy-option`.
+
 ### working on a wrong branch
 - If you did't commit the changes, use `git stash` (**git stash is per-repository, not per-branch**)
   - git stash
