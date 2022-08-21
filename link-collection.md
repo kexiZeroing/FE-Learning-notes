@@ -208,11 +208,11 @@ Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJ
 
 Why React Re-Renders: https://www.joshwcomeau.com/react/why-react-re-renders
 
+useEffect Mistakes Every Junior React Developer Makes: https://www.youtube.com/watch?v=QQYeipc_cik
+
 Build your own React: https://pomb.us/build-your-own-react
 
 useHooks Code Examples: https://usehooks.com
-
-TypeScript and React: https://fettblog.eu/typescript-react
 
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
 
