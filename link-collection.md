@@ -206,6 +206,8 @@ React getting started tutorial: https://daveceddia.com/react-getting-started-tut
 
 Getting Closure on React Hooks by Shawn Wang: https://www.youtube.com/watch?v=KJP1E-Y-xyo
 
+Why React Re-Renders: https://www.joshwcomeau.com/react/why-react-re-renders
+
 Build your own React: https://pomb.us/build-your-own-react
 
 useHooks Code Examples: https://usehooks.com
@@ -225,3 +227,11 @@ Introducing Remix: https://www.youtube.com/watch?v=wsJaUjd1rUo
 Up and Running with Remix: https://egghead.io/courses/up-and-running-with-remix-b82b6bb6
 
 Next vs Remix (FULL STACK FRAMEWORK QUICKSTART): https://www.brenelz.com/posts/next-vs-remix
+
+---
+
+## Vue
+
+Using Vue's new Composition API: https://aschmelyun.com/blog/why-you-should-be-using-vue-new-composition-api
+
+Collection of Vue Composition Utilities: https://vueuse.org/functions.html

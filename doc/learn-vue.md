@@ -496,6 +496,28 @@ var component = new MyComponent().$mount()
 document.getElementById('app').appendChild(component.$el)
 ```
 
+### use Lodash with Vue
+Importing the entire Lodash library is not my preference. If you look at their docs, there are a lot of functions. And by importing them all, you're taking on all those unnecessary weights. Lodash is around 24kB when gzipped (not terribly big).
+
+```js
+// Import Entire Lodash Library
+import _ from 'lodash';
+
+const range = _.range(1, 3);
+const random = _.random(0, 5);
+
+// Default Import
+import _range from 'lodash/range';
+import _random from 'lodash/random';
+
+// Named Import
+import { range, random } from 'lodash';
+
+// Named Import + Rename
+import { range as _range, random as _random } from 'lodash';
+```
+
+With modern JavaScript, you can do so much natively. Check this lovely repo [You don't need Lodash](https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore)
 
 ## Electron 桌面端项目
 https://github.com/dengyaolong/geektime-electron  

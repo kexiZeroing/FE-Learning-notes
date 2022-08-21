@@ -18,6 +18,7 @@ I should remember what I have and lower the expectations. Take a relief, I'm ju
 - @devdevcharlie ML for front-end developers
 - @shadeed9 css articles https://ishadeed.com/articles/
 - @cassidoo https://github.com/readme/stories/cassidy-williams
+- @JoshWComeau blog https://www.joshwcomeau.com/
 
 Becoming a good engineer is about collecting experience. Each project, even small ones, is a chance to add new techniques and tools to your toolbox. To experience is to learn.
 
