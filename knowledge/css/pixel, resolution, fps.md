@@ -91,6 +91,26 @@ $("#stop").on("click", function() {
 });
 ```
 
+## Animations Overview
+Modern browsers can animate two CSS properties cheaply: `transform` and `opacity`. If you animate anything else, the chances are you're not going to hit a silky smooth 60 frames per second.
+
+To display something on a webpage the browser has to go through the following sequential steps, and these four steps are known as the browser's **rendering pipeline**.
+
+1. Style: Calculate the styles that apply to the elements.
+2. Layout: Generate the geometry and position for each element.
+3. Paint: Fill out the pixels for each element into layers.
+4. Composite: Draw the layers to the screen.
+
+When you animate something on a page that has already loaded these steps have to happen again. For example, if you animate something that changes layout, the paint and composite steps also have to run again. Animating something that changes layout is therefore more expensive than animating something that only changes compositing.
+
+By placing the things that will be animated or transitioned onto a new layer, the browser only needs to repaint those items and not everything else. Browsers will often make good decisions about which items should be placed on a new layer, but you can manually force layer creation with the `will-change` property. However, creating new layers should be done with care because each layer uses memory.
+
+**Hardware acceleration** is a general term for offloading CPU processes onto another dedicated piece of hardware. In the world of CSS transitions, transforms, and animations, it implies that we’re offloading the process onto the GPU, and hence speeding it up. This occurs by pushing the element to a layer of its own, where it can be rendered independently while undergoing its animation.
+
+1. Hardware-accelerated layer compositing is enabled in the browser.
+2. Only compositing CSS properties (`opacity`, `transform: translate / scale / rotate`, etc) are acceleratable.
+3. The element has been given its own compositing layer. (it may be forced by using a "go faster" hack like `transform: translate3d`)
+
 ## Fluid Typography
 
 ```css

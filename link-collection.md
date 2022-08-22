@@ -164,6 +164,8 @@ Incomplete List of Mistakes in the Design of CSS: https://wiki.csswg.org/ideas/m
 
 Build faithful recreations of old UIs: https://jdan.github.io/98.css, https://botoxparty.github.io/XP.css, https://khang-nd.github.io/7.css
 
+How to create high-performance CSS animations: https://web.dev/animations-guide
+
 ---
 
 ## FE dev resources
