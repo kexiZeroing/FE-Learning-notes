@@ -32,6 +32,8 @@ To build with container queries, you must first set containment on a parent elem
 }
 ```
 
+> Interested in container queries but worried about browser support? A polyfill for CSS Container Queries: https://github.com/GoogleChromeLabs/container-query-polyfill
+
 ## The `:has()` parent selector
 The CSS `:has()` pseudo-class enables developers to check if a parent element contains children with specific parameters. For example, `p:has(span)` indicates a paragraph selector, which has a `span` inside of it. You can use this to style the parent paragraph itself, or style anything within it.
 

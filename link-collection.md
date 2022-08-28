@@ -196,6 +196,8 @@ CSS Grid generator: https://cssgrid-generator.netlify.app
 
 Icon Explorer: https://icones.js.org
 
+Beautiful hand-crafted SVG icons: https://heroicons.com
+
 A lightweight image and video gallery plugin: https://www.lightgalleryjs.com
 
 Split an element by words, characters, children and more: https://splitting.js.org
