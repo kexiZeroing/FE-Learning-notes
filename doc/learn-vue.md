@@ -275,6 +275,21 @@ With the [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin)
 - `vue-loader` 会解析单文件形式的 Vue 组件。应该将 `vue-loader` 和 `vue-template-compiler` 一起安装，而且 `vue-template-compiler` 的版本要和 vue 保持同步。同时需要添加 `VueLoaderPlugin` 插件，它的职责是将你定义过的其它规则复制并应用到 `.vue` 文件里相应语言的块，比如 `['vue-style-loader', 'css-loader', 'sass-loader']` 处理普通的 `.scss` 文件和 `*.vue` 文件中的 `<style lang="scss">`
 - `vue-loader` 会把 template 中遇到的资源 URL 转换为 webpack 模块请求；处理 scoped style 的样式只作用于当前组件中的元素，如果希望 scoped 样式影响到更深的子组件，可以使用 `::v-deep`
 
+```vue
+<style scoped>
+/* Sometimes you need to override the styles of a child component and break out of the scope. */
+/* Vue 3 */
+.my-component :deep(.child-component) {
+  font-size: 24px;
+}
+
+/* Vue 2 using SASS */
+.my-component ::v-deep .child-component {
+  font-size: 24px;
+}
+</style>
+```
+
 ## Vuex 相关
 - Vuex store，主要包括 state，mutations，actions；从 store 中读取状态是在 computed 中返回某个 state，触发变化是在组件的 methods 中 commit mutation。在创建 Vue 实例时，注入一个 store 实例，从而在所有子组件可以访问 `this.$store`
 - 提交 mutation 是更改状态的唯一方法，并且这个过程是同步的（类似于 reducer），action (接收一个 store，可以解构) 提交 mutation，`store.dispatch` 返回一个 Promise 可以组合下一个 action
