@@ -132,6 +132,8 @@ Generate fake but realistic data: https://fakerjs.dev/
 
 A cache that deletes the least-recently-used items: https://github.com/isaacs/node-lru-cache
 
+PDF Reader in JavaScript: https://github.com/mozilla/pdf.js
+
 ---
 
 ## CSS related

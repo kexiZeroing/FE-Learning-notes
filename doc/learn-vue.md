@@ -458,6 +458,8 @@ export default {
 }
 ```
 
+Just remember, if you find yourself needing to force Vue to re-render a component, there’s probably a better way. If, however, you do need to re-render something, choose the Key-Changing Technique over anything else.
+
 ### Vue.extend
 It creates a subclass of the base Vue constructor. The argument should be an object containing component options. You can use `Vue.extend()` to create component definition (called "component constructor" in old documentation). `Vue.component()`, on the other hand, is to associate a given constructor with a name so Vue can pick it up in templates. When directly passing in options to `Vue.component()`, it calls `Vue.extend()` under the hood.
 
