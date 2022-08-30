@@ -500,6 +500,8 @@ defineExpose({
 ### Components In-Depth
 Components allow us to split the UI into independent and reusable pieces, and think about each piece in isolation. When using a build step, we typically define each Vue component in a dedicated file using the `.vue` extension - known as a Single-File Component.
 
+> A Clean Component does not hold you back from being productive over the long term.
+
 When switching between multiple components with `<component :is="...">`, a component will be unmounted when it is switched away. We can force the inactive components to stay alive with the built-in `<KeepAlive>` component.
 
 #### Component Registration

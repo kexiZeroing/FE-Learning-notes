@@ -202,6 +202,8 @@ A lightweight image and video gallery plugin: https://www.lightgalleryjs.com
 
 Split an element by words, characters, children and more: https://splitting.js.org
 
+Generate regular expressions that match a set of strings: https://github.com/devongovett/regexgen
+
 ---
 
 ## React ecosystem
