@@ -1,3 +1,134 @@
+## A crash course on Docker
+Docker offers a way to package and run your code so that it is portable: that is, so that you can run that code just about anywhere—your own computer, a QA server, a production server—and be confident that it will always run exactly the same way.
+
+With Docker, you package your software into a Docker image, which is a self-contained snapshot that includes a file system with your code and your code’s dependencies, and you run that image as a container by using the Docker engine, which virtualizes the user space (processes, memory, mount points, and networking) of your operating system, isolating your code from the host machine and any other containers, and ensuring your code will run the same way in all environments. Since all the containers running on a single server share that server’s OS kernel and hardware, containers can boot up in milliseconds and have little CPU or memory overhead.
+
+> Before Docker came along, it was common to use virtual machines (VMs) to package and run code. One drawback with VMs is that virtualizing all the hardware and running a totally separate OS for each VM image incurs a lot of overhead in terms of CPU usage, memory usage, and startup time.
+
+Once you have Docker installed, you should have the docker command available on your command line. You can run Docker images locally using the `docker run` command. For example, you can run a Bash shell in an Ubuntu 20.04 Docker image by running `docker run -it ubuntu:20.04 bash`. Here `-it` is short for `--interactive` + `--tty`, and it means you will have bash session inside the container. If you omit the flag, the container still executes bash but exits immediately.
+
+First, Docker searches your local file system for the `ubuntu:20.04` image. If you don’t have that image downloaded already, Docker downloads it automatically from Docker Hub, which is a Docker Registry that contains shared Docker images. (It’s also possible to create private Docker images which only certain authenticated users can use.) Once the image is downloaded, Docker runs the image, executing the bash command, which starts an interactive Bash prompt, where you can type. You might notice that’s not your file system. That’s because Docker images run in containers that are isolated at the userspace level. Any data in other containers, or on the underlying host operating system, is not accessible to you.
+
+Next, exit the container by hitting `Cmd-D` on macOS, and you should be back in your original command prompt on your underlying host OS. If you try to look for the file you just wrote in the container, you’ll see that it doesn’t exist: the container’s file system is totally isolated from your host OS.
+
+If you try running the same Docker image again, since the image is already downloaded, the container starts almost instantly. You may also notice that the second time you fired up the container, you’re in a totally new container; any data you wrote in the previous one is no longer accessible to you.
+
+Back on your host OS and run the `docker ps -a` command. This will show you all the containers on your system, including the stopped ones (the ones you exited). You can start a stopped container again by using the `docker start <ID>` command.
+
+Note that every time you run `docker run` and exit, you are leaving behind containers, which take up disk space. You may wish to clean them up with the `docker rm <CONTAINER_ID>` command. Alternatively, you could include the `--rm` flag in your `docker run` command to have Docker automatically clean up when you exit the container.
+
+Docker containers are isolated from the host operating system and other containers, not only at the file system level, but also in terms of networking. So while the container really is listening on port 5000, that is only on a port inside the container, which isn’t accessible on the host OS. If you want to expose a port from the container on the host OS, you have to do it via the `-p` flag. `docker run -p 5000:5000 webapp` tells Docker to expose port 5000 inside the container on port 5000 of the host OS.
+
+You can create your own Docker image, a `Dockerfile` is a text file that consists of a series of commands in capital letters that instruct Docker how to build a Docker image.
+
+```dockerfile
+FROM python:3
+WORKDIR /usr/src/app
+COPY index.html .
+CMD ["python", "-m", "http.server", "8000"]
+```
+
+- `FROM`: This specifies the base image. One convenient thing about Docker is that you can build on top of officially-maintained images that have the dependencies you need already installed.
+- `WORKDIR`: This specifies the working directory for any subsequent commands. If the directory doesn’t already exist, Docker will create it.
+- `COPY`: This copies files from the host OS into the Docker image.
+- `CMD`: This specifies the default command to execute in the image when someone does `docker run`.
+
+To build a Docker image from your `Dockerfile`, run the `docker build` command. Add the `-t` flag to specify the tag—effectively a name—to use for this image. After the image finishes building, you should be able to see it, along with all other images on your computer, by running the `docker images` command. To make this image accessible to others, you could use the `docker push` command to push it to a Docker Registry (note that this will require authentication).
+
+## A crash course on Kubernetes
+Kubernetes is an orchestration tool, which means it’s a tool for running and managing applications across a fleet of servers. More specifically, it is designed to deploy and manage applications packaged as containers. You give Kubernetes a fleet of servers to manage and in return, it gives you all the following functionality, out-of-the-box:
+
+- Scheduling: pick the optimal servers to run your containers.
+- Deployment: roll out changes to your containers without downtime.
+- Auto healing: automatically redeploy containers that failed.
+- Auto scaling: scale the number of containers up and down with load.
+- Networking: routing, load balancing, & service discovery for containers.
+- Configuration: configure data and secrets for containers.
+- Data storage: manage and mount data volumes in containers.
+
+Under the hood, Kubernetes consists of two main pieces: a control plane and worker nodes.
+
+- The control plane is responsible for managing the Kubernetes cluster. It is the “brains” of the operation, responsible for storing the state of the cluster, monitoring containers, and coordinating actions across the cluster. It also runs the API server, which provides an API you can use from command line tools (e.g., kubectl), web UIs (e.g., the Kubernetes Dashboard), and infrastructure as code tools (e.g., Terraform) to control what’s happening in the cluster.
+- The worker nodes are the servers used to actually run your containers. The worker nodes are entirely managed by the control plane, which tells each worker node what containers it should run.
+
+Kubernetes is open source, and one of its strengths is that you can run it anywhere: in any public cloud, in your own data center, and even on your own developer workstation. Let’s start small, and run it locally. This is easy to do if you installed a recent version of Docker Desktop, as it has the ability to fire up a Kubernetes cluster locally with just a few clicks.
+
+`kubectl` is the command-line tool for interacting with Kubernetes. To use `kubectl`, you must first update its configuration file, which lives in `$HOME/.kube/config`, to tell it what Kubernetes cluster to connect to. Conveniently, when you enable Kubernetes in Docker Desktop, it updates this config file for you, adding a `docker-desktop` entry to it, so all you need to do is tell `kubectl` to use this configuration: `kubectl config use-context docker-desktop`. Now you can check if your Kubernetes cluster is working with the `kubectl get nodes` command, and it shows you information about all the worker nodes in your cluster. Since you’re running Kubernetes locally, your computer is the only node, and it’s running both the control plane and acting as a worker node.
+
+To deploy something in Kubernetes, you create Kubernetes objects, which are persistent entities you write to the Kubernetes cluster that record your intent: e.g., your intent to have specific Docker images running. There are many different types of Kubernetes objects available. Now let’s use the following two objects:
+
+- Kubernetes Deployment: A Kubernetes Deployment is a declarative way to manage an application in Kubernetes. You declare what Docker images to run, how many copies of them to run (called replicas), a variety of settings for those images (e.g., CPU, memory, port numbers, environment variables), and the strategy to roll out updates to those images, and the Kubernetes Deployment will then work to ensure that the requirements you declared are always met.
+- Kubernetes Service: A Kubernetes Service is a way to expose a web app running in Kubernetes as a networked service.
+
+You can create a Deployment using the following command:
+
+```sh
+kubectl create deployment simple-webapp \
+  --image webapp \
+  --replicas=2 \
+  --port=5000
+```
+
+This command configures the Deployment as follows:
+1. Name: `simple-webapp`.
+2. Docker image: run the webapp Docker image from Docker Hub, which contains a simple web app that listens on port 5000.
+3. Replicas: run two replicas of the webapp image.
+4. Ports: listen on port 5000.
+
+Next, create a Service using the command `kubectl create service loadbalancer simple-webapp --tcp=80:5000`
+
+This command configures the Service as follows:
+1. Name: `simple-webapp`
+2. Type: Load Balancer. This tells Kubernetes to deploy a load balancer to route traffic across your replicas. The exact type of load balancer depends on what sort of Kubernetes cluster you run.
+3. Ports: map port 80 in the cluster (on your host OS) to port 5000 in the Docker container.
+
+Give the app a few seconds to boot and then type `curl http://localhost` to test it out. The result is identical to the output of the `docker run` command, so what’s the point of the more complicated `kubectl` commands? Well, let’s look under the hood to see the differences. You can use `kubectl` to explore your cluster. 
+
+First, run `kubectl get deployments` command. You can see your Kubernetes Deployment, named `simple-webapp`, reporting that 2/2 Pods are ready. In Kubernetes, instead of deploying one container at a time, you deploy Pods, which are groups of containers that are meant to be deployed together. To get more info on your Pods, run `kubectl get pods` command. So that’s one difference from `docker run` already: there are multiple containers running here, not just one. Moreover, those containers are being actively monitored and managed. For example, if one crashed, a replacement will be deployed automatically. You can see this in action by running the `docker ps` command, then grab the `CONTAINER ID` of one of those containers and use the `docker kill` command to shut it down. If you run `docker ps` again very quickly, you’ll see just one container left running. But just a few seconds later, the Kubernetes Deployment will have detected that there is only one replica instead of the requested two, and it’ll launch a replacement container automatically. So Kubernetes is ensuring that you always have the expected number of replicas running. Moreover, it is also running a load balancer to distribute traffic across those replicas, which you can see by running the `kubectl get services` command.
+
+Using `kubectl` commands is convenient for learning and testing, but it’s not a great way to manage applications in production. A better option is to manage all of your infrastructure as code. For now, you can improve the situation a little bit by storing the configuration of your Kubernetes objects in YAML files. First, clean up the Service and Deployment from before: `kubectl delete service simple-webapp` and `kubectl delete deployment simple-webapp`. Next, create a file called `deployment.yml`, which configures the exact same Deployment you created earlier with the `kubectl create deployment` command.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webapp
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: simple-webapp
+    spec:
+      containers:
+      - name: simple-webapp
+        image: webapp
+        ports:
+        - containerPort: 5000
+  selector:
+    matchLabels:
+      app: simple-webapp
+```
+
+Then create a `service.yml` file to configure the same Service as you created earlier with the `kubectl create service` command.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-webapp
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  selector:
+    app: simple-webapp
+```
+
+Deploy these two YAML files using the `kubectl apply` command, then give the app a few seconds and test the endpoint `curl http://localhost` again. And there you go! Now, all the information about your Kubernetes objects is stored in files that you can check into version control.
+
 ## 前端相关的部署
 
 ### 最基本的 Node 服务
