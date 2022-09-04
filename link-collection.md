@@ -50,6 +50,8 @@ Become a DevOps engineer: https://www.youtube.com/channel/UCdngmbVKX1Tgre699-XLl
 
 What happens when we type google.com in a browser: https://github.com/vasanthk/how-web-works
 
+90DaysOfDevOps: https://github.com/MichaelCade/90DaysOfDevOps
+
 ---
 
 ## Tools and Cool websites

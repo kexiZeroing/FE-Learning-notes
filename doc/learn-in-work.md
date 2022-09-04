@@ -415,6 +415,8 @@ There are times when it’s useful to have multiple slots. `<slot>` element has 
 
 It’s useful for slot content to have access to data only available in the child component. We can bind an attribute to the `<slot>` element which called slot props. Now, in the parent scope, we can use `v-slot` with a value to define a name for the slot props we’ve been provided (`<template v-slot="slotProps">` or `<template v-slot:default="slotProps">`).
 
+> One kind of prop, a template prop (only ever used in the template), can be directly converted into slots without very much work. This makes your component more reusable.
+
 ### the `is` attribute
 1. The typical situation of using `is` attribute is to switch between several possible components (dynamic components). `<component :is="currentComponent"></component>` and the currentComponent can be the name of a registered component.
 
