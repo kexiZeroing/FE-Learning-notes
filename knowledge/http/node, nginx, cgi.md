@@ -10,6 +10,16 @@ If CGI is installed on the server, the specific `cgi-bin` directory is also adde
  
 PHP is the first programing language built for the web. It's original goals are processing web forms and generating web pages (html file is a valid php program). It can be built into web servers like Apache and you can use it to generate your pages dynamically (LAMP stack). You would probably use it in situations you would have otherwise used a CGI script. By using PHP as a module on the server (`mod_php`), the PHP interpreter is in the web server code. The PHP process is part of the web server process.
 
+## API gateway
+An API gateway is an API management tool that sits between a client and a collection of backend services. It acts as a reverse proxy to accept all API calls, takes request and redirects them to the right service.
+
+Typically the types of functions the gateway may provide may include:
+- access control, filtering traffic so only authenticated/authorized traffic gets through.
+- rate limiting, restricting how much traffic can be sent by each client of the API.
+- analytics capture and logging, tracking what's going on on the API.
+- security filtering, checking the content on incoming messages for attacks.
+- traffic routing, sending traffic to different endpoints in your own infrastructure depending on the sender or the request.
+
 ## Nginx as a reverse proxy
 Many modern web applications written in Node.js or Angular can run with their own standalone server but they lack a number of advanced features like load balancing, security, and acceleration that most of these applications demands. Nginx with its advanced features can act as a reverse proxy while serving the request for a Node.js application. The servers that Nginx proxies requests to are known as **upstream servers**.
 

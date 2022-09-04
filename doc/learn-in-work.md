@@ -25,6 +25,12 @@
 6. Use Vuex with Composition API: https://github.com/greenpress/vuex-composition-helpers, add support of Vue 2.7: https://github.com/greenpress/vuex-composition-helpers/pull/72
 7. Access `this.$route` in Vue 2 Composition API setup function: You could import the router from its module and access both `router` and `route` from it. Use `router.app.$route` as `this.$route`.
 
+Check the version of vue.js at runtime
+```js
+import { version } from 'vue'
+console.log(version)
+```
+
 ### 本地 build 与上线 build
 1. 公共组件库 C 需要先 build，再 `npm link` 映射到全局的 node_modules，然后被其他项目 `npm link C` 引用。
 2. 项目 A 的上线脚本中会先进入组件库 C，执行 `npm build` 和 `npm link`，之后再进入项目 A 本身，执行 `npm link C`，`npm build` 等项目本身的构建。
