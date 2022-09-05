@@ -224,6 +224,8 @@ useEffect Mistakes Every Junior React Developer Makes: https://www.youtube.com/w
 
 Build your own React: https://pomb.us/build-your-own-react
 
+A curated list about React Hooks: https://github.com/glauberfc/awesome-react-hooks
+
 useHooks Code Examples: https://usehooks.com
 
 How styled-components works: https://medium.com/styled-components/how-styled-components-works-618a69970421
