@@ -20,6 +20,10 @@ Typically the types of functions the gateway may provide may include:
 - security filtering, checking the content on incoming messages for attacks.
 - traffic routing, sending traffic to different endpoints in your own infrastructure depending on the sender or the request.
 
+<img alt="gateway" src="https://tva1.sinaimg.cn/large/e6c9d24ely1h61oh00uc2j20tq14y42a.jpg" width="500" >
+
+API Gateway and Load Balancer are 2 different things. Load Balancer works at protocol or socket level (eg. tcp, http, or port 3306 etc.) Its job is to balance the incoming traffic by distributing it to the destinations with various logics. It doesn't offer features such as authorization checks, authentication of requests etc.
+
 ## Nginx as a reverse proxy
 Many modern web applications written in Node.js or Angular can run with their own standalone server but they lack a number of advanced features like load balancing, security, and acceleration that most of these applications demands. Nginx with its advanced features can act as a reverse proxy while serving the request for a Node.js application. The servers that Nginx proxies requests to are known as **upstream servers**.
 

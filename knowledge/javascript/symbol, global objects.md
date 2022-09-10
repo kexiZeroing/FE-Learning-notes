@@ -80,6 +80,42 @@ The global object itself can be accessed using `this` operator in the global sco
 - Reflection: Proxy, Reflect
 - Internationalization: Intl, Intl.DateTimeFormat, Intl.NumberFormat, Intl.RelativeTimeFormat
 
+## Date toLocaleString
+The `toLocaleString()` method returns a string with a language-sensitive representation of this date. In implementations with `Intl.DateTimeFormat` API support, this method simply calls `Intl.DateTimeFormat`.
+
+> Date uses the system time on the client computer where this javascript is executed. So if you change the date/time on the client computer it will send the new value.
+
+The `locales` and `options` arguments customize the behavior of the function and let applications specify the language whose formatting conventions should be used.
+
+```js
+const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+
+// US English uses month-day-year order and 12-hour time with AM/PM
+console.log(date.toLocaleString('en-US'));
+// "12/19/2012, 7:00:00 PM"
+
+// British English uses day-month-year order and 24-hour time without AM/PM
+console.log(date.toLocaleString('en-GB'));
+// "20/12/2012 03:00:00"
+
+const enUS = now.toLocaleTimeString('en-US', {
+  hour: '2-digit',
+  minute: '2-digit',
+});
+console.log(enUS); // 01:47 PM
+
+// Request a weekday along with a long date
+const options = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+
+console.log(date.toLocaleString('en-US', options));
+// Thursday, December 20, 2012
+```
+
 ### encodeURI() and encodeURIComponent()
 `encodeURI` and `encodeURIComponent` are used to encode Uniform Resource Identifier (URI) by replacing each instance of certain characters by one, two, three, or four escape sequences representing the UTF-8 encoding of the character.
 
