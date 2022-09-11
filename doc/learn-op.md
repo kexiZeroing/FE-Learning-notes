@@ -129,6 +129,8 @@ spec:
 
 Deploy these two YAML files using the `kubectl apply` command, then give the app a few seconds and test the endpoint `curl http://localhost` again. And there you go! Now, all the information about your Kubernetes objects is stored in files that you can check into version control.
 
+更多 k8s 教程: https://github.com/guangzhengli/k8s-tutorials
+
 ## 前端相关的部署
 
 ### 最基本的 Node 服务
