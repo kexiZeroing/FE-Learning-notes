@@ -56,6 +56,9 @@ How about resolving cherry-pick conflicts using their changes? First you should 
 ### stash untracked files
 To stash your working directory including untracked files, use `git stash --include-untracked` or `git stash -u`.
 
+### refusing to merge unrelated histories
+I always see this error when I create a new Github repository with a README.md or a LICENSE file, then pull it to a local repository at the first time. `git pull origin main --allow-unrelated-histories` should fix it, which force the merge to happen.
+
 ### git log and git reflog
 - `git log` shows the current HEAD and its ancestry. That is, it prints the commit HEAD points to, then its parent, its parent, and so on. It traverses back through the repo's ancestry by recursively looking up each commit's parent. (often use `git log --pretty=oneline`)
 
