@@ -266,13 +266,25 @@ scutil --set HostName <newval>
 scutil --set ComputerName <newval>
 ```
 
+## Check if an app is running on Rosetta or M1 native architecture
+Rosetta 2 enables a Mac with Apple silicon to use apps built for a Mac with an Intel processor. Rosetta is not an app that you open or interact with. Rosetta works automatically in the background whenever you use an app that was built only for Mac computers with an Intel processor.
+
+Rosetta 2 is available only for Mac computers with Apple silicon. You're asked to install Rosetta the first time you open an app that needs Rosetta:
+- Application (Intel) means the app supports only Intel processors and needs Rosetta to work on a Mac with Apple silicon.
+- Application (Universal) means the app supports both Apple silicon and Intel processors, and uses Apple silicon by default. Universal apps don't need Rosetta.
+
+**How can you check if a Mac app runs on Rosetta or M1?**
+Open Activity Monitor, you’ll see a column named “Kind”. If the app says “Intel” under that, you should download the native version if available.
+
+> If you have a M1 Mac, be sure you’re running node 16 or higher, otherwise you’re running via Rosetta.
+
 ## 常⽤命令和作用
 | 常⽤命令 |  作用 |
 |  ----   | ---- |
 | shutdown -h now | 即刻关机 (graceful shutdown)
 | reboot  | 重启
-| uname -m | 处理器名称
-| uname -s | 操作系统名称
+| arch | 体系结构名称 i386, i486, i586, arm, mips, sparc, x86_64
+| uname -s | 操作系统名称 kernel name
 | hostname | 计算机名
 | whoami | 当前用户名
 | who | 当前登录系统的⽤户 (The console is your physical computer and the various tty are virtual terminals)
