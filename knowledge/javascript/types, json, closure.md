@@ -25,7 +25,9 @@ Object.prototype.toString.call(new Set())       // '[object Set]'
 Object.prototype.toString.call(new Map())       // '[object Map]'
 ```
 
-**The Number type is a double-precision 64-bit binary format IEEE 754 value. The String type is used to represent textual data. It is a set of "elements" of 16-bit unsigned integer values (UTF-16 code unit).**
+The `Number` type is a double-precision 64-bit binary format IEEE 754 value, and each digit represents 4-bits, hence 64-bit has 16 digits. That's why some numbers are rounded while represented in more than 16 digits.
+
+The `String` type is used to represent textual data. It is a set of "elements" of 16-bit unsigned integer values (UTF-16 code unit).
 
 > Typically an `int` contains 32 bits. Let's look at 4-bit integers. Tiny, but useful for illustration purposes. Since there are four bits in such an integer, it can assume one of 16 values. What are those values? The answer depends on whether this integer is a `signed int` or an `unsigned int`. Signed integers can represent both positive and negative numbers, while unsigned integers are only non-negative.
 

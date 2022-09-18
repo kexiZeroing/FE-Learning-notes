@@ -409,6 +409,13 @@ In Vue, a tick is a single DOM update cycle. Vue will collect all updates made i
 
 The key concept to understand is that the DOM is updated asynchronously. **When you change a value in Vue, the change is not immediately rendered to the DOM**. Instead, Vue queues a DOM update and then, on a timer, updates the DOM. Most of the time we don’t need to care about this, but it can be tricky when you want to do something that depends on the post-update DOM state. In order to wait until Vue has finished updating the DOM after a data change, you can use `Vue.nextTick(callback)` immediately after the data is changed. The callback will be called after the DOM has been updated.
 
+```js
+// a super handy way to wait for the DOM to finish updating
+changeTheDom();
+await nextTick();  // await this.$nextTick(); if you're using the options API
+inspectTheDom();
+```
+
 ### $parent and $refs
 `$parent` property can be used to access the parent instance from a child. This can be tempting to reach for as a lazy alternative to passing data with a prop. In most cases, reaching into the parent makes your application more difficult to debug and understand, especially if you mutate data in the parent.
 

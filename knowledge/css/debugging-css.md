@@ -32,7 +32,23 @@
 ```css
 /* debug your CSS layouts with one line */
 * {
-  outline: 1px solid red;
+  outline: 1px solid #f00 !important;
+}
+```
+
+- Find element that is causing the showing of horizontal scrollbar.
+
+```js
+var all = document.getElementsByTagName("*"),
+    i = 0, 
+    rect,
+    docWidth = document.documentElement.offsetWidth;
+for (; i < all.length; i++) {
+  rect = all[i].getBoundingClientRect();
+  if (rect.right > docWidth || rect.left < 0){
+    console.log(all[i]);
+    all[i].style.outline = '1px solid red';
+  }
 }
 ```
 
@@ -134,3 +150,5 @@ ul:has(:nth-child(n + 5)) li:not(:last-child)::after {
   - `:nth-last-child(5n)` represents elements 5, 10, 15, etc., counting from the end.
   - `:nth-last-child(3n+4)` represents elements 4, 7, 10, 13, etc., counting from the end.
   - `:nth-last-child(-n+3)` represents the last three elements among a group of siblings.
+
+- Position `fixed` doesn’t work with `transform` CSS property. It happens because transform creates a new coordinate system and your `position: fixed` element becomes fixed to that transformed element.

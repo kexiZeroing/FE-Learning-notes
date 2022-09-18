@@ -206,6 +206,8 @@ Split an element by words, characters, children and more: https://splitting.js.o
 
 Generate regular expressions that match a set of strings: https://github.com/devongovett/regexgen
 
+A polyfill of scroll-driven animations: https://github.com/flackr/scroll-timeline
+
 ---
 
 ## React ecosystem
