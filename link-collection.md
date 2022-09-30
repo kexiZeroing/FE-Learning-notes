@@ -136,6 +136,10 @@ A cache that deletes the least-recently-used items: https://github.com/isaacs/no
 
 PDF Reader in JavaScript: https://github.com/mozilla/pdf.js
 
+PPTist: https://github.com/pipipi-pikachu/PPTist
+
+Pure Javascript OCR for more than 100 Languages: https://tesseract.projectnaptha.com/
+
 ---
 
 ## CSS related
