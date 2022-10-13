@@ -254,3 +254,98 @@ window.onload = () => {
   });
 };
 ```
+
+### Mobile Web Video Playback
+> Refer to this article: https://web.dev/media-mobile-web-video-playback
+
+Rather than adjusting our video controls in the `click` event listener, we use the `play` and `pause` video events. Making our controls events based helps with flexibility and will allow us to keep our controls in sync if the browser intervenes in the playback.
+
+```js
+video.addEventListener('play', function () {
+  playPauseButton.classList.add('playing');
+});
+
+video.addEventListener('pause', function () {
+  playPauseButton.classList.remove('playing');
+});
+
+video.addEventListener('ended', function () {
+  playPauseButton.classList.remove('playing');
+  video.currentTime = 0;
+});
+```
+
+Prevent automatic fullscreen. On iOS, `video` elements automatically enter fullscreen mode when media playback begins. I recommend you set the `playsinline` attribute of the `video` element to force it to play inline on iPhone and not enter fullscreen mode when playback begins. Note that this has no side effects on other browsers.
+
+When user clicks the "fullscreen button", let's exit fullscreen mode with `document.exitFullscreen()` if fullscreen mode is currently in use by the document. Otherwise, request fullscreen on the video container with the method `requestFullscreen()` if available or fallback to `webkitEnterFullscreen()` on the video element only on iOS.
+
+```js
+fullscreenButton.addEventListener('click', function (event) {
+  event.stopPropagation();
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    requestFullscreenVideo();
+    lockScreenInLandscape();  // will explain it later
+  }
+});
+
+function requestFullscreenVideo() {
+  if (videoContainer.requestFullscreen) {
+    videoContainer.requestFullscreen();
+  } else {
+    video.webkitEnterFullscreen();
+  }
+}
+```
+
+As user rotates device in landscape mode, let's be smart about this and automatically request fullscreen to create an immersive experience. How does this work? As soon as we detect the screen orientation changes, let's request fullscreen if the browser window is in landscape mode. If not, let's exit fullscreen.
+
+```js
+if ('orientation' in screen) {
+  screen.orientation.addEventListener('change', function () {
+    if (screen.orientation.type.startsWith('landscape')) {
+      requestFullscreenVideo();
+    } else if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  });
+}
+```
+
+As video may be better viewed in landscape mode, we may want to lock screen in landscape when user clicks the "fullscreen button". Locking screen in landscape is as easy as calling `screen.orientation.lock('landscape')`. However, we should do this only when device is in portrait mode with `matchMedia('(orientation: portrait)')` and can be held in one hand with `matchMedia('(max-device-width: 768px)')` as this wouldn't be a great experience for users on tablet.
+
+```js
+function lockScreenInLandscape() {
+  if (!('orientation' in screen)) {
+    return;
+  }
+  if (matchMedia('(orientation: portrait) and (max-device-width: 768px)').matches) {
+    screen.orientation.lock('landscape');
+  }
+}
+```
+
+Pause video on page visibility change. Code below pauses video when page is hidden. This happens when screen lock is active or when you switch tabs for instance.
+
+```js
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) {
+    video.pause();
+  }
+});
+```
+
+If you use the new *Intersection Observer API*, you can be even more granular at no cost. This API lets you know when an observed element enters or exits the browser's viewport. Let's show/hide a mute button based on the video visibility in the page.
+
+```js
+if ('IntersectionObserver' in window) {
+  function onIntersection(entries) {
+    entries.forEach(function (entry) {
+      muteButton.hidden = video.paused || entry.isIntersecting;
+    });
+  }
+  var observer = new IntersectionObserver(onIntersection);
+  observer.observe(video);
+}
+```
