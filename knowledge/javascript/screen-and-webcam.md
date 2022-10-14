@@ -143,6 +143,8 @@ const draw = () => {
 }
 ```
 
+> The `CanvasRenderingContext2D.drawImage()` method of the Canvas 2D API provides different ways to draw an image onto the canvas. The specification permits any canvas image source, specifically, an `HTMLImageElement`, an `SVGImageElement`, an `HTMLVideoElement` or an `HTMLCanvasElement`.
+
 ### Creating a Recording
 Once we have our pixels dancing on our canvas, and our microphone audio stream captured, we can start to stitch these together to create an actual recording. Something we could upload to, say, YouTube.
 
@@ -190,7 +192,7 @@ recorder.onstop = () => {
 
 The `MediaRecorder` `mimeType` option supposedly allows you to specify a media type, but Chromium-based browsers and FireFox [only seem to support webm](https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/web_tests/fast/mediarecorder/MediaRecorder-isTypeSupported.html?q=MediaRecorder-isTypeSupported&ss=chromium). This means you’re more-or-less forced into creating `.webm` videos – a video format that’s not as widely adopted as other formats like `.mp4`. Many video editing softwares do not handle `.webm` videos, therefore it’s a struggle to do any sort of post-processing or editing on the generated video files.
 
-The `.webm` video blobs generated from the `MediaRecorder` API in Chromium-based browsers are missing the `duration` video metadata – which means browsers or video players cannot properly seek these videos (because they don’t know how long the video is), and many platforms will reject them as uploads. Open source to the rescue. [fix-webm-duration](https://github.com/yusitnikov/fix-webm-duration) is a library that allows you to manually pass in a video duration and it’ll adjust the blob’s metadata accordingly. Therefore, to get a usable video file – you’ll need to manually track the start/end time of the video recording – and then monkey patch the duration metadata accordingly.
+The `.webm` video blobs generated from the `MediaRecorder` API in Chromium-based browsers are missing the `duration` video metadata – which means browsers or video players cannot properly seek these videos because they don’t know how long the video is, and many platforms will reject them as uploads. Open source to the rescue. [fix-webm-duration](https://github.com/yusitnikov/fix-webm-duration) is a library that allows you to manually pass in a video duration and it’ll adjust the blob’s metadata accordingly. Therefore, to get a usable video file – you’ll need to manually track the start/end time of the video recording – and then monkey patch the duration metadata accordingly.
 
 ```js
 import fixWebmDuration from "fix-webm-duration";
@@ -216,6 +218,10 @@ recorder.onstop = async () => {
   const patchedBlob = patchBlob(recordedBlob, duration);
 }
 ```
+
+> WebM is an open media file format designed for the web. It is an open-source project sponsored by Google. WebM files consist of video streams compressed with the VP8 or VP9 video codec, audio streams compressed with the Vorbis or Opus audio codecs, and WebVTT text tracks. Read more at: https://www.webmproject.org/about/faq
+> 
+> VP8 and VP9 are highly-efficient video compression technologies developed by the WebM Project; Vorbis and Opus are open-source audio compression technologies.
 
 ### Generating a download
 To automatically download the blob as a video file, we’ll use the standard technique of using `URL.createObjectURL` to create an object URL, generating an anchor DOM element with this URL as its `href`, simulating a click on that anchor tag (which will trigger a download of the blob), and then discard the anchor tag.
