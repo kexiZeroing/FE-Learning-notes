@@ -140,6 +140,8 @@ PPTist: https://github.com/pipipi-pikachu/PPTist
 
 Pure Javascript OCR for more than 100 Languages: https://tesseract.projectnaptha.com/
 
+Awesome Diagramming: https://github.com/shubhamgrg04/awesome-diagramming
+
 ---
 
 ## CSS related
@@ -186,6 +188,8 @@ Minimal CSS Framework for semantic HTML: https://picocss.com
 
 Modern & Interactive Open-source Charts: https://apexcharts.com
 
+The react library to build dashboards fast: https://github.com/tremorlabs/tremor
+
 SVG spinners: https://github.com/n3r4zzurr0/svg-spinners
 
 Epic Spinners: https://github.com/epicmaxco/epic-spinners
@@ -207,8 +211,6 @@ Beautiful hand-crafted SVG icons: https://heroicons.com
 A lightweight image and video gallery plugin: https://www.lightgalleryjs.com
 
 Split an element by words, characters, children and more: https://splitting.js.org
-
-Generate regular expressions that match a set of strings: https://github.com/devongovett/regexgen
 
 A polyfill of scroll-driven animations: https://github.com/flackr/scroll-timeline
 
