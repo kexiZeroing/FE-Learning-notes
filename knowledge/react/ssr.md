@@ -108,3 +108,6 @@ module.exports = {
 ```
 
 7. The server webpack config will watch for changes and our server will restart on changes. Now open `http://localhost:3006/` in the web browser and you will see the server-side rendered app (convert the `<App>` component into HTML).
+
+### Deploy SSR to Production
+- [How to deploy a React SSR app on Google Cloud Platform](https://javascript.plainenglish.io/deploy-react-ssr-to-production-26350e9985d1)
